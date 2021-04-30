@@ -1,11 +1,12 @@
 ﻿using Keap.Sdk.Domain;
+using Keap.Sdk.Domain.Clients;
 using System;
 
 namespace Keap.Sdk
 {
     public class Authentication
     {
-        public static KeapClient GetClientUsingOAuth2(string integrationName, string clientId, string clientSecret, string baseUrl, IRestClient restClient = null)
+        public static KeapClient GetClientUsingOAuth2(string integrationName, string clientId, string clientSecret, string baseUrl, IApiClient apiClient = null)
         {
             if (string.IsNullOrWhiteSpace(integrationName))
             {
@@ -27,15 +28,18 @@ namespace Keap.Sdk
                 throw new Common.KeapArgumentException(nameof(baseUrl));
             }
 
-            if (restClient == null)
+            if (apiClient == null)
             {
-                AccessToken token = new AccessToken(integrationName, clientId, clientSecret, baseUrl);
-
-                // TODO: trigger opening a 
-                restClient = new RestClient(null);
+                ApiCredentials credentials = new ApiCredentials(integrationName, clientId, clientSecret, baseUrl);
+               
+                // TODO: Get the access token
+                // TODO: trigger opening a browser or raise an event to make this happen or take in delegates as an argument
+                AccessToken token = null;
+                                
+                apiClient = new ApiClient(credentials, token);
             }
             
-            return new KeapClient(restClient);
+            return new KeapClient(apiClient);
         }
     }
 }

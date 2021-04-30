@@ -1,5 +1,4 @@
-﻿using Keap.Sdk.Domain;
-using Keap.Sdk.Logging;
+﻿using Keap.Sdk.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,22 +13,39 @@ namespace Keap.Sdk.Domain.Clients
     internal class ApiClient : IApiClient
     {
 
-        internal ApiClient(string consumingApplicationName, string apiBaseAddress)
+        internal ApiClient(ApiCredentials credentials, AccessToken token)
         {
-            InitializeClient(consumingApplicationName, apiBaseAddress);
+            if (token == null)
+            {
+                throw new Common.KeapArgumentException(nameof(token));
+            }
+
+            if (credentials == null)
+            {
+                throw new Common.KeapArgumentException(nameof(credentials));
+            }
+
+            AccessToken = token;
+            Credentials = credentials;
+
+            InitializeClient();
         }
 
-        private void InitializeClient(string consumingApplicationName, string apiBaseAddress)
+        private void InitializeClient()
         {
             restClient = new HttpClient();
             restClient.DefaultRequestHeaders.Accept.Clear();
             restClient.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
-            restClient.DefaultRequestHeaders.Add("User-Agent", consumingApplicationName);
-            restClient.BaseAddress = new Uri(apiBaseAddress);
+            restClient.DefaultRequestHeaders.Add("User-Agent", Credentials.IntegrationName);
+            restClient.BaseAddress = new Uri(Credentials.BaseUrl);
         }
 
         private HttpClient restClient;
+
+        public AccessToken AccessToken { get; private set; }
+
+        public ApiCredentials Credentials { get; private set; }
 
         public StringContent GetJsonContentType(object value)
         {

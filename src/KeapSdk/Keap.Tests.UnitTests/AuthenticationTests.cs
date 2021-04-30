@@ -20,7 +20,7 @@ namespace Keap.Tests.UnitTests
             string baseUrl = "https://api.infusionsoft.com/crm/rest/v1";
 
             // Act
-            var actual = Sdk.Authentication.GetClientUsingOAuth2(clientId, clientSecret, baseUrl);
+            var actual = Sdk.Authentication.GetClientUsingOAuth2("Keap SDK Unit Tests", clientId, clientSecret, baseUrl);
                         
             // Assert
             actual.Should().NotBeNull("valid credentials were passed in.");

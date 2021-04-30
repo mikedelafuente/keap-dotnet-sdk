@@ -1,11 +1,13 @@
-﻿using Keap.Sdk.Domain.Clients;
-using System.Net.Http;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
-namespace Keap.Sdk.Domain
+namespace Keap.Sdk.Domain.Clients
 {
     public interface IApiClient
     {
+        AccessToken AccessToken { get; }
+
+        ApiCredentials Credentials { get; }
+
         Task<ServerResponse> DeleteAsync(string path);
         Task<ServerResponse> GetAsync(string path);
         Task<ServerResponse> PatchAsync(string path, object valueToSerialize);

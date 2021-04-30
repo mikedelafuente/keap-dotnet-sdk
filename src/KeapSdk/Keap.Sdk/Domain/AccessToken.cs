@@ -4,14 +4,7 @@ namespace Keap.Sdk.Domain
 {
     public class AccessToken
     {
-        public AccessToken(string integrationName, string clientId, string clientSecret, string baseUrl)
-        {
-            IntegrationName = integrationName;
-            ClientId = clientId;
-            ClientSecret = clientSecret;
-            BaseUrl = baseUrl;
-        }
-
+        
         [JsonPropertyName("access_token")]
         public string Token { get; set; }
         
