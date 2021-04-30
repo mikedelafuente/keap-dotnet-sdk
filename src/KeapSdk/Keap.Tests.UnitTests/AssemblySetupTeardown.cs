@@ -8,7 +8,6 @@ namespace Keap.Tests.UnitTests
     [TestClass()]
     public static class AssemblySetupTeardown
     {
-
         [AssemblyInitialize]
         public static void AssemblyInit(TestContext context)
         {
@@ -19,9 +18,7 @@ namespace Keap.Tests.UnitTests
             EventHub.OnInfoMessage += LogHelper.HandleLogMessage;
             EventHub.OnVerboseMessage += LogHelper.HandleLogMessage;
             EventHub.OnWarnMessage += LogHelper.HandleLogMessage;
-
         }
-
 
         [AssemblyCleanup]
         public static void AssemblyCleanup()

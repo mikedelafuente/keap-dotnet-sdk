@@ -1,10 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Keap.Tests.UnitTests.Common
 {
@@ -12,6 +7,7 @@ namespace Keap.Tests.UnitTests.Common
     {
         private static IConfigurationRoot _configuration = null;
         private static object configLock = new object();
+
         public static IConfigurationRoot GetConfiguration()
         {
             if (_configuration == null)
@@ -23,7 +19,6 @@ namespace Keap.Tests.UnitTests.Common
                         _configuration = BuildConfiguration();
                     }
                 }
-
             }
 
             return _configuration;

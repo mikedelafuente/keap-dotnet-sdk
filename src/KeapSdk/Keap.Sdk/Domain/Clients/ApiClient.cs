@@ -1,7 +1,5 @@
 ﻿using Keap.Sdk.Logging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -12,6 +10,7 @@ namespace Keap.Sdk.Domain.Clients
 {
     internal class ApiClient : IApiClient
     {
+        private HttpClient _restClient;
 
         internal ApiClient(ApiCredentials credentials, AccessToken token)
         {
@@ -31,40 +30,36 @@ namespace Keap.Sdk.Domain.Clients
             InitializeClient();
         }
 
-        private void InitializeClient()
-        {
-            restClient = new HttpClient();
-            restClient.DefaultRequestHeaders.Accept.Clear();
-            restClient.DefaultRequestHeaders.Accept.Add(
-                new MediaTypeWithQualityHeaderValue("application/json"));
-            restClient.DefaultRequestHeaders.Add("User-Agent", Credentials.IntegrationName);
-            restClient.BaseAddress = new Uri(Credentials.BaseUrl);
-        }
-
-        private HttpClient restClient;
-
         public AccessToken AccessToken { get; private set; }
 
         public ApiCredentials Credentials { get; private set; }
+
+        public async Task<ServerResponse> DeleteAsync(string path)
+        {
+            var httpResponseTask = _restClient.DeleteAsync(path);
+            var httpResponse = await httpResponseTask;
+
+            return ParseHttpResponse(httpResponse);
+        }
+
+        public async Task<ServerResponse> GetAsync(string path)
+        {
+            var httpResponseTask = _restClient.GetAsync(path);
+            var httpResponse = await httpResponseTask;
+
+            return ParseHttpResponse(httpResponse);
+        }
 
         public StringContent GetJsonContentType(object value)
         {
             return new StringContent(SerializeRequest(value), Encoding.UTF8, "application/json");
         }
 
-        private string SerializeRequest(object value)
+        public async Task<ServerResponse> PatchAsync(string path, object valueToSerialize)
         {
-            JsonSerializerOptions options = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
-            string json = JsonSerializer.Serialize(value);
-            LogEventManager.Info($"JSON request sent: {json}");
-            return json;
-        }
+            var jsonContent = GetJsonContentType(valueToSerialize);
 
-
-
-        public async Task<ServerResponse> GetAsync(string path)
-        {
-            var httpResponseTask = restClient.GetAsync(path);
+            var httpResponseTask = _restClient.PatchAsync(path, jsonContent);
             var httpResponse = await httpResponseTask;
 
             return ParseHttpResponse(httpResponse);
@@ -74,11 +69,20 @@ namespace Keap.Sdk.Domain.Clients
         {
             var jsonContent = GetJsonContentType(valueToSerialize);
 
-            var httpResponseTask = restClient.PostAsync(path, jsonContent);
+            var httpResponseTask = _restClient.PostAsync(path, jsonContent);
             var httpResponse = await httpResponseTask;
 
             return ParseHttpResponse(httpResponse);
+        }
 
+        public async Task<ServerResponse> PutAsync(string path, object valueToSerialize)
+        {
+            var jsonContent = GetJsonContentType(valueToSerialize);
+
+            var httpResponseTask = _restClient.PutAsync(path, jsonContent);
+            var httpResponse = await httpResponseTask;
+
+            return ParseHttpResponse(httpResponse);
         }
 
         private static ServerResponse ParseHttpResponse(HttpResponseMessage httpResponse)
@@ -92,41 +96,28 @@ namespace Keap.Sdk.Domain.Clients
 
             if (serverResponse.IsSuccessStatusCode)
             {
-
                 var stringTask = httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false).GetAwaiter();
                 serverResponse.ResponseBody = stringTask.GetResult();
-
             }
 
             return serverResponse;
         }
 
-        public async Task<ServerResponse> DeleteAsync(string path)
+        private void InitializeClient()
         {
-            var httpResponseTask = restClient.DeleteAsync(path);
-            var httpResponse = await httpResponseTask;
-
-            return ParseHttpResponse(httpResponse);
+            _restClient = new HttpClient();
+            _restClient.DefaultRequestHeaders.Accept.Clear();
+            _restClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            _restClient.DefaultRequestHeaders.Add("User-Agent", Credentials.IntegrationName);
+            _restClient.BaseAddress = new Uri(Credentials.BaseUrl);
         }
 
-        public async Task<ServerResponse> PutAsync(string path, object valueToSerialize)
+        private string SerializeRequest(object value)
         {
-            var jsonContent = GetJsonContentType(valueToSerialize);
-
-            var httpResponseTask = restClient.PutAsync(path, jsonContent);
-            var httpResponse = await httpResponseTask;
-
-            return ParseHttpResponse(httpResponse);
-        }
-
-        public async Task<ServerResponse> PatchAsync(string path, object valueToSerialize)
-        {
-            var jsonContent = GetJsonContentType(valueToSerialize);
-
-            var httpResponseTask = restClient.PatchAsync(path, jsonContent);
-            var httpResponse = await httpResponseTask;
-
-            return ParseHttpResponse(httpResponse);
+            JsonSerializerOptions options = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
+            string json = JsonSerializer.Serialize(value);
+            LogEventManager.Info($"JSON request sent: {json}");
+            return json;
         }
     }
 }

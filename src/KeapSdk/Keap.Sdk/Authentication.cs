@@ -1,6 +1,5 @@
 ﻿using Keap.Sdk.Domain;
 using Keap.Sdk.Domain.Clients;
-using System;
 
 namespace Keap.Sdk
 {
@@ -31,14 +30,14 @@ namespace Keap.Sdk
             if (apiClient == null)
             {
                 ApiCredentials credentials = new ApiCredentials(integrationName, clientId, clientSecret, baseUrl);
-               
+
                 // TODO: Get the access token
                 // TODO: trigger opening a browser or raise an event to make this happen or take in delegates as an argument
                 AccessToken token = null;
-                                
+
                 apiClient = new ApiClient(credentials, token);
             }
-            
+
             return new KeapClient(apiClient);
         }
     }

@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
+﻿using System.Net.Http;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace Keap.Sdk.Domain.Clients
 {
@@ -20,10 +15,9 @@ namespace Keap.Sdk.Domain.Clients
                 return result;
             }
 
-            // TODO: Make the return type nullable 
+            // TODO: Make the return type nullable
             //return default(T);
             throw new HttpRequestException(serverResponse.ReasonPhrase, null, serverResponse.StatusCode);
-
         }
     }
 }

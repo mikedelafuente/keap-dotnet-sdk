@@ -5,14 +5,12 @@
     /// </summary>
     public class KeapArgumentException : KeapException
     {
-
         /// <summary>
         /// Creates a new instance with a message
         /// </summary>
         /// <param name="paramName">The name of the parameter that caused the exception.</param>
         public KeapArgumentException(string paramName) : base($"Invalid parameter value: {paramName}")
         {
-            
         }
 
         /// <summary>
@@ -22,9 +20,6 @@
         /// <param name="paramName">The name of the parameter that caused the exception.</param>
         public KeapArgumentException(string message, string paramName) : base($"Invalid parameter value: {paramName}. Message: {message}")
         {
-
         }
     }
-
-
 }

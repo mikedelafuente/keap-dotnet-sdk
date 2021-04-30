@@ -1,5 +1,4 @@
-﻿
-using Keap.Sdk.Common;
+﻿using Keap.Sdk.Common;
 using System;
 
 namespace Keap.Sdk.Logging
@@ -9,7 +8,7 @@ namespace Keap.Sdk.Logging
         #region Methods
 
         /// <summary>
-        ///     Publish a debug message to the EventHub. 
+        ///     Publish a debug message to the EventHub.
         ///     Used for debugging purposes.
         ///     If you want to print out a bunch of messages so you can log the exact flow of your program, use this.
         ///     If you want to keep a log of variable values, use this.

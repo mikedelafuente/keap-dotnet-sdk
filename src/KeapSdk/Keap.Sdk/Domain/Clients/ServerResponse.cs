@@ -1,7 +1,4 @@
-﻿using System.Net.Http;
-using System.Text.Json;
-
-namespace Keap.Sdk.Domain.Clients
+﻿namespace Keap.Sdk.Domain.Clients
 {
     public class ServerResponse
     {
@@ -10,16 +7,16 @@ namespace Keap.Sdk.Domain.Clients
         public string ResponseBody { get; set; }
         public string ReasonPhrase { get; internal set; }
 
-        bool? isSuccessStatusCode = null;
+        private bool? _isSuccessStatusCode = null;
 
         public bool IsSuccessStatusCode
         {
             get
             {
                 // If the value was explicitly set, use that value otherwise parse for 2xx codes
-                if (isSuccessStatusCode.HasValue)
+                if (_isSuccessStatusCode.HasValue)
                 {
-                    return isSuccessStatusCode.Value;
+                    return _isSuccessStatusCode.Value;
                 }
                 else
                 {
@@ -27,7 +24,7 @@ namespace Keap.Sdk.Domain.Clients
                     return statusCode >= 200 && statusCode < 300;
                 }
             }
-            internal set { isSuccessStatusCode = value; }
+            internal set { _isSuccessStatusCode = value; }
         }
     }
 }

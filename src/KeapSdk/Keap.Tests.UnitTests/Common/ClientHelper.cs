@@ -1,9 +1,4 @@
 ﻿using Keap.Sdk;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Keap.Tests.UnitTests.Common
 {
@@ -23,7 +18,6 @@ namespace Keap.Tests.UnitTests.Common
 
         internal static KeapClient GetSdkClient()
         {
-
             return Authentication.GetClientUsingOAuth2("validClientId", "validClientSecret", GetTestApplicationName(), GetServerAddress());
         }
     }

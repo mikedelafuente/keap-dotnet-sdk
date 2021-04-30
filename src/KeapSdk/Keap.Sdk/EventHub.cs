@@ -61,7 +61,6 @@ namespace Keap.Sdk
         /// </summary>
         public static void ClearListeners()
         {
-
             try
             {
                 if (OnDebugMessage != null)
@@ -223,7 +222,6 @@ namespace Keap.Sdk
             return listening;
         }
 
-
         /// <summary>
         /// Inspects the log level of the event data and triggers the corresponding event if there is a listener.
         /// </summary>
@@ -271,7 +269,5 @@ namespace Keap.Sdk
                 }
             }
         }
-
-
     }
 }

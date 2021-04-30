@@ -1,10 +1,5 @@
 ﻿using Keap.Sdk.Logging;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Keap.Tests.UnitTests.Common
 {
@@ -21,7 +16,6 @@ namespace Keap.Tests.UnitTests.Common
                 Debug.WriteLine("------------ END EXCEPTION ------------");
                 Debug.WriteLine("");
             }
-
         }
     }
 }

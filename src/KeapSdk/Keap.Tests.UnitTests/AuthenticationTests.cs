@@ -21,10 +21,9 @@ namespace Keap.Tests.UnitTests
 
             // Act
             var actual = Sdk.Authentication.GetClientUsingOAuth2("Keap SDK Unit Tests", clientId, clientSecret, baseUrl);
-                        
+
             // Assert
             actual.Should().NotBeNull("valid credentials were passed in.");
         }
-
     }
 }

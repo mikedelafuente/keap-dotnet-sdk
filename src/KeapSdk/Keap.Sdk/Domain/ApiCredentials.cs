@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Keap.Sdk.Domain
+﻿namespace Keap.Sdk.Domain
 {
     public class ApiCredentials
     {
@@ -16,9 +10,9 @@ namespace Keap.Sdk.Domain
             BaseUrl = baseUrl;
         }
 
-        public string IntegrationName { get; }
+        public string BaseUrl { get; }
         public string ClientId { get; }
         public string ClientSecret { get; }
-        public string BaseUrl { get; }
+        public string IntegrationName { get; }
     }
 }
