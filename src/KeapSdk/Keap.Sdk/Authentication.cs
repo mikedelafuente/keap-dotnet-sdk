@@ -4,6 +4,8 @@ using System;
 
 namespace Keap.Sdk
 {
+    public delegate AccessTokenCredentials OAuth2BrowserHandler(string integrationName, string clientId, string clientSecret, string baseUrl);
+
     /// <summary>
     /// Start here. This is used to get a <see cref="KeapClient"/> which allows you to make calls to the Keap API
     /// </summary>
@@ -58,7 +60,7 @@ namespace Keap.Sdk
         /// or
         /// Null or white space for baseUrl
         /// </exception>
-        public static KeapClient GetClientUsingOAuth2(string integrationName, string clientId, string clientSecret, string baseUrl, IApiClient apiClient = null)
+        public static KeapClient GetClientUsingOAuth2(string integrationName, string clientId, string clientSecret, string baseUrl, OAuth2BrowserHandler browserDelegate, IApiClient apiClient = null)
         {
             if (string.IsNullOrWhiteSpace(integrationName))
             {
@@ -84,7 +86,7 @@ namespace Keap.Sdk
             {
                 // TODO: Get the access token
                 // TODO: trigger opening a browser or raise an event to make this happen or take in delegates as an argument
-                AccessTokenCredentials token = null;
+                AccessTokenCredentials token = browserDelegate(integrationName, clientSecret, clientSecret, baseUrl);
 
                 apiClient = new ApiClient(token);
             }
