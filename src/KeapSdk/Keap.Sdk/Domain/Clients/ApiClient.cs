@@ -12,27 +12,19 @@ namespace Keap.Sdk.Domain.Clients
     {
         private HttpClient _restClient;
 
-        internal ApiClient(ApiCredentials credentials, AccessToken token)
+        internal ApiClient(AccessTokenCredentials accessTokenCredentials)
         {
-            if (token == null)
+            if (accessTokenCredentials == null)
             {
-                throw new Common.KeapArgumentException(nameof(token));
+                throw new Exceptions.KeapArgumentException(nameof(accessTokenCredentials));
             }
 
-            if (credentials == null)
-            {
-                throw new Common.KeapArgumentException(nameof(credentials));
-            }
-
-            AccessToken = token;
-            Credentials = credentials;
+            AccessTokenCredentials = accessTokenCredentials;
 
             InitializeClient();
         }
 
-        public AccessToken AccessToken { get; private set; }
-
-        public ApiCredentials Credentials { get; private set; }
+        public AccessTokenCredentials AccessTokenCredentials { get; private set; }
 
         public async Task<ServerResponse> DeleteAsync(string path)
         {
@@ -108,8 +100,8 @@ namespace Keap.Sdk.Domain.Clients
             _restClient = new HttpClient();
             _restClient.DefaultRequestHeaders.Accept.Clear();
             _restClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            _restClient.DefaultRequestHeaders.Add("User-Agent", Credentials.IntegrationName);
-            _restClient.BaseAddress = new Uri(Credentials.BaseUrl);
+            _restClient.DefaultRequestHeaders.Add("User-Agent", AccessTokenCredentials.IntegrationName);
+            _restClient.BaseAddress = new Uri(AccessTokenCredentials.BaseUrl);
         }
 
         private string SerializeRequest(object value)

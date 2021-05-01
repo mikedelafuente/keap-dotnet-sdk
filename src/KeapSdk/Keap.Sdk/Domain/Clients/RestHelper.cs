@@ -17,7 +17,7 @@ namespace Keap.Sdk.Domain.Clients
 
             // TODO: Make the return type nullable
             //return default(T);
-            throw new HttpRequestException(serverResponse.ReasonPhrase, null, serverResponse.StatusCode);
+            throw new Exceptions.KeapException("There was an unsuccesful status code returned.", new HttpRequestException(serverResponse.ReasonPhrase, null, serverResponse.StatusCode));
         }
     }
 }

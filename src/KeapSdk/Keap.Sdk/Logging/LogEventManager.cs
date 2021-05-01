@@ -1,5 +1,4 @@
-﻿using Keap.Sdk.Common;
-using System;
+﻿using System;
 
 namespace Keap.Sdk.Logging
 {
@@ -89,7 +88,7 @@ namespace Keap.Sdk.Logging
         public static void ErrorAndThrow(string message)
         {
             Publish(message, LogLevelType.Error);
-            throw new KeapException(message);
+            throw new Exceptions.KeapException(message);
         }
 
         /// <summary>

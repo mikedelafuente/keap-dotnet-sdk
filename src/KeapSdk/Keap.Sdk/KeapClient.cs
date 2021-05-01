@@ -1,5 +1,4 @@
-﻿using Keap.Sdk.Common;
-using Keap.Sdk.Domain.Clients;
+﻿using Keap.Sdk.Domain.Clients;
 
 namespace Keap.Sdk
 {
@@ -12,7 +11,7 @@ namespace Keap.Sdk
         {
             if (apiClient == null)
             {
-                throw new KeapArgumentException(nameof(apiClient));
+                throw new Exceptions.KeapArgumentException(nameof(apiClient));
             }
 
             ApiClient = apiClient;

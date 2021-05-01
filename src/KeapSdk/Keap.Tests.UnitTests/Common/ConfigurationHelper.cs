@@ -6,13 +6,13 @@ namespace Keap.Tests.UnitTests.Common
     public static class ConfigurationHelper
     {
         private static IConfigurationRoot _configuration = null;
-        private static object configLock = new object();
+        private static object _configLock = new object();
 
         public static IConfigurationRoot GetConfiguration()
         {
             if (_configuration == null)
             {
-                lock (configLock)
+                lock (_configLock)
                 {
                     if (_configuration == null)
                     {
