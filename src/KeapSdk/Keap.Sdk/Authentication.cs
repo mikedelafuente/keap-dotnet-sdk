@@ -4,7 +4,7 @@ using System;
 
 namespace Keap.Sdk
 {
-    public delegate AccessTokenCredentials OAuth2BrowserHandler(string integrationName, string clientId, string clientSecret, string baseUrl);
+    public delegate AccessTokenCredentials OAuth2BrowserHandler(string redirectUri);
 
     /// <summary>
     /// Start here. This is used to get a <see cref="KeapClient"/> which allows you to make calls to the Keap API
@@ -46,9 +46,9 @@ namespace Keap.Sdk
         /// Gets the client using o auth2.
         /// </summary>
         /// <param name="integrationName">Name of the integration.</param>
-        /// <param name="clientId">The client identifier.</param>
+        /// <param name="clientId">Application client ID. Found in the developer portal.</param>
         /// <param name="clientSecret">The client secret.</param>
-        /// <param name="baseUrl">The base URL.</param>
+        /// <param name="redirectUri">This is the callback URL that Keap will redirect the users back to after authorization(must be HTTPS). Users will not be redirect to any other URLs during the authentication process so it is important to use the site that users can visit and has a script to capture the authorization code.</param>
         /// <param name="apiClient">The API client.</param>
         /// <returns></returns>
         /// <exception cref="Keap.Sdk.Exceptions.KeapArgumentException">
@@ -60,7 +60,17 @@ namespace Keap.Sdk
         /// or
         /// Null or white space for baseUrl
         /// </exception>
-        public static KeapClient GetClientUsingOAuth2(string integrationName, string clientId, string clientSecret, string baseUrl, OAuth2BrowserHandler browserDelegate, IApiClient apiClient = null)
+        public static KeapClient GetClientUsingOAuth2(string integrationName,
+                string clientId,
+                string clientSecret,
+                string redirectUri,
+                OAuth2BrowserHandler browserDelegate,
+                string authorizationRequestUrl = "https://accounts.infusionsoft.com/app/oauth/authorize",
+                string accessTokenRequestUrl = "https://api.infusionsoft.com/token",
+                string refreshTokenRequestUrl = "https://api.infusionsoft.com/token",
+                string restApiUrl = "https://api.infusionsoft.com/crm/rest/v1",
+                string xmlRpcApiUrl = "https://api.infusionsoft.com/crm/xmlrpc/v1",
+                IApiClient apiClient = null)
         {
             if (string.IsNullOrWhiteSpace(integrationName))
             {
@@ -77,21 +87,37 @@ namespace Keap.Sdk
                 throw new Exceptions.KeapArgumentException(nameof(clientId));
             }
 
-            if (string.IsNullOrWhiteSpace(baseUrl))
-            {
-                throw new Exceptions.KeapArgumentException(nameof(baseUrl));
-            }
+            ValidateUrlWithThrow(nameof(authorizationRequestUrl), authorizationRequestUrl);
+            ValidateUrlWithThrow(nameof(accessTokenRequestUrl), accessTokenRequestUrl);
+            ValidateUrlWithThrow(nameof(refreshTokenRequestUrl), refreshTokenRequestUrl);
+            ValidateUrlWithThrow(nameof(restApiUrl), restApiUrl);
+            ValidateUrlWithThrow(nameof(xmlRpcApiUrl), xmlRpcApiUrl);
 
             if (apiClient == null)
             {
                 // TODO: Get the access token
                 // TODO: trigger opening a browser or raise an event to make this happen or take in delegates as an argument
-                AccessTokenCredentials token = browserDelegate(integrationName, clientSecret, clientSecret, baseUrl);
+
+                string browserDelegateRedirectUri = $"{authorizationRequestUrl}?client_id={clientId}&redirect_uri={redirectUri}&response_type=code&scope=full";
+                AccessTokenCredentials token = browserDelegate(browserDelegateRedirectUri);
 
                 apiClient = new ApiClient(token);
             }
 
             return new KeapClient(apiClient);
+        }
+
+        private static void ValidateUrlWithThrow(string nameOfParam, string url)
+        {
+            if (string.IsNullOrWhiteSpace(url))
+            {
+                throw new Exceptions.KeapArgumentException(nameOfParam);
+            }
+
+            if (!url.StartsWith("http", StringComparison.InvariantCultureIgnoreCase))
+            {
+                throw new Exceptions.KeapArgumentException(nameOfParam, "Expected the uri to start with 'http'");
+            }
         }
     }
 }

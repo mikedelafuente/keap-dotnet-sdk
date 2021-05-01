@@ -1,4 +1,5 @@
 ﻿using Keap.Sdk;
+using System;
 
 namespace Keap.Tests.E2E.Common
 {
@@ -6,7 +7,8 @@ namespace Keap.Tests.E2E.Common
     {
         internal static KeapClient GetSdkClient()
         {
-            return Authentication.GetClientUsingOAuth2("validClientId", "validClientSecret", GetTestApplicationName(), GetServerAddress());
+            throw new NotImplementedException();
+            // return Authentication.GetClientUsingOAuth2("validClientId", "validClientSecret", GetTestApplicationName(), GetServerAddress());
         }
 
         internal static string GetServerAddress()
