@@ -1,10 +1,18 @@
 ﻿using Keap.Sdk.Domain;
 using Keap.Sdk.Domain.Clients;
 using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Text.Json;
 
 namespace Keap.Sdk
 {
-    public delegate AccessTokenCredentials OAuth2BrowserHandler(string redirectUri);
+    /// <summary>
+    /// As the developer, you are responsible to redirect the user's browser to a URL that will then return the code for use by the SDK.
+    /// </summary>
+    /// <param name="authorizationUri">The URI to redirect a user's browser to</param>
+    /// <returns>The 'Code' found in the redirect uri once the user has approved the integration.</returns>
+    public delegate string OAuth2BrowserHandler(string authorizationUri);
 
     /// <summary>
     /// Start here. This is used to get a <see cref="KeapClient"/> which allows you to make calls to the Keap API
@@ -72,6 +80,7 @@ namespace Keap.Sdk
                 string xmlRpcApiUrl = "https://api.infusionsoft.com/crm/xmlrpc/v1",
                 IApiClient apiClient = null)
         {
+            // Validate input
             if (string.IsNullOrWhiteSpace(integrationName))
             {
                 throw new Exceptions.KeapArgumentException(nameof(integrationName));
@@ -93,18 +102,75 @@ namespace Keap.Sdk
             ValidateUrlWithThrow(nameof(restApiUrl), restApiUrl);
             ValidateUrlWithThrow(nameof(xmlRpcApiUrl), xmlRpcApiUrl);
 
-            if (apiClient == null)
+            // if a client wasn't injected or if we are missing access token credentials, we need to get them
+            if (apiClient == null || apiClient.AccessTokenCredentials == null)
             {
-                // TODO: Get the access token
-                // TODO: trigger opening a browser or raise an event to make this happen or take in delegates as an argument
-
+                // Create the url to redirect the user's browser to
                 string browserDelegateRedirectUri = $"{authorizationRequestUrl}?client_id={clientId}&redirect_uri={redirectUri}&response_type=code&scope=full";
-                AccessTokenCredentials token = browserDelegate(browserDelegateRedirectUri);
 
-                apiClient = new ApiClient(token);
+                // Call the delegate
+                string code = browserDelegate(browserDelegateRedirectUri);
+
+                if (string.IsNullOrWhiteSpace(code))
+                {
+                    throw new Exceptions.KeapInvalidOAuth2CodeException("Invalid code was returned from the delegate. Have the Keap user grant access again.");
+                }
+
+                var accessTokenCredentials = GetAccessToken(code, redirectUri, accessTokenRequestUrl, clientId, clientSecret, integrationName, restApiUrl, xmlRpcApiUrl);
+
+                if (accessTokenCredentials == null || !accessTokenCredentials.IsValid())
+                {
+                    throw new Exceptions.KeapArgumentException(nameof(accessTokenCredentials), "Invalid token was returned from the access token endpoint."); ;
+                }
+
+                if (apiClient == null)
+                {
+                    apiClient = new ApiClient(accessTokenCredentials);
+                }
+                else
+                {
+                    // IF we remove this, then we should set the AccessTokenCredentials back to read-only on the interface.
+                    apiClient.AccessTokenCredentials = accessTokenCredentials;
+                }
             }
 
             return new KeapClient(apiClient);
+        }
+
+        private static AccessTokenCredentials GetAccessToken(string code, string originalRedirectUri, string accessTokenRequestUrl, string clientId, string clientSecret, string integrationName, string restApiUrl, string xmlRpcUrl)
+        {
+            HttpResponseMessage httpResponse;
+            DateTime createTime;
+            // POST the code to the token endpoint
+            using (HttpClient httpClient = new HttpClient())
+            {
+                var requestBody = new Dictionary<string, string>();
+                requestBody.Add("client_id", clientId);
+                requestBody.Add("client_secret", clientSecret);
+                requestBody.Add("grant_type", "authorization_code");
+                requestBody.Add("redirect_uri", originalRedirectUri);
+                requestBody.Add("code", code);
+
+                var content = new FormUrlEncodedContent(requestBody);
+                createTime = DateTime.UtcNow;
+                var postTask = httpClient.PostAsync(accessTokenRequestUrl, content).ConfigureAwait(false).GetAwaiter();
+                httpResponse = postTask.GetResult();
+            }
+
+            // Parse the response
+            if (httpResponse.StatusCode != System.Net.HttpStatusCode.OK)
+            {
+                throw new Exceptions.KeapHttpRequestException("Unable to convert the OAuth2 code into an access token. Please try again.", new HttpRequestException(httpResponse.ReasonPhrase));
+            }
+
+            var responseContentTask = httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false).GetAwaiter();
+            var responseContent = responseContentTask.GetResult();
+
+            JsonSerializerOptions options = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
+            var accessTokenResponse = JsonSerializer.Deserialize<Domain.Clients.Authentication.AccessTokenResponse>(responseContent, options);
+
+            AccessTokenCredentials credentials = new AccessTokenCredentials(integrationName, clientId, clientSecret, restApiUrl, xmlRpcUrl, createTime, accessTokenResponse);
+            return credentials;
         }
 
         private static void ValidateUrlWithThrow(string nameOfParam, string url)

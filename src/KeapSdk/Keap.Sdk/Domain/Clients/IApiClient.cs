@@ -4,7 +4,7 @@ namespace Keap.Sdk.Domain.Clients
 {
     public interface IApiClient
     {
-        AccessTokenCredentials AccessTokenCredentials { get; }
+        AccessTokenCredentials AccessTokenCredentials { get; set; }
 
         Task<ServerResponse> DeleteAsync(string path);
 

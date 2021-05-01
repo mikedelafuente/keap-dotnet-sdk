@@ -24,7 +24,7 @@ namespace Keap.Sdk.Domain.Clients
             InitializeClient();
         }
 
-        public AccessTokenCredentials AccessTokenCredentials { get; private set; }
+        public AccessTokenCredentials AccessTokenCredentials { get; set; }
 
         public async Task<ServerResponse> DeleteAsync(string path)
         {
@@ -101,7 +101,7 @@ namespace Keap.Sdk.Domain.Clients
             _restClient.DefaultRequestHeaders.Accept.Clear();
             _restClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             _restClient.DefaultRequestHeaders.Add("User-Agent", AccessTokenCredentials.IntegrationName);
-            _restClient.BaseAddress = new Uri(AccessTokenCredentials.BaseUrl);
+            _restClient.BaseAddress = new Uri(AccessTokenCredentials.RestUrl);
         }
 
         private string SerializeRequest(object value)
