@@ -1,5 +1,4 @@
-﻿using Keap.Sdk.Domain.Clients;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace Keap.Sdk.Domain
 {

@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Keap.Tests.E2E
 {
     [TestClass]
-    public class InteractiveAuthenticationTests : E2E.Common.E2ETests
+    public class InteractiveAuthenticationTests : E2E.Common.SdkE2ETests
     {
         [Scenario("Get a client using an existing access token")]
         [Given("a valid Keap developer client ID and secret")]
@@ -15,10 +15,10 @@ namespace Keap.Tests.E2E
         public void Get_a_client_using_an_existing_access_token()
         {
             // Arrange
-            var accessToken = base.GetCredentialsFromSecretFile();
+            var accessToken = ClientHelper.GetCredentialsFromSecretFile(PersonaType.Admin);
 
             // Act
-            var actual = Sdk.Authentication.GetClientUsingAccessToken(accessToken, PersistCredentialsToSecretFile);
+            var actual = Sdk.Authentication.GetClientUsingAccessToken(accessToken, ClientHelper.PersistCredentialsToSecretFile);
 
             // Assert
             actual.Should().NotBeNull("valid credentials were passed in.");
@@ -35,9 +35,10 @@ namespace Keap.Tests.E2E
             string clientId = _config["TestSettings:ClientId"];
             string clientSecret = _config["TestSettings:ClientSecret"];
             var integrationName = _config["TestSettings:IntegrationName"];
+            string integratorUniqueIdentifier = PersonaType.Admin.ToString();
 
             // Act
-            var actual = Sdk.Authentication.GetClientUsingOAuth2(integrationName, clientId, clientSecret, "https://localhost/seleniumHandler", GetCodeViaSelenium, PersistCredentialsToSecretFile);
+            var actual = Sdk.Authentication.GetClientUsingOAuth2(integrationName, integratorUniqueIdentifier, clientId, clientSecret, "https://localhost/seleniumHandler", Tests.Common.ClientHelper.PersistCredentialsToSecretFile, Common.SeleniumHelper.GetAdminCodeFromSelenium);
 
             // Assert
             actual.Should().NotBeNull("valid credentials were passed in.");

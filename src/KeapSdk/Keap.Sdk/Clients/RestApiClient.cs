@@ -132,7 +132,7 @@ namespace Keap.Sdk.Domain.Clients
             JsonSerializerOptions options = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
             var accessTokenResponse = JsonSerializer.Deserialize<AccessTokenResponse>(responseContent, options);
 
-            AccessTokenCredentials credentials = new AccessTokenCredentials(currentCredentials.IntegrationName, currentCredentials.ClientId, currentCredentials.ClientSecret, currentCredentials.RestApiUrl, currentCredentials.XmlRpcApiUrl, currentCredentials.AuthorizationRequestUrl, currentCredentials.AccessTokenRequestUrl, currentCredentials.RefreshTokenRequestUrl, createTime, accessTokenResponse);
+            AccessTokenCredentials credentials = new AccessTokenCredentials(currentCredentials.IntegrationName, currentCredentials.IntegratorUniqueIdentifier, currentCredentials.ClientId, currentCredentials.ClientSecret, currentCredentials.RestApiUrl, currentCredentials.XmlRpcApiUrl, currentCredentials.AuthorizationRequestUrl, currentCredentials.AccessTokenRequestUrl, currentCredentials.RefreshTokenRequestUrl, createTime, accessTokenResponse);
             return credentials;
         }
 

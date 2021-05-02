@@ -5,20 +5,19 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Keap.Tests.E2E
 {
     [TestClass]
-    public class AccountProfileTests : E2E.Common.E2ETests
+    public class AccountProfileTests : E2E.Common.SdkE2ETests
     {
-        [Scenario("Get a client using an existing access token")]
-        [Given("a valid Keap developer client ID and secret")]
+        [Scenario("Get the account profile for the current app")]
+        [Given("an admin token")]
         [When("a call to the OAuth2 endpoint is made and validated by the user")]
         [Then("a client object is returned to the integrator")]
         [TestMethod]
         public void Get_a_client_using_an_existing_access_token()
         {
             // Arrange
-            var accessToken = base.GetCredentialsFromSecretFile();
+            var client = Tests.Common.ClientHelper.GetSdkClient(PersonaType.Admin);
 
             // Act
-            var client = Sdk.Authentication.GetClientUsingAccessToken(accessToken, PersistCredentialsToSecretFile);
             var actual = client.AccountInfo.GetAccountProfile();
 
             // Assert

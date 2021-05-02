@@ -5,7 +5,7 @@ namespace Keap.Sdk
     /// <summary>
     /// The Client for the Keap API
     /// </summary>
-    public class KeapClient
+    internal class KeapClient : IKeapClient
     {
         internal KeapClient(IRestApiClient apiClient)
         {
