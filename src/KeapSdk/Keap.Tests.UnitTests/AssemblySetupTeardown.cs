@@ -25,7 +25,7 @@ namespace Keap.Tests.UnitTests
         {
             // Executes once after the test run. (Optional)
             Console.WriteLine("CredentialFixture: Disposing CredentialFixture");
-            EventHub.ClearListeners();
+            EventHub.ClearAllListeners();
         }
     }
 }

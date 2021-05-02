@@ -2,11 +2,6 @@
 {
     public class ServerResponse
     {
-        public System.Net.HttpStatusCode StatusCode { get; set; }
-
-        public string ResponseBody { get; set; }
-        public string ReasonPhrase { get; internal set; }
-
         private bool? _isSuccessStatusCode = null;
 
         public bool IsSuccessStatusCode
@@ -26,5 +21,9 @@
             }
             internal set { _isSuccessStatusCode = value; }
         }
+
+        public string ReasonPhrase { get; internal set; }
+        public string ResponseBody { get; set; }
+        public System.Net.HttpStatusCode StatusCode { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿using Keap.Sdk.Domain.Clients;
+﻿using Keap.Sdk.Domain;
 
 namespace Keap.Sdk
 {
@@ -7,7 +7,7 @@ namespace Keap.Sdk
     /// </summary>
     public class KeapClient
     {
-        internal KeapClient(IApiClient apiClient)
+        internal KeapClient(IRestApiClient apiClient)
         {
             if (apiClient == null)
             {
@@ -15,8 +15,11 @@ namespace Keap.Sdk
             }
 
             ApiClient = apiClient;
+            AccountInfo = new Clients.AccountInfo.AccountInfoClient(ApiClient);
         }
 
-        public IApiClient ApiClient { get; }
+        public IAccountInfoClient AccountInfo { get; }
+
+        internal IRestApiClient ApiClient { get; }
     }
 }

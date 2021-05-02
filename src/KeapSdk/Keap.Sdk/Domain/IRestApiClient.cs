@@ -1,8 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using Keap.Sdk.Domain.Clients;
+using System.Threading.Tasks;
 
-namespace Keap.Sdk.Domain.Clients
+namespace Keap.Sdk.Domain
 {
-    public interface IApiClient
+    public interface IRestApiClient
     {
         AccessTokenCredentials AccessTokenCredentials { get; set; }
 

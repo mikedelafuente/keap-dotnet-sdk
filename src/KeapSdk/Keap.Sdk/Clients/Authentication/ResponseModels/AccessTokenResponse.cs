@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace Keap.Sdk.Domain.Clients.Authentication
+namespace Keap.Sdk.Clients.Authentication.ResponseModels
 {
     internal class AccessTokenResponse
     {

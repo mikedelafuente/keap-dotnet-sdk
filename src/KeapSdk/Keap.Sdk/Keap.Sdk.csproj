@@ -5,8 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Common\" />
-    <Folder Include="Domain\Clients\Account\" />
+    <Folder Include="Clients\Common\RequestModels\" />
   </ItemGroup>
 
 </Project>
