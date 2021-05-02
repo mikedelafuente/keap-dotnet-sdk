@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using System.IO;
 
-namespace Keap.Tests.UnitTests.Common
+namespace Keap.Tests.E2E.Common
 {
     public static class ConfigurationHelper
     {
