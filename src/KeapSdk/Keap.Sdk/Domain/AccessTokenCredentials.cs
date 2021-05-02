@@ -8,33 +8,41 @@ namespace Keap.Sdk.Domain
     /// </summary>
     public class AccessTokenCredentials
     {
-        public AccessTokenCredentials(string integrationName, string clientId, string clientSecret, string restApiUrl, string xmlRpcUrl, DateTime createTime, string accessToken, string refreshToken, int expiresIn)
-        {
-            AccessToken = accessToken;
-            RestUrl = restApiUrl;
-            XmlRpcUrl = xmlRpcUrl;
-            ClientId = clientId;
-            ClientSecret = clientSecret;
-            CreateTime = createTime;
-            ExpiresIn = expiresIn;
-            IntegrationName = integrationName;
-            RefreshToken = refreshToken;
+        //public AccessTokenCredentials(string integrationName, string clientId, string clientSecret, string restApiUrl, string xmlRpcApiUrl, string authorizationRequestUrl, string accessTokenRequestUrl, string refreshTokenRequestUrl, DateTime createTime, string accessToken, string refreshToken, int expiresIn)
+        //{
+        //    AccessToken = accessToken;
+        //    RestApiUrl = restApiUrl;
+        //    XmlRpcApiUrl = xmlRpcApiUrl;
+        //    ClientId = clientId;
+        //    ClientSecret = clientSecret;
+        //    CreateTime = createTime;
+        //    ExpiresIn = expiresIn;
+        //    IntegrationName = integrationName;
+        //    RefreshToken = refreshToken;
+        //    AuthorizationRequestUrl = authorizationRequestUrl;
+        //    AccessTokenRequestUrl = accessTokenRequestUrl;
+        //    RefreshTokenRequestUrl = refreshTokenRequestUrl;
 
-            // Calculated value
-        }
+        //    // Calculated value
+        //}
 
-        internal AccessTokenCredentials(string integrationName, string clientId, string clientSecret, string restApiUrl, string xmlRpcUrl, DateTime createTime, Domain.Clients.Authentication.AccessTokenResponse accessTokenResponse)
+        internal AccessTokenCredentials(string integrationName, string clientId, string clientSecret, string restApiUrl, string xmlRpcApiUrl, string authorizationRequestUrl, string accessTokenRequestUrl, string refreshTokenRequestUrl, DateTime createTime, Domain.Clients.Authentication.AccessTokenResponse accessTokenResponse)
         {
             AccessToken = accessTokenResponse.AccessToken;
+            ExpiresIn = accessTokenResponse.ExpiresIn;
+            RefreshToken = accessTokenResponse.RefreshToken;
+            Scope = accessTokenResponse.Scope;
+            TokenType = accessTokenResponse.TokenType;
 
-            RestUrl = restApiUrl;
-            XmlRpcUrl = xmlRpcUrl;
+            RestApiUrl = restApiUrl;
+            XmlRpcApiUrl = xmlRpcApiUrl;
             ClientId = clientId;
             ClientSecret = clientSecret;
             CreateTime = createTime;
-            ExpiresIn = accessTokenResponse.ExpiresIn;
             IntegrationName = integrationName;
-            RefreshToken = accessTokenResponse.RefreshToken;
+            AuthorizationRequestUrl = authorizationRequestUrl;
+            AccessTokenRequestUrl = accessTokenRequestUrl;
+            RefreshTokenRequestUrl = refreshTokenRequestUrl;
 
             // Calculated value
         }
@@ -42,13 +50,19 @@ namespace Keap.Sdk.Domain
         [JsonPropertyName("access_token")]
         public string AccessToken { get; set; }
 
+        [JsonPropertyName("access_token_request_url")]
+        public string AccessTokenRequestUrl { get; set; }
+
+        [JsonPropertyName("authorization_request_url")]
+        public string AuthorizationRequestUrl { get; set; }
+
         [JsonPropertyName("client_id")]
         public string ClientId { get; }
 
         [JsonPropertyName("client_secret")]
         public string ClientSecret { get; }
 
-        [JsonPropertyName("expires_at")]
+        [JsonPropertyName("created_at")]
         public System.DateTime CreateTime { get; set; }
 
         [JsonPropertyName("expires_in")]
@@ -60,11 +74,20 @@ namespace Keap.Sdk.Domain
         [JsonPropertyName("refresh_token")]
         public string RefreshToken { get; set; }
 
-        [JsonPropertyName("rest_url")]
-        public string RestUrl { get; }
+        [JsonPropertyName("refresh_token_request_url")]
+        public string RefreshTokenRequestUrl { get; set; }
 
-        [JsonPropertyName("xml_rpc_url")]
-        public string XmlRpcUrl { get; private set; }
+        [JsonPropertyName("rest_api_url")]
+        public string RestApiUrl { get; }
+
+        [JsonPropertyName("scope")]
+        public string Scope { get; private set; }
+
+        [JsonPropertyName("token_type")]
+        public string TokenType { get; private set; }
+
+        [JsonPropertyName("xml_rpc_api_url")]
+        public string XmlRpcApiUrl { get; set; }
 
         public System.DateTime GetAccessTokenExpiration()
         {
@@ -83,7 +106,7 @@ namespace Keap.Sdk.Domain
                 return false;
             }
 
-            if (string.IsNullOrWhiteSpace(RestUrl))
+            if (string.IsNullOrWhiteSpace(RestApiUrl))
             {
                 return false;
             }

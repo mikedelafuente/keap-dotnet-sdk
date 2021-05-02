@@ -5,8 +5,22 @@ namespace Keap.Tests.UnitTests.Common
 {
     public static class ConfigurationHelper
     {
-        private static IConfigurationRoot _configuration = null;
         private static object _configLock = new object();
+        private static IConfigurationRoot _configuration = null;
+
+        public static void ClearCachedConfiguration()
+        {
+            if (_configuration != null)
+            {
+                lock (_configLock)
+                {
+                    if (_configuration != null)
+                    {
+                        _configuration = null;
+                    }
+                }
+            }
+        }
 
         public static IConfigurationRoot GetConfiguration()
         {

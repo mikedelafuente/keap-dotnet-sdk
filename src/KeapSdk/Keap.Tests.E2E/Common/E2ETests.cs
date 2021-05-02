@@ -1,15 +1,18 @@
 ﻿using FluentAssertions;
+using Keap.Sdk.Domain;
 using Microsoft.Extensions.Configuration;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
 using System;
+using System.Text.Json;
 using System.Web;
 
 namespace Keap.Tests.E2E.Common
 {
     public class E2ETests
     {
+        public string _accessTokenFile = "token.secret";
         public IConfigurationRoot _config;
 
         public E2ETests()
@@ -17,6 +20,12 @@ namespace Keap.Tests.E2E.Common
             _config = ConfigurationHelper.GetConfiguration();
         }
 
+        /// <summary>
+        /// Returns the value of a given query string parameter name
+        /// </summary>
+        /// <param name="url">The url to parse</param>
+        /// <param name="name">The parameter name to get the value for</param>
+        /// <returns></returns>
         protected static string GetQueryStringValue(string url, string name)
         {
             var uri = new Uri(url);
@@ -24,6 +33,11 @@ namespace Keap.Tests.E2E.Common
             return parts[name];
         }
 
+        /// <summary>
+        /// Runs Selenium, using the chrome driver
+        /// </summary>
+        /// <param name="authorizationUri"></param>
+        /// <returns></returns>
         protected string GetCodeViaSelenium(string authorizationUri)
         {
             string code;
@@ -61,6 +75,31 @@ namespace Keap.Tests.E2E.Common
             }
 
             return code;
+        }
+
+        protected AccessTokenCredentials GetCredentialsFromSecretFile()
+        {
+            var fullPath = System.IO.Path.GetFullPath("./" + _accessTokenFile);
+            if (System.IO.File.Exists(fullPath))
+            {
+                var json = System.IO.File.ReadAllText(fullPath);
+
+                JsonSerializerOptions options = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
+                var credentials = JsonSerializer.Deserialize<AccessTokenCredentials>(json, options);
+                return credentials;
+            }
+
+            return null;
+        }
+
+        protected void PersistCredentialsToSecretFile(AccessTokenCredentials accessTokenCredentials)
+        {
+            var fullPath = System.IO.Path.GetFullPath("./" + _accessTokenFile);
+
+            JsonSerializerOptions options = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true, WriteIndented = true };
+            var json = JsonSerializer.Serialize(accessTokenCredentials, options);
+
+            System.IO.File.WriteAllText(fullPath, json);
         }
     }
 }

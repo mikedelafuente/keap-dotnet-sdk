@@ -27,7 +27,7 @@ namespace Keap.Tests.E2E
             var integrationName = _config["TestSettings:IntegrationName"];
 
             // Act
-            var actual = Sdk.Authentication.GetClientUsingOAuth2(integrationName, clientId, clientSecret, "https://localhost:44379/seleniumHandler", GetCodeViaSelenium);
+            var actual = Sdk.Authentication.GetClientUsingOAuth2(integrationName, clientId, clientSecret, "https://localhost/seleniumHandler", GetCodeViaSelenium, PersistCredentialsToSecretFile);
 
             // Assert
             actual.Should().NotBeNull("valid credentials were passed in.");

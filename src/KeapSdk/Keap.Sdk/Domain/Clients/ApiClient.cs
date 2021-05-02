@@ -101,7 +101,7 @@ namespace Keap.Sdk.Domain.Clients
             _restClient.DefaultRequestHeaders.Accept.Clear();
             _restClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             _restClient.DefaultRequestHeaders.Add("User-Agent", AccessTokenCredentials.IntegrationName);
-            _restClient.BaseAddress = new Uri(AccessTokenCredentials.RestUrl);
+            _restClient.BaseAddress = new Uri(AccessTokenCredentials.RestApiUrl);
         }
 
         private string SerializeRequest(object value)
