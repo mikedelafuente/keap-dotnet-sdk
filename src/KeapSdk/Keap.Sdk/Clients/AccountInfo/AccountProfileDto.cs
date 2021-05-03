@@ -1,12 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using Keap.Sdk.Clients.Common;
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace Keap.Sdk.Clients.AccountInfo.ResponseModels
+namespace Keap.Sdk.Clients.AccountInfo
 {
-    internal class AccountProfileResponse
+    internal class AccountProfileDto
     {
+
         [JsonPropertyName("address")]
-        public Common.ResponseModels.AddressResponse Address { get; set; }
+        public AddressDto Address { get; set; }
 
         [JsonPropertyName("business_goals")]
         public List<string> BusinessGoals { get; set; }
@@ -47,10 +49,10 @@ namespace Keap.Sdk.Clients.AccountInfo.ResponseModels
         [JsonPropertyName("website")]
         public string Website { get; set; }
 
-        internal static AccountProfileResponse MapFrom(Domain.Account.AccountProfile value)
+        internal static AccountProfileDto MapFrom(Domain.Account.AccountProfile value)
         {
-            AccountProfileResponse result = new AccountProfileResponse();
-            result.Address = Common.ResponseModels.AddressResponse.MapFrom(value.Address);
+            AccountProfileDto result = new AccountProfileDto();
+            result.Address = AddressDto.MapFrom(value.Address);
             result.BusinessGoals = value.BusinessGoals.GetClone();
             result.BusinessPrimaryColor = value.BusinessPrimaryColor;
             result.BusinessSecondaryColor = value.BusinessSecondaryColor;
@@ -70,20 +72,20 @@ namespace Keap.Sdk.Clients.AccountInfo.ResponseModels
         internal Domain.Account.AccountProfile MapTo()
         {
             Domain.Account.AccountProfile result = new Domain.Account.AccountProfile();
-            result.Address = this.Address.MapTo();
-            result.BusinessGoals = this.BusinessGoals.GetClone();
-            result.BusinessPrimaryColor = this.BusinessPrimaryColor;
-            result.BusinessSecondaryColor = this.BusinessSecondaryColor;
-            result.BusinessType = this.BusinessType;
-            result.CurrencyCode = this.CurrencyCode;
-            result.Email = this.Email;
-            result.LanguageTag = this.LanguageTag;
-            result.LogoUrl = this.LogoUrl;
-            result.Name = this.Name;
-            result.Phone = this.Phone;
-            result.PhoneExt = this.PhoneExt;
-            result.TimeZone = this.TimeZone;
-            result.Website = this.Website;
+            result.Address = Address.MapTo();
+            result.BusinessGoals = BusinessGoals.GetClone();
+            result.BusinessPrimaryColor = BusinessPrimaryColor;
+            result.BusinessSecondaryColor = BusinessSecondaryColor;
+            result.BusinessType = BusinessType;
+            result.CurrencyCode = CurrencyCode;
+            result.Email = Email;
+            result.LanguageTag = LanguageTag;
+            result.LogoUrl = LogoUrl;
+            result.Name = Name;
+            result.Phone = Phone;
+            result.PhoneExt = PhoneExt;
+            result.TimeZone = TimeZone;
+            result.Website = Website;
             return result;
         }
     }

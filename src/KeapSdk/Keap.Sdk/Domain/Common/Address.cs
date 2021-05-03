@@ -9,12 +9,12 @@ namespace Keap.Sdk.Domain.Common
 {
     public class Address
     {
-        /// <summary>
-        ///  Can be BILLING, SHIPPING or OTHER
-        /// </summary>
-        [JsonPropertyName("county_code")]
+        [JsonPropertyName("country_code")]
         public string CountryCode { get; set; }
 
+        /// <summary>
+        /// Can be BILLING, SHIPPING or OTHER
+        /// </summary>
         [JsonPropertyName("field")]
         public AddressType Field { get; set; }
 

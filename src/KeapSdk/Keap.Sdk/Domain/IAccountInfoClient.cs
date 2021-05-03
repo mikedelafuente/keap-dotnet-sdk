@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Keap.Sdk.Domain.Account;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,5 +12,9 @@ namespace Keap.Sdk.Domain
         public Account.AccountProfile GetAccountProfile();
 
         public Task<Account.AccountProfile> GetAccountProfileAsync();
+
+        AccountProfile UpdateAccountProfile(AccountProfile updatedAccountProfile);
+
+        Task<AccountProfile> UpdateAccountProfileAsync(AccountProfile updatedAccountProfile);
     }
 }

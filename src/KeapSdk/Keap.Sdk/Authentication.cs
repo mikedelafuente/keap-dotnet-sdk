@@ -242,7 +242,7 @@ namespace Keap.Sdk
             var responseContent = responseContentTask.GetResult();
 
             JsonSerializerOptions options = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
-            var accessTokenResponse = JsonSerializer.Deserialize<AccessTokenResponse>(responseContent, options);
+            var accessTokenResponse = JsonSerializer.Deserialize<AccessTokenDto>(responseContent, options);
 
             AccessTokenCredentials credentials = new AccessTokenCredentials(integrationName, integratorUniqueIdentifier, clientId, clientSecret, restApiUrl, xmlRpcApiUrl, authorizationRequestUrl, accessTokenRequestUrl, refreshTokenRequestUrl, createTime, accessTokenResponse);
             return credentials;

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Keap.Sdk.Clients.Authentication.ResponseModels
 {
-    internal class AccessTokenResponse
+    internal class AccessTokenDto
     {
         [JsonPropertyName("access_token")]
         public string AccessToken { get; set; }

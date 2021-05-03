@@ -14,7 +14,7 @@ namespace Keap.Sdk.Domain
         {
         }
 
-        internal AccessTokenCredentials(string integrationName, string integratorUniqueIdentifier, string clientId, string clientSecret, string restApiUrl, string xmlRpcApiUrl, string authorizationRequestUrl, string accessTokenRequestUrl, string refreshTokenRequestUrl, DateTime createTime, AccessTokenResponse accessTokenResponse)
+        internal AccessTokenCredentials(string integrationName, string integratorUniqueIdentifier, string clientId, string clientSecret, string restApiUrl, string xmlRpcApiUrl, string authorizationRequestUrl, string accessTokenRequestUrl, string refreshTokenRequestUrl, DateTime createTime, AccessTokenDto accessTokenResponse)
         {
             AccessToken = accessTokenResponse.AccessToken;
             ExpiresIn = accessTokenResponse.ExpiresIn;
