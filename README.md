@@ -15,8 +15,8 @@
 
 ### REST
 * Account Info
-  * Retrieve account profile
-  * Updates an account profile
+  * ~~ Retrieve account profile ~~
+  * ~~ Updates an account profile ~~
 * Affiliate
   * List Affiliates
   * Create an affiliate
