@@ -14,7 +14,7 @@ namespace Keap.Sdk.Domain
         {
         }
 
-        internal AccessTokenCredentials(string integrationName, string clientId, string clientSecret, string restApiUrl, string xmlRpcApiUrl, string authorizationRequestUrl, string accessTokenRequestUrl, string refreshTokenRequestUrl, DateTime createTime, AccessTokenResponse accessTokenResponse)
+        internal AccessTokenCredentials(string integrationName, string integratorUniqueIdentifier, string clientId, string clientSecret, string restApiUrl, string xmlRpcApiUrl, string authorizationRequestUrl, string accessTokenRequestUrl, string refreshTokenRequestUrl, DateTime createTime, AccessTokenDto accessTokenResponse)
         {
             AccessToken = accessTokenResponse.AccessToken;
             ExpiresIn = accessTokenResponse.ExpiresIn;
@@ -27,6 +27,7 @@ namespace Keap.Sdk.Domain
             ClientId = clientId;
             ClientSecret = clientSecret;
             CreateTime = createTime;
+            IntegratorUniqueIdentifier = integratorUniqueIdentifier;
             IntegrationName = integrationName;
             AuthorizationRequestUrl = authorizationRequestUrl;
             AccessTokenRequestUrl = accessTokenRequestUrl;
@@ -56,6 +57,13 @@ namespace Keap.Sdk.Domain
 
         [JsonPropertyName("integration_name")]
         public string IntegrationName { get; set; }
+
+        /// <summary>
+        /// This can be anything or empty. Use it to flow an identity of a user in your system to
+        /// this token.
+        /// </summary>
+        [JsonPropertyName("integrator_unique_identifier")]
+        public string IntegratorUniqueIdentifier { get; }
 
         [JsonPropertyName("refresh_token")]
         public string RefreshToken { get; set; }

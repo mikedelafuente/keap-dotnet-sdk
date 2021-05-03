@@ -5,18 +5,18 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace Keap.Sdk.Clients.Common.ResponseModels
+namespace Keap.Sdk.Clients.Common
 {
-    internal class AddressResponse
+    internal class AddressDto
     {
-        public AddressResponse()
+        public AddressDto()
         {
         }
 
         /// <summary>
         /// Can be BILLING, SHIPPING or OTHER
         /// </summary>
-        [JsonPropertyName("county_code")]
+        [JsonPropertyName("country_code")]
         public string CountryCode { get; set; }
 
         [JsonPropertyName("field")]
@@ -43,9 +43,9 @@ namespace Keap.Sdk.Clients.Common.ResponseModels
         [JsonPropertyName("zip_four")]
         public string ZipFour { get; set; }
 
-        internal static AddressResponse MapFrom(Domain.Common.Address value)
+        internal static AddressDto MapFrom(Domain.Common.Address value)
         {
-            AddressResponse result = new AddressResponse();
+            AddressDto result = new AddressDto();
             result.CountryCode = value.CountryCode;
             result.Field = value.Field.ToString();
             result.Line1 = value.Line1;
@@ -61,15 +61,15 @@ namespace Keap.Sdk.Clients.Common.ResponseModels
         internal Domain.Common.Address MapTo()
         {
             Domain.Common.Address result = new Domain.Common.Address();
-            result.CountryCode = this.CountryCode;
-            result.Field = Enum.Parse<Domain.Common.AddressType>(this.Field, true);
-            result.Line1 = this.Line1;
-            result.Line2 = this.Line2;
-            result.Locality = this.Locality;
-            result.PostalCode = this.PostalCode;
-            result.Region = this.Region;
-            result.ZipCode = this.ZipCode;
-            result.ZipFour = this.ZipFour;
+            result.CountryCode = CountryCode;
+            result.Field = Enum.Parse<Domain.Common.AddressType>(Field, true);
+            result.Line1 = Line1;
+            result.Line2 = Line2;
+            result.Locality = Locality;
+            result.PostalCode = PostalCode;
+            result.Region = Region;
+            result.ZipCode = ZipCode;
+            result.ZipFour = ZipFour;
             return result;
         }
     }

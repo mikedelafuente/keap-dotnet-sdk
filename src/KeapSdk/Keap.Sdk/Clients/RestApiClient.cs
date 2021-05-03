@@ -51,10 +51,10 @@ namespace Keap.Sdk.Domain.Clients
             return new StringContent(SerializeRequest(value), Encoding.UTF8, "application/json");
         }
 
-        public async Task<ServerResponse> PatchAsync(string path, object valueToSerialize)
+        public async Task<ServerResponse> PatchAsync(string path, object dtoToSerialize)
         {
             ValidateToken();
-            var jsonContent = GetJsonContentType(valueToSerialize);
+            var jsonContent = GetJsonContentType(dtoToSerialize);
 
             var httpResponseTask = _restClient.PatchAsync(path, jsonContent);
             var httpResponse = await httpResponseTask;
@@ -62,10 +62,10 @@ namespace Keap.Sdk.Domain.Clients
             return ParseHttpResponse(httpResponse);
         }
 
-        public async Task<ServerResponse> PostAsync(string path, object valueToSerialize)
+        public async Task<ServerResponse> PostAsync(string path, object dtoToSerialize)
         {
             ValidateToken();
-            var jsonContent = GetJsonContentType(valueToSerialize);
+            var jsonContent = GetJsonContentType(dtoToSerialize);
 
             var httpResponseTask = _restClient.PostAsync(path, jsonContent);
             var httpResponse = await httpResponseTask;
@@ -73,10 +73,10 @@ namespace Keap.Sdk.Domain.Clients
             return ParseHttpResponse(httpResponse);
         }
 
-        public async Task<ServerResponse> PutAsync(string path, object valueToSerialize)
+        public async Task<ServerResponse> PutAsync(string path, object dtoToSerialize)
         {
             ValidateToken();
-            var jsonContent = GetJsonContentType(valueToSerialize);
+            var jsonContent = GetJsonContentType(dtoToSerialize);
 
             var httpResponseTask = _restClient.PutAsync(path, jsonContent);
             var httpResponse = await httpResponseTask;
@@ -130,9 +130,9 @@ namespace Keap.Sdk.Domain.Clients
             var responseContent = responseContentTask.GetResult();
 
             JsonSerializerOptions options = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
-            var accessTokenResponse = JsonSerializer.Deserialize<AccessTokenResponse>(responseContent, options);
+            var accessTokenResponse = JsonSerializer.Deserialize<AccessTokenDto>(responseContent, options);
 
-            AccessTokenCredentials credentials = new AccessTokenCredentials(currentCredentials.IntegrationName, currentCredentials.ClientId, currentCredentials.ClientSecret, currentCredentials.RestApiUrl, currentCredentials.XmlRpcApiUrl, currentCredentials.AuthorizationRequestUrl, currentCredentials.AccessTokenRequestUrl, currentCredentials.RefreshTokenRequestUrl, createTime, accessTokenResponse);
+            AccessTokenCredentials credentials = new AccessTokenCredentials(currentCredentials.IntegrationName, currentCredentials.IntegratorUniqueIdentifier, currentCredentials.ClientId, currentCredentials.ClientSecret, currentCredentials.RestApiUrl, currentCredentials.XmlRpcApiUrl, currentCredentials.AuthorizationRequestUrl, currentCredentials.AccessTokenRequestUrl, currentCredentials.RefreshTokenRequestUrl, createTime, accessTokenResponse);
             return credentials;
         }
 
@@ -148,8 +148,8 @@ namespace Keap.Sdk.Domain.Clients
 
         private string SerializeRequest(object value)
         {
-            JsonSerializerOptions options = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
-            string json = JsonSerializer.Serialize(value);
+            JsonSerializerOptions options = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true, WriteIndented = true };
+            string json = JsonSerializer.Serialize(value, options);
             LogEventManager.Info($"JSON request sent: {json}");
             return json;
         }

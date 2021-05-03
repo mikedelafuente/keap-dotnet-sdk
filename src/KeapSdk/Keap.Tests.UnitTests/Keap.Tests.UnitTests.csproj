@@ -32,4 +32,8 @@
     <ProjectReference Include="..\Keap.Tests.Common\Keap.Tests.Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Common\" />
+  </ItemGroup>
+
 </Project>

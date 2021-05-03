@@ -1,5 +1,4 @@
-﻿using Keap.Sdk.Domain.Clients;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace Keap.Sdk.Domain
 {
@@ -11,10 +10,10 @@ namespace Keap.Sdk.Domain
 
         Task<ServerResponse> GetAsync(string path);
 
-        Task<ServerResponse> PatchAsync(string path, object valueToSerialize);
+        Task<ServerResponse> PatchAsync(string path, object dtoToSerialize);
 
-        Task<ServerResponse> PostAsync(string path, object valueToSerialize);
+        Task<ServerResponse> PostAsync(string path, object dtoToSerialize);
 
-        Task<ServerResponse> PutAsync(string path, object valueToSerialize);
+        Task<ServerResponse> PutAsync(string path, object dtoToSerialize);
     }
 }

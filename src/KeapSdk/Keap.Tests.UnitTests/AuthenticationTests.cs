@@ -7,7 +7,7 @@ using System;
 namespace Keap.Tests.UnitTests
 {
     [TestClass]
-    public class AuthenticationTests
+    public class AuthenticationTests : SdkUnitTests
     {
         //[Scenario("Get a client via OAuth2 by passing in client ID and secret")]
         //[Given("a valid Keap developer client ID and secret")]
@@ -21,8 +21,8 @@ namespace Keap.Tests.UnitTests
         //    string clientSecret = "validClientSecret";
         //    string baseUrl = "https://api.infusionsoft.com/crm/rest/v1";
 
-        //    // Act
-        //    var actual = Sdk.Authentication.GetClientUsingOAuth2("Keap SDK Unit Tests", clientId, clientSecret, baseUrl);
+        // // Act var actual = Sdk.Authentication.GetClientUsingOAuth2("Keap SDK Unit Tests",
+        // clientId, clientSecret, baseUrl);
 
         //    // Assert
         //    actual.Should().NotBeNull("valid credentials were passed in.");

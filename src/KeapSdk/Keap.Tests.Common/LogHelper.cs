@@ -1,11 +1,11 @@
 ﻿using Keap.Sdk.Logging;
 using System.Diagnostics;
 
-namespace Keap.Tests.E2E.Common
+namespace Keap.Tests.Common
 {
     public static class LogHelper
     {
-        internal static void HandleLogMessage(LogEventArgs args)
+        public static void HandleLogMessage(LogEventArgs args)
         {
             Debug.WriteLine($"{args.LogLevel}: {args.DateTime:O} : {args.Message}");
 

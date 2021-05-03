@@ -1,12 +1,12 @@
-﻿using Keap.Sdk.Logging;
+﻿using Keap.Sdk.Authorization;
+using Keap.Sdk.Logging;
 using System;
 using System.Diagnostics;
 
 namespace Keap.Sdk
 {
     /// <summary>
-    /// The EventHub allows you to attach to events firing from different parts of the SDK. This
-    /// includes from the Utilities.LogsEventManager
+    /// The EventHub allows you to attach to events firing from different parts of the SDK.
     /// </summary>
     public static class EventHub
     {

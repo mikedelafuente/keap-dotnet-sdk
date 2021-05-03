@@ -1,4 +1,4 @@
-﻿namespace Keap.Sdk.Domain.Clients
+﻿namespace Keap.Sdk.Domain
 {
     public class ServerResponse
     {

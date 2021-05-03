@@ -1,4 +1,5 @@
-﻿using Keap.Sdk.Clients.Authentication.ResponseModels;
+﻿using Keap.Sdk.Authorization;
+using Keap.Sdk.Clients.Authentication.ResponseModels;
 using Keap.Sdk.Domain;
 using Keap.Sdk.Domain.Clients;
 using System;
@@ -8,21 +9,6 @@ using System.Text.Json;
 
 namespace Keap.Sdk
 {
-    /// <summary>
-    /// As the developer, you are responsible to redirect the user's browser to a URL that will then
-    /// return the code for use by the SDK.
-    /// </summary>
-    /// <param name="authorizationUri">The URI to redirect a user's browser to</param>
-    /// <returns>The 'Code' found in the redirect uri once the user has approved the integration.</returns>
-    public delegate string OAuth2BrowserHandler(string authorizationUri);
-
-    /// <summary>
-    /// If access credentials are updated, this delegate will allow you to persist those credentials
-    /// to long term storage.
-    /// </summary>
-    /// <param name="accessTokenCredentials">The update credentials that you should persist</param>
-    public delegate void PersistAccessTokenCredentialsHandler(AccessTokenCredentials accessTokenCredentials);
-
     /// <summary>
     /// Start here. This is used to get a <see cref="KeapClient"/> which allows you to make calls to
     /// the Keap API
@@ -45,7 +31,7 @@ namespace Keap.Sdk
         /// <exception cref="Keap.Sdk.Exceptions.KeapInvalidTokenException">
         /// The access token is invalid. Please re-authorize and get a new token.
         /// </exception>
-        public static KeapClient GetClientUsingAccessToken(AccessTokenCredentials accessToken, PersistAccessTokenCredentialsHandler persistCredentialsDelegate, IRestApiClient apiClient = null)
+        public static IKeapClient GetClientUsingAccessToken(AccessTokenCredentials accessToken, PersistAccessTokenCredentialsHandler persistCredentialsDelegate, IRestApiClient apiClient = null)
         {
             if (accessToken == null)
             {
@@ -86,21 +72,21 @@ namespace Keap.Sdk
         /// authentication process so it is important to use the site that users can visit and has a
         /// script to capture the authorization code.
         /// </param>
-        /// <param name="browserDelegate">The delegate</param>
         /// <param name="persistCredentialsDelegate">
         /// As the developer, you are responsible to redirect the user's browser to a URL that will
         /// then return the code for use by the SDK.
         /// </param>
+        /// <param name="browserDelegate">The delegate</param>
         /// <returns>Returns a client that can be used to interact with the Keap API</returns>
-        public static KeapClient GetClientUsingOAuth2(string integrationName,
+        public static IKeapClient GetClientUsingOAuth2(string integrationName, string integratorUniqueIdentifier,
                 string clientId,
                 string clientSecret,
                 string redirectUri,
-                OAuth2BrowserHandler browserDelegate,
                 PersistAccessTokenCredentialsHandler persistCredentialsDelegate
-              )
+,
+                OAuth2BrowserHandler browserDelegate)
         {
-            return GetClientUsingOAuth2(integrationName, clientId, clientSecret, redirectUri, browserDelegate, persistCredentialsDelegate, null);
+            return GetClientUsingOAuth2(integrationName, integratorUniqueIdentifier, clientId, clientSecret, redirectUri, persistCredentialsDelegate, browserDelegate, null);
         }
 
         /// <summary>
@@ -117,11 +103,11 @@ namespace Keap.Sdk
         /// authentication process so it is important to use the site that users can visit and has a
         /// script to capture the authorization code.
         /// </param>
-        /// <param name="browserDelegate">The delegate</param>
         /// <param name="persistCredentialsDelegate">
         /// As the developer, you are responsible to redirect the user's browser to a URL that will
         /// then return the code for use by the SDK.
         /// </param>
+        /// <param name="browserDelegate">The delegate</param>
         /// <param name="apiClient">You should not need to override this value. For testing purposes.</param>
         /// <param name="authorizationRequestUrl">
         /// You should not need to override this value. For testing purposes.
@@ -137,12 +123,12 @@ namespace Keap.Sdk
         /// You should not need to override this value. For testing purposes.
         /// </param>
         /// <returns>Returns a client that can be used to interact with the Keap API</returns>
-        public static KeapClient GetClientUsingOAuth2(string integrationName,
+        public static IKeapClient GetClientUsingOAuth2(string integrationName, string integratorUniqueIdentifier,
             string clientId,
             string clientSecret,
             string redirectUri,
-            OAuth2BrowserHandler browserDelegate,
             PersistAccessTokenCredentialsHandler persistCredentialsDelegate,
+            OAuth2BrowserHandler browserDelegate,
             IRestApiClient apiClient,
             string authorizationRequestUrl = "https://accounts.infusionsoft.com/app/oauth/authorize",
             string accessTokenRequestUrl = "https://api.infusionsoft.com/token",
@@ -190,18 +176,19 @@ namespace Keap.Sdk
             // get them
             if (apiClient == null || apiClient.AccessTokenCredentials == null)
             {
+                //&integratorUID={integratorUniqueIdentifier}
                 // Create the url to redirect the user's browser to
                 string browserDelegateRedirectUri = $"{authorizationRequestUrl}?client_id={clientId}&redirect_uri={redirectUri}&response_type=code&scope=full";
 
                 // Call the delegate
-                string code = browserDelegate(browserDelegateRedirectUri);
+                string authCode = browserDelegate(browserDelegateRedirectUri);
 
-                if (string.IsNullOrWhiteSpace(code))
+                if (string.IsNullOrWhiteSpace(authCode))
                 {
                     throw new Exceptions.KeapInvalidOAuth2CodeException("Invalid code was returned from the delegate. Have the Keap user grant access again.");
                 }
 
-                var accessTokenCredentials = GetAccessToken(code, redirectUri, clientId, clientSecret, integrationName, restApiUrl, xmlRpcApiUrl, authorizationRequestUrl, accessTokenRequestUrl, refreshTokenRequestUrl);
+                var accessTokenCredentials = GetAccessToken(authCode, redirectUri, clientId, clientSecret, integratorUniqueIdentifier, integrationName, restApiUrl, xmlRpcApiUrl, authorizationRequestUrl, accessTokenRequestUrl, refreshTokenRequestUrl);
 
                 if (accessTokenCredentials == null || !accessTokenCredentials.IsValid())
                 {
@@ -225,7 +212,7 @@ namespace Keap.Sdk
             return new KeapClient(apiClient);
         }
 
-        private static AccessTokenCredentials GetAccessToken(string code, string originalRedirectUri, string clientId, string clientSecret, string integrationName, string restApiUrl, string xmlRpcApiUrl, string authorizationRequestUrl, string accessTokenRequestUrl, string refreshTokenRequestUrl)
+        private static AccessTokenCredentials GetAccessToken(string code, string originalRedirectUri, string clientId, string clientSecret, string integratorUniqueIdentifier, string integrationName, string restApiUrl, string xmlRpcApiUrl, string authorizationRequestUrl, string accessTokenRequestUrl, string refreshTokenRequestUrl)
         {
             HttpResponseMessage httpResponse;
             DateTime createTime;
@@ -255,9 +242,9 @@ namespace Keap.Sdk
             var responseContent = responseContentTask.GetResult();
 
             JsonSerializerOptions options = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
-            var accessTokenResponse = JsonSerializer.Deserialize<AccessTokenResponse>(responseContent, options);
+            var accessTokenResponse = JsonSerializer.Deserialize<AccessTokenDto>(responseContent, options);
 
-            AccessTokenCredentials credentials = new AccessTokenCredentials(integrationName, clientId, clientSecret, restApiUrl, xmlRpcApiUrl, authorizationRequestUrl, accessTokenRequestUrl, refreshTokenRequestUrl, createTime, accessTokenResponse);
+            AccessTokenCredentials credentials = new AccessTokenCredentials(integrationName, integratorUniqueIdentifier, clientId, clientSecret, restApiUrl, xmlRpcApiUrl, authorizationRequestUrl, accessTokenRequestUrl, refreshTokenRequestUrl, createTime, accessTokenResponse);
             return credentials;
         }
 
