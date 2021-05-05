@@ -1,4 +1,7 @@
-// Place this in your Postman Prerequisite file to have it refresh tokens
+// For use with https://www.postman.com/
+// Place this in your Postman Prerequisite file to have it refresh tokens.
+// Import the environment from DEV.postman_environment.json into Postman
+// Use the Auth Type of "Bearer Token" and set the "Token" value to "{{OAuth_AccessToken}}"
 var needsRefresh = false;
 
 // Is the token valid
@@ -29,15 +32,13 @@ if (originalExpirationDate) {
     needsRefresh = true;
 }
 
-
+// Exit early if no refresh is needed
 if (!needsRefresh) {
-    // console.log("Access token is still valid");
     return;
 }
 
 console.log("Attempting to refresh token.");
     
-
 var authToken = pm.environment.get("OAuth_ClientId") + ':' + pm.environment.get("OAuth_Secret");
 var base64Auth = btoa(authToken)
 
@@ -67,8 +68,7 @@ pm.sendRequest({
           console.warn(res);
           return;
       }
-       // console.log(res);
-       // console.log(res.json());
+
         pm.environment.set("OAuth_RefreshToken", res.json().refresh_token);
 
         pm.environment.set("OAuth_AccessToken", res.json().access_token);
@@ -81,9 +81,7 @@ pm.sendRequest({
         
         newTokenExpiration.setSeconds(newTokenExpiration.getSeconds() + expiresIn);
 
-       // console.log("New Expiration: " + newTokenExpiration.toString());
-
-       pm.environment.set("OAuth_TokenExpiration", newTokenExpiration.toString());
+        pm.environment.set("OAuth_TokenExpiration", newTokenExpiration.toString());
 
         console.log("Updated the refresh token");
   });

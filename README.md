@@ -173,7 +173,7 @@
   * Create a Custom Field
   * Search Tasks
 * User Info
-  * Retrieve User Info
+  * ~~ Retrieve User Info ~~
 * Users
   * List Users
   * Create a User
