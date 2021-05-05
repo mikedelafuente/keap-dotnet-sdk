@@ -13,5 +13,11 @@ namespace Keap.Sdk
         /// Methods for getting Keap compatible country and province codes
         /// </summary>
         ILocaleClient Locale { get; }
+
+        /// <summary>
+        /// Methods for getting information about the current logged in user (the user the OAuth
+        /// access token belongs to)
+        /// </summary>
+        IUserInfoClient UserInfo { get; }
     }
 }
