@@ -1,0 +1,105 @@
+﻿using Keap.Sdk.Domain;
+using Keap.Sdk.Domain.Clients;
+using Keap.Sdk.Domain.Common;
+using Keap.Sdk.Domain.Users;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Keap.Sdk.Clients.Users
+{
+    internal class UsersClient : IUsersClient
+    {
+        private readonly IRestApiClient apiClient;
+
+        public UsersClient(Domain.IRestApiClient apiClient)
+        {
+            this.apiClient = apiClient;
+        }
+
+        public ResultPage<User> GetUsers(bool includeInactive = true, bool includePartners = true, int pageSize = 1000)
+        {
+            var responseTask = GetUsersAsync(includeInactive, includePartners, pageSize).ConfigureAwait(false).GetAwaiter();
+            var result = responseTask.GetResult();
+            return result;
+        }
+
+        public ResultPage<User> GetUsers(string nextPageToken)
+        {
+            var responseTask = GetUsersAsync(nextPageToken).ConfigureAwait(false).GetAwaiter();
+            var result = responseTask.GetResult();
+            return result;
+        }
+
+        public async Task<ResultPage<User>> GetUsersAsync(bool includeInactive = true, bool includePartners = true, int pageSize = 1000)
+        {
+            // Client side enforcement of limits
+            return await GetUsersAsync(includeInactive, includePartners, pageSize, 0);
+        }
+
+        public async Task<ResultPage<User>> GetUsersAsync(string nextPageToken)
+        {
+            bool includeInactive = true;
+            bool includePartners = true;
+            int pageSize = 1000;
+            int offset = 0;
+
+            if (!string.IsNullOrWhiteSpace(nextPageToken))
+            {
+                var nvp = RestHelper.ConvertPageTokenToNameValueCollection(nextPageToken);
+
+                if (nvp["limit"] != null)
+                {
+                    pageSize = int.Parse(nvp["limit"]);
+                }
+
+                if (nvp["offset"] != null)
+                {
+                    offset = int.Parse(nvp["offset"]);
+                }
+
+                if (nvp["include_partners"] != null)
+                {
+                    includePartners = bool.Parse(nvp["include_partners"]);
+                }
+
+                if (nvp["include_inactive"] != null)
+                {
+                    includeInactive = bool.Parse(nvp["include_inactive"]);
+                }
+            }
+
+            return await GetUsersAsync(includeInactive, includePartners, pageSize, offset);
+        }
+
+        private async Task<ResultPage<User>> GetUsersAsync(bool includeInactive, bool includePartners, int pageSize, int offset)
+        {
+            // Client side enforcement of limits
+            if (pageSize <= 0 || pageSize > 1000)
+            {
+                pageSize = 1000;
+            }
+
+            string path = $"users?include_inactive={includeInactive}&include_partners={includePartners}&limit={pageSize}&offset={offset}";
+
+            var responseTask = apiClient.GetAsync(path);
+            var response = await responseTask;
+            var resultDto = Domain.Clients.RestHelper.ProcessResults<UserListDto>(response);
+
+            ResultPage<User> result = new ResultPage<User>();
+            if (resultDto.Users != null && resultDto.Users.Length > 0)
+            {
+                result.NextPageToken = resultDto.GetNextPageToken($"include_inactive={includeInactive}&include_partners={includePartners}");
+
+                foreach (var item in resultDto.Users)
+                {
+                    result.Items.Add(item.MapTo());
+                }
+            }
+
+            return result;
+        }
+    }
+}

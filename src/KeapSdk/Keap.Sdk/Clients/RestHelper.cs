@@ -1,10 +1,19 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Net.Http;
+using System.Text;
 using System.Text.Json;
 
 namespace Keap.Sdk.Domain.Clients
 {
     internal static class RestHelper
     {
+        internal static System.Collections.Specialized.NameValueCollection ConvertPageTokenToNameValueCollection(string nextPageToken)
+        {
+            var queryString = Encoding.UTF8.GetString(Convert.FromBase64String(nextPageToken));
+            var nvp = System.Web.HttpUtility.ParseQueryString(queryString);
+            return nvp;
+        }
+
         internal static T ProcessResults<T>(ServerResponse serverResponse)
         {
             JsonSerializerOptions options = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };

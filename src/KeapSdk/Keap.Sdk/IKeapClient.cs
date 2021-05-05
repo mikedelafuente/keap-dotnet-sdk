@@ -19,5 +19,7 @@ namespace Keap.Sdk
         /// access token belongs to)
         /// </summary>
         IUserInfoClient UserInfo { get; }
+
+        IUsersClient Users { get; }
     }
 }
