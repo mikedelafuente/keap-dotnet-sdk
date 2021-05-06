@@ -51,5 +51,40 @@ namespace Keap.Tests.E2E
             actual.Should().NotBeNull();
             actual.Items.Count.Should().BeGreaterOrEqualTo(1);
         }
+
+        [Scenario("Get the email signature for a user")]
+        [Given("a valid user id and access token")] // TODO: Determine how to feed in a list of different tokens as input
+        [When("a request to get the email signature is made")]
+        [Then("the snippet of HTML for that user's email signature is returned")]
+        [TestMethod]
+        public void Get_the_email_signature_for_a_user()
+        {
+            // Arrange
+            var client = Tests.Common.ClientHelper.GetSdkClient(PersonaType.Admin);
+
+            // Act
+            var actual = client.Users.GetUserEmailSignature(1); // This user should always exist
+
+            // Assert
+            actual.Should().NotBeNull();
+            actual.HtmlSignature.Should().NotBeNullOrWhiteSpace();
+        }
+
+        [Scenario("Get the email signature for an invalid user")]
+        [Given("a invalid user id and a valid access token")] // TODO: Determine how to feed in a list of different tokens as input
+        [When("a request to get the email signature is made")]
+        [Then("null is returned")]
+        [TestMethod]
+        public void Get_the_email_signature_for_an_invalid_user()
+        {
+            // Arrange
+            var client = Tests.Common.ClientHelper.GetSdkClient(PersonaType.Admin);
+
+            // Act
+            var actual = client.Users.GetUserEmailSignature(99999); // This user should never exist
+
+            // Assert
+            actual.Should().BeNull();
+        }
     }
 }

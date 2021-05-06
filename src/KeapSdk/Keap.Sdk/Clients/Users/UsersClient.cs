@@ -19,6 +19,38 @@ namespace Keap.Sdk.Clients.Users
             this.apiClient = apiClient;
         }
 
+        public EmailSignature GetUserEmailSignature(int userId)
+        {
+            var responseTask = GetUserEmailSignatureAsync(userId).ConfigureAwait(false).GetAwaiter();
+            var result = responseTask.GetResult();
+            return result;
+        }
+
+        public async Task<EmailSignature> GetUserEmailSignatureAsync(int userId)
+        {
+            if (userId <= 0)
+            {
+                throw new Exceptions.KeapArgumentException(nameof(userId), "Value should be greater than 0.");
+            }
+
+            string path = $"users/{userId}/signature";
+
+            var responseTask = apiClient.GetAsync(path);
+            var response = await responseTask;
+
+            EmailSignature result = null;
+
+            // This does not match the standard JSON return format. A 200(OK) will have an HTML body
+            // only which is the HTML snippet for the signature
+            if (response.IsSuccessStatusCode)
+            {
+                result = new EmailSignature();
+                result.HtmlSignature = response.ResponseBody;
+            }
+
+            return result;
+        }
+
         public ResultPage<User> GetUsers(bool includeInactive = true, bool includePartners = true, int pageSize = 1000)
         {
             var responseTask = GetUsersAsync(includeInactive, includePartners, pageSize).ConfigureAwait(false).GetAwaiter();

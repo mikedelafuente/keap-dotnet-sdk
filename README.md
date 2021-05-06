@@ -175,9 +175,9 @@
 * User Info
   * ~~ Retrieve User Info ~~
 * Users
-  * List Users
+  * ~~ List Users ~~
   * Create a User
-  * Get User email signature
+  * ~~ Get User email signature ~~
 
 ### XML-RPC 
 * Authentication
