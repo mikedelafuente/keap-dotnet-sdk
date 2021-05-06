@@ -10,6 +10,11 @@ namespace Keap.Sdk
         IAccountInfoClient AccountInfo { get; }
 
         /// <summary>
+        /// Methods for interacting with the current app's contacts
+        /// </summary>
+        IContactsClient Contacts { get; }
+
+        /// <summary>
         /// Methods for getting Keap compatible country and province codes
         /// </summary>
         ILocaleClient Locale { get; }

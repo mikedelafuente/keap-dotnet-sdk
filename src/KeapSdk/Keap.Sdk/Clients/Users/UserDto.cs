@@ -34,6 +34,7 @@ namespace Keap.Sdk.Clients.Users
         [JsonPropertyName("given_name")]
         public string GivenName { get; set; }
 
+        // TODO: Use [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("global_user_id")]
         public long? GlobalUserId { get; set; }
 

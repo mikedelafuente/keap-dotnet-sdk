@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Keap.Sdk.Clients.Common
 {
-    public class ServerErrorMessageDto
+    internal class ServerErrorMessageDto
     {
         [JsonPropertyName("message")]
         public string Message { get; set; }

@@ -28,7 +28,7 @@ namespace Keap.Tests.E2E.Common
             }
             catch (Exception ex)
             {
-                Sdk.Logging.LogEventManager.Error(ex);
+                System.Diagnostics.Debug.WriteLine(ex);
             }
 
             return null;

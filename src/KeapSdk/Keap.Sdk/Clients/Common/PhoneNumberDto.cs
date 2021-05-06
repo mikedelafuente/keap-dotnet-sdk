@@ -6,7 +6,7 @@ namespace Keap.Sdk.Clients.Common
 {
     // TODO: Add comments to properties and class
 
-    public class PhoneNumberDto
+    internal class PhoneNumberDto
     {
         [JsonPropertyName("extension")]
         public string Extension { get; set; }
