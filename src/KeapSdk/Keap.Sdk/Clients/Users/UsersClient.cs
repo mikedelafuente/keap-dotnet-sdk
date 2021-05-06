@@ -106,6 +106,45 @@ namespace Keap.Sdk.Clients.Users
             return await GetUsersAsync(includeInactive, includePartners, pageSize, offset);
         }
 
+        public User InviteUser(string email, string fullName, bool isAdmin, bool isPartner)
+        {
+            var responseTask = InviteUserAsync(email, fullName, isAdmin, isPartner).ConfigureAwait(false).GetAwaiter();
+            var result = responseTask.GetResult();
+            return result;
+        }
+
+        public async Task<User> InviteUserAsync(string email, string fullName, bool isAdmin, bool isPartner)
+        {
+            if (string.IsNullOrWhiteSpace(email))
+            {
+                throw new Exceptions.KeapNullOrWhitespaceArgumentException(nameof(email));
+            }
+
+            if (string.IsNullOrWhiteSpace(fullName))
+            {
+                throw new Exceptions.KeapNullOrWhitespaceArgumentException(nameof(fullName));
+            }
+
+            string path = "users";
+
+            var inviteUserDto = new Users.InviteUserDto
+            {
+                Email = email,
+                GivenName = fullName,
+                Admin = isAdmin,
+                Partner = isPartner
+            };
+
+            var responseTask = apiClient.PostAsync(path, inviteUserDto);
+            var response = await responseTask;
+            // TODO: Currently if we hit the license limit, a 400 is returned which is difficult to discern from other 400s for missing email
+            var resultDto = Domain.Clients.RestHelper.ProcessResults<UserDto>(response);
+
+            var result = resultDto.MapTo();
+
+            return result;
+        }
+
         private async Task<ResultPage<User>> GetUsersAsync(bool includeInactive, bool includePartners, int pageSize, int offset)
         {
             // Client side enforcement of limits

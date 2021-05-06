@@ -35,7 +35,7 @@ namespace Keap.Sdk.Clients.Users
         public string GivenName { get; set; }
 
         [JsonPropertyName("global_user_id")]
-        public long GlobalUserId { get; set; }
+        public long? GlobalUserId { get; set; }
 
         [JsonPropertyName("id")]
         public long Id { get; set; }
@@ -90,7 +90,11 @@ namespace Keap.Sdk.Clients.Users
             result.EmailAddress = this.EmailAddress;
             result.FamilyName = this.FamilyName;
             result.GivenName = this.GivenName;
-            result.GlobalUserId = this.GlobalUserId;
+            if (this.GlobalUserId.HasValue)
+            {
+                result.GlobalUserId = this.GlobalUserId.Value;
+            }
+
             result.Id = this.Id;
             result.InfusionsoftId = this.InfusionsoftId;
             result.JobTitle = this.JobTitle;

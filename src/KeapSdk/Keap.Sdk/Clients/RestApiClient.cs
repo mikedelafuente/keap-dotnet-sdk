@@ -93,10 +93,22 @@ namespace Keap.Sdk.Domain.Clients
                 IsSuccessStatusCode = httpResponse.IsSuccessStatusCode
             };
 
-            if (serverResponse.IsSuccessStatusCode)
+            try
             {
+                // TODO: Parse non-success codes to JSON to see if there is an error message in the format of: { "message":"blah" }
+                // Store that message as an "Error reason"
+
                 var stringTask = httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false).GetAwaiter();
                 serverResponse.ResponseBody = stringTask.GetResult();
+            }
+            catch (Exception ex)
+            {
+                LogEventManager.Error(ex);
+                if (serverResponse.IsSuccessStatusCode)
+                {
+                    // We should not be in a failing state
+                    throw;
+                }
             }
 
             return serverResponse;

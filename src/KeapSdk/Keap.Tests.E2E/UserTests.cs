@@ -86,5 +86,34 @@ namespace Keap.Tests.E2E
             // Assert
             actual.Should().BeNull();
         }
+
+        [Scenario("Invite a user to the app")]
+        [Given("a valid access token, given name and email")] // TODO: Determine how to feed in a list of different tokens as input
+        [When("a user is invited to the app")]
+        [Then("a user record with an ID greater than 0 and a status of Invited is returned")]
+        [TestMethod]
+        public void Invite_a_user_to_the_app()
+        {
+            // Arrange
+            var client = Tests.Common.ClientHelper.GetSdkClient(PersonaType.Admin);
+            var expectedEmail = Guid.NewGuid().ToString() + "@weekendproject.app";
+            var expectedGivenName = "E2E Tests";
+            var expectedIsAdmin = true;
+            var expectedIsPartner = false;
+
+            // Act
+            var actual = client.Users.InviteUser(expectedEmail, expectedGivenName, expectedIsAdmin, expectedIsPartner); // This user should never exist
+
+            // Assert
+            actual.Should().NotBeNull();
+            actual.Id.Should().BeGreaterThan(0);
+            actual.GivenName.Should().Be(expectedGivenName);
+            actual.EmailAddress.Should().Be(expectedEmail);
+            actual.InfusionsoftId.Should().Be(expectedEmail);
+            actual.Partner.Should().Be(expectedIsPartner);
+
+            // TODO: How do I know if they are an admin?
+            throw new NotImplementedException("Clear out users! Bubble up the over license limit to the end use.");
+        }
     }
 }

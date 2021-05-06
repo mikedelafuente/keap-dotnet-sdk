@@ -71,5 +71,27 @@ namespace Keap.Sdk.Domain
         /// token will be empty or null.
         /// </returns>
         Task<ResultPage<Users.User>> GetUsersAsync(bool includeInactive = true, bool includePartners = true, int pageSize = 1000);
+
+        /// <summary>
+        /// Creates a new user record in an invited state. Note: Users will be invited to the
+        /// application and remain in the "Invited" status until the user accepts the invite.
+        /// "Inactive" users will not take up a user license, but "Invited" users will.
+        /// </summary>
+        /// <returns>A <see cref="User"/> is returned if the invite is sent.</returns>
+        /// <exception cref="Exceptions.KeapLicenseException">
+        /// Unable to add user. All user licenses are in use.
+        /// </exception>
+        User InviteUser(string email, string fullName, bool isAdmin, bool isPartner);
+
+        /// <summary>
+        /// Creates a new user record in an invited state. Note: Users will be invited to the
+        /// application and remain in the "Invited" status until the user accepts the invite.
+        /// "Inactive" users will not take up a user license, but "Invited" users will.
+        /// </summary>
+        /// <returns>A <see cref="User"/> is returned if the invite is sent.</returns>
+        /// <exception cref="Exceptions.KeapLicenseException">
+        /// Unable to add user. All user licenses are in use.
+        /// </exception>
+        Task<User> InviteUserAsync(string email, string fullName, bool isAdmin, bool isPartner);
     }
 }
