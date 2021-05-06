@@ -1,15 +1,14 @@
 ﻿using Keap.Sdk.Domain.Contacts;
-using System;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace Keap.Sdk.Clients.Contacts
 {
     internal class SocialAccountDto
     {
-        [JsonPropertyName("name")]
+        [JsonProperty("name")]
         public string Name { get; set; }
 
-        [JsonPropertyName("type")]
+        [JsonProperty("type")]
         public string Type { get; set; }
 
         internal SocialAccount MapTo()

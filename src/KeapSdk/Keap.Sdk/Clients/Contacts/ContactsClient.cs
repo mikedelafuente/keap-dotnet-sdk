@@ -1,9 +1,5 @@
 ﻿using Keap.Sdk.Domain;
 using Keap.Sdk.Domain.Contacts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Keap.Sdk.Clients.Contacts

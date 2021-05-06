@@ -1,24 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
+﻿using Newtonsoft.Json;
 
 namespace Keap.Sdk.Clients.Users
 {
     internal class InviteUserDto
     {
-        [JsonPropertyName("admin")]
+        [JsonProperty("admin")]
         public bool Admin { get; set; }
 
-        [JsonPropertyName("email")]
+        [JsonProperty("email")]
         public string Email { get; set; }
 
-        [JsonPropertyName("given_name")]
+        [JsonProperty("given_name")]
         public string GivenName { get; set; }
 
-        [JsonPropertyName("partner")]
+        [JsonProperty("partner")]
         public bool Partner { get; set; }
     }
 }

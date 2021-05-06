@@ -1,10 +1,7 @@
 ﻿using Keap.Sdk.Domain.Common;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace Keap.Sdk.Domain.Users
 {
@@ -13,70 +10,70 @@ namespace Keap.Sdk.Domain.Users
         /// <summary>
         /// Can be null. Address of the user.
         /// </summary>
-        [JsonPropertyName("address")]
+        [JsonProperty("address")]
         public Address Address { get; set; }
 
-        [JsonPropertyName("company_name")]
+        [JsonProperty("company_name")]
         public string CompanyName { get; set; }
 
-        [JsonPropertyName("created_by")]
+        [JsonProperty("created_by")]
         public long CreatedBy { get; set; }
 
-        [JsonPropertyName("date_created")]
+        [JsonProperty("date_created")]
         public DateTimeOffset? DateCreated { get; set; }
 
-        [JsonPropertyName("email_address")]
+        [JsonProperty("email_address")]
         public string EmailAddress { get; set; }
 
-        [JsonPropertyName("family_name")]
+        [JsonProperty("family_name")]
         public string FamilyName { get; set; }
 
-        [JsonPropertyName("fax_numbers")]
+        [JsonProperty("fax_numbers")]
         public List<PhoneNumber> FaxNumbers { get; set; }
 
-        [JsonPropertyName("given_name")]
+        [JsonProperty("given_name")]
         public string GivenName { get; set; }
 
-        [JsonPropertyName("global_user_id")]
+        [JsonProperty("global_user_id")]
         public long GlobalUserId { get; set; }
 
-        [JsonPropertyName("id")]
+        [JsonProperty("id")]
         public long Id { get; set; }
 
-        [JsonPropertyName("infusionsoft_id")]
+        [JsonProperty("infusionsoft_id")]
         public string InfusionsoftId { get; set; }
 
-        [JsonPropertyName("job_title")]
+        [JsonProperty("job_title")]
         public string JobTitle { get; set; }
 
-        [JsonPropertyName("last_updated")]
+        [JsonProperty("last_updated")]
         public DateTimeOffset? LastUpdated { get; set; }
 
-        [JsonPropertyName("last_updated_by")]
+        [JsonProperty("last_updated_by")]
         public long LastUpdatedBy { get; set; }
 
-        [JsonPropertyName("middle_name")]
+        [JsonProperty("middle_name")]
         public string MiddleName { get; set; }
 
-        [JsonPropertyName("partner")]
+        [JsonProperty("partner")]
         public bool Partner { get; set; }
 
-        [JsonPropertyName("phone_numbers")]
+        [JsonProperty("phone_numbers")]
         public List<PhoneNumber> PhoneNumbers { get; set; }
 
-        [JsonPropertyName("preferred_name")]
+        [JsonProperty("preferred_name")]
         public string PreferredName { get; set; }
 
         /// <summary>
         /// Can be Active, Invited or Inactive
         /// </summary>
-        [JsonPropertyName("status")]
+        [JsonProperty("status")]
         public UserStatus Status { get; set; }
 
-        [JsonPropertyName("time_zone")]
+        [JsonProperty("time_zone")]
         public string TimeZone { get; set; }
 
-        [JsonPropertyName("website")]
+        [JsonProperty("website")]
         public string Website { get; set; }
     }
 }

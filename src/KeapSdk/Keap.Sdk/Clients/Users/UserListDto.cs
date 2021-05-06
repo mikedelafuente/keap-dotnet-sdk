@@ -1,10 +1,10 @@
-﻿using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
 
 namespace Keap.Sdk.Clients.Users
 {
     internal class UserListDto : Common.KeapListDto
     {
-        [JsonPropertyName("users")]
+        [JsonProperty("users")]
         public UserDto[] Users { get; set; }
     }
 }

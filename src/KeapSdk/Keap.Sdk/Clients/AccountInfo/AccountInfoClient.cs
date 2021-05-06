@@ -1,6 +1,5 @@
 ﻿using Keap.Sdk.Domain;
 using Keap.Sdk.Domain.Account;
-using System;
 using System.Threading.Tasks;
 
 namespace Keap.Sdk.Clients.AccountInfo

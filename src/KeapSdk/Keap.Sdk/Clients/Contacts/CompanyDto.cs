@@ -1,15 +1,14 @@
 ﻿using Keap.Sdk.Domain.Contacts;
-using System;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace Keap.Sdk.Clients.Contacts
 {
     internal class CompanyDto
     {
-        [JsonPropertyName("company_name")]
+        [JsonProperty("company_name")]
         public string CompanyName { get; set; }
 
-        [JsonPropertyName("id")]
+        [JsonProperty("id")]
         public long Id { get; set; }
 
         internal static CompanyDto MapFrom(Company source)

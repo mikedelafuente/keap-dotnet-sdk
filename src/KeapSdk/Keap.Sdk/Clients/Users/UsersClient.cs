@@ -3,9 +3,6 @@ using Keap.Sdk.Domain.Clients;
 using Keap.Sdk.Domain.Common;
 using Keap.Sdk.Domain.Users;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Keap.Sdk.Clients.Users

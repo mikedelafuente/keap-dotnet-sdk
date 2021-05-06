@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
 
 namespace Keap.Sdk.Domain.Common
 {
@@ -6,16 +6,16 @@ namespace Keap.Sdk.Domain.Common
 
     public class PhoneNumber
     {
-        [JsonPropertyName("extension")]
+        [JsonProperty("extension")]
         public string Extension { get; set; }
 
-        [JsonPropertyName("field")]
+        [JsonProperty("field")]
         public string Field { get; set; }
 
-        [JsonPropertyName("number")]
+        [JsonProperty("number")]
         public string Number { get; set; }
 
-        [JsonPropertyName("type")]
+        [JsonProperty("type")]
         public string Type { get; set; }
     }
 }

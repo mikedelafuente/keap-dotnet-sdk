@@ -1,15 +1,14 @@
 ﻿using Keap.Sdk.Domain.Contacts;
-using System;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace Keap.Sdk.Clients.Contacts
 {
     internal class CustomFieldDto
     {
-        [JsonPropertyName("content")]
+        [JsonProperty("content")]
         public CustomFieldContentDto Content { get; set; }
 
-        [JsonPropertyName("id")]
+        [JsonProperty("id")]
         public string Id { get; set; }
 
         internal CustomField MapTo()

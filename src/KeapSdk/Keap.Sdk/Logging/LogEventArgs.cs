@@ -19,22 +19,22 @@ namespace Keap.Sdk.Logging
         }
 
         /// <summary>
-        ///     The date time that the event fired
+        /// The date time that the event fired
         /// </summary>
         public DateTimeOffset DateTime { get; set; }
 
         /// <summary>
-        ///     The exception that may have been raised
+        /// The exception that may have been raised
         /// </summary>
         public Exception Exception { get; set; }
 
         /// <summary>
-        ///     The log level of the message
+        /// The log level of the message
         /// </summary>
         public LogLevelType LogLevel { get; set; }
 
         /// <summary>
-        ///     The message
+        /// The message
         /// </summary>
         public string Message { get; set; }
     }

@@ -1,6 +1,5 @@
 ﻿using Keap.Sdk.Domain.Common;
-using System;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace Keap.Sdk.Clients.Common
 {
@@ -8,16 +7,16 @@ namespace Keap.Sdk.Clients.Common
 
     internal class PhoneNumberDto
     {
-        [JsonPropertyName("extension")]
+        [JsonProperty("extension")]
         public string Extension { get; set; }
 
-        [JsonPropertyName("field")]
+        [JsonProperty("field")]
         public string Field { get; set; }
 
-        [JsonPropertyName("number")]
+        [JsonProperty("number")]
         public string Number { get; set; }
 
-        [JsonPropertyName("type")]
+        [JsonProperty("type")]
         public string Type { get; set; }
 
         internal PhoneNumber MapTo()

@@ -1,5 +1,4 @@
 ﻿using Keap.Sdk.Domain.Contacts;
-using System;
 
 namespace Keap.Sdk.Clients.Contacts
 {

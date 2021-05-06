@@ -1,14 +1,14 @@
-﻿using System;
-using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
+using System;
 
 namespace Keap.Sdk.Domain.Contacts
 {
     public class IpOrigin
     {
-        [JsonPropertyName("date")]
+        [JsonProperty("date")]
         public DateTimeOffset Date { get; set; }
 
-        [JsonPropertyName("ip_address")]
+        [JsonProperty("ip_address")]
         public string IpAddress { get; set; }
     }
 }

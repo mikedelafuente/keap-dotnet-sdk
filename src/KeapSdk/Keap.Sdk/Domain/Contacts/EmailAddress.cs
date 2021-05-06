@@ -1,22 +1,22 @@
-﻿using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
 
 namespace Keap.Sdk.Domain.Contacts
 {
     public class EmailAddress
     {
-        [JsonPropertyName("email")]
+        [JsonProperty("email")]
         public string Email { get; set; }
 
-        [JsonPropertyName("email_opt_status")]
+        [JsonProperty("email_opt_status")]
         public string EmailOptStatus { get; set; }
 
-        [JsonPropertyName("field")]
+        [JsonProperty("field")]
         public string Field { get; set; }
 
-        [JsonPropertyName("is_opt_in")]
+        [JsonProperty("is_opt_in")]
         public bool IsOptIn { get; set; }
 
-        [JsonPropertyName("opt_in_reason")]
+        [JsonProperty("opt_in_reason")]
         public string OptInReason { get; set; }
     }
 }

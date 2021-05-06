@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
-using System.Text.Json;
+using Newtonsoft.Json;
 using System.Threading.Tasks;
 
 namespace Keap.Sdk.Domain.Clients
@@ -141,8 +141,8 @@ namespace Keap.Sdk.Domain.Clients
             var responseContentTask = httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false).GetAwaiter();
             var responseContent = responseContentTask.GetResult();
 
-            JsonSerializerOptions options = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
-            var accessTokenResponse = JsonSerializer.Deserialize<AccessTokenDto>(responseContent, options);
+            JsonSerializerSettings options = new JsonSerializerSettings() { Formatting = Formatting.Indented };
+            var accessTokenResponse = JsonConvert.DeserializeObject<AccessTokenDto>(responseContent, options);
 
             AccessTokenCredentials credentials = new AccessTokenCredentials(currentCredentials.IntegrationName, currentCredentials.IntegratorUniqueIdentifier, currentCredentials.ClientId, currentCredentials.ClientSecret, currentCredentials.RestApiUrl, currentCredentials.XmlRpcApiUrl, currentCredentials.AuthorizationRequestUrl, currentCredentials.AccessTokenRequestUrl, currentCredentials.RefreshTokenRequestUrl, createTime, accessTokenResponse);
             return credentials;
@@ -160,8 +160,8 @@ namespace Keap.Sdk.Domain.Clients
 
         private string SerializeRequest(object value)
         {
-            JsonSerializerOptions options = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true, WriteIndented = true };
-            string json = JsonSerializer.Serialize(value, options);
+            JsonSerializerSettings options = new JsonSerializerSettings() { Formatting = Formatting.Indented };
+            string json = JsonConvert.SerializeObject(value, options);
             LogEventManager.Info($"JSON request sent: {json}");
             return json;
         }

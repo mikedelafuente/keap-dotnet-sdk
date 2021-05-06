@@ -1,119 +1,116 @@
 ﻿using Keap.Sdk.Clients.Common;
 using Keap.Sdk.Domain.Contacts;
+using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace Keap.Sdk.Clients.Contacts
 {
     internal class ContactDto
     {
-        [JsonPropertyName("addresses")]
+        [JsonProperty("addresses")]
         public AddressDto[] Addresses { get; set; }
 
-        [JsonPropertyName("anniversary")]
+        [JsonProperty("anniversary")]
         public DateTimeOffset Anniversary { get; set; }
 
-        [JsonPropertyName("birthday")]
+        [JsonProperty("birthday")]
         public DateTimeOffset Birthday { get; set; }
 
-        [JsonPropertyName("company")]
+        [JsonProperty("company")]
         public CompanyDto Company { get; set; }
 
-        [JsonPropertyName("company_name")]
+        [JsonProperty("company_name")]
         public string CompanyName { get; set; }
 
-        [JsonPropertyName("contact_type")]
+        [JsonProperty("contact_type")]
         public string ContactType { get; set; }
 
-        [JsonPropertyName("custom_fields")]
+        [JsonProperty("custom_fields")]
         public CustomFieldDto[] CustomFields { get; set; }
 
-        [JsonPropertyName("date_created")]
+        [JsonProperty("date_created")]
         public DateTimeOffset DateCreated { get; set; }
 
-        [JsonPropertyName("email_addresses")]
+        [JsonProperty("email_addresses")]
         public EmailAddressDto[] EmailAddresses { get; set; }
 
-        [JsonPropertyName("email_opted_in")]
+        [JsonProperty("email_opted_in")]
         public bool EmailOptedIn { get; set; }
 
-        [JsonPropertyName("email_status")]
+        [JsonProperty("email_status")]
         public string EmailStatus { get; set; }
 
-        [JsonPropertyName("family_name")]
+        [JsonProperty("family_name")]
         public string FamilyName { get; set; }
 
-        [JsonPropertyName("fax_numbers")]
+        [JsonProperty("fax_numbers")]
         public PhoneNumberDto[] FaxNumbers { get; set; }
 
-        [JsonPropertyName("given_name")]
+        [JsonProperty("given_name")]
         public string GivenName { get; set; }
 
-        [JsonPropertyName("id")]
+        [JsonProperty("id")]
         public long Id { get; set; }
 
-        [JsonPropertyName("job_title")]
+        [JsonProperty("job_title")]
         public string JobTitle { get; set; }
 
-        [JsonPropertyName("last_updated")]
+        [JsonProperty("last_updated")]
         public DateTimeOffset LastUpdated { get; set; }
 
-        [JsonPropertyName("lead_source_id")]
+        [JsonProperty("lead_source_id")]
         public long LeadSourceId { get; set; }
 
-        [JsonPropertyName("middle_name")]
+        [JsonProperty("middle_name")]
         public string MiddleName { get; set; }
 
-        [JsonPropertyName("opt_in_reason")]
+        [JsonProperty("opt_in_reason")]
         public string OptInReason { get; set; }
 
-        [JsonPropertyName("origin")]
+        [JsonProperty("origin")]
         public IpOriginDto Origin { get; set; }
 
-        [JsonPropertyName("owner_id")]
+        [JsonProperty("owner_id", NullValueHandling = NullValueHandling.Ignore)]
         public long OwnerId { get; set; }
 
-        [JsonPropertyName("phone_numbers")]
+        [JsonProperty("phone_numbers")]
         public PhoneNumberDto[] PhoneNumbers { get; set; }
 
-        [JsonPropertyName("preferred_locale")]
+        [JsonProperty("preferred_locale")]
         public string PreferredLocale { get; set; }
 
-        [JsonPropertyName("preferred_name")]
+        [JsonProperty("preferred_name")]
         public string PreferredName { get; set; }
 
-        [JsonPropertyName("prefix")]
+        [JsonProperty("prefix")]
         public string Prefix { get; set; }
 
-        [JsonPropertyName("relationships")]
+        [JsonProperty("relationships")]
         public RelationshipDto[] Relationships { get; set; }
 
-        [JsonPropertyName("ScoreValue")]
+        [JsonProperty("ScoreValue")]
         public string ScoreValue { get; set; }
 
-        [JsonPropertyName("social_accounts")]
+        [JsonProperty("social_accounts")]
         public SocialAccountDto[] SocialAccounts { get; set; }
 
-        [JsonPropertyName("source_type")]
+        [JsonProperty("source_type")]
         public string SourceType { get; set; }
 
-        [JsonPropertyName("spouse_name")]
+        [JsonProperty("spouse_name")]
         public string SpouseName { get; set; }
 
-        [JsonPropertyName("suffix")]
+        [JsonProperty("suffix")]
         public string Suffix { get; set; }
 
-        [JsonPropertyName("tag_ids")]
+        [JsonProperty("tag_ids")]
         public long[] TagIds { get; set; }
 
-        [JsonPropertyName("time_zone")]
+        [JsonProperty("time_zone")]
         public string TimeZone { get; set; }
 
-        [JsonPropertyName("website")]
+        [JsonProperty("website")]
         public string Website { get; set; }
 
         internal Contact MapTo()
@@ -128,23 +125,22 @@ namespace Keap.Sdk.Clients.Contacts
             r.Company = this.Company?.MapTo();
             r.CompanyName = this.CompanyName;
             r.ContactType = this.ContactType;
-            foreach (var item in this.CustomFields)
+            if (this.CustomFields != null)
             {
-                r.CustomFields.Add(item.MapTo());
+                r.CustomFields.AddRange(this.CustomFields.Select(item => item.MapTo()));
             }
 
             r.DateCreated = this.DateCreated;
-            foreach (var item in this.EmailAddresses)
+            if (this.EmailAddresses != null)
             {
-                r.EmailAddresses.Add(item.MapTo());
+                r.EmailAddresses.AddRange(this.EmailAddresses.Select(item => item.MapTo()));
             }
-
             r.EmailOptedIn = this.EmailOptedIn;
             r.EmailStatus = this.EmailStatus;
             r.FamilyName = this.FamilyName;
-            foreach (var item in this.FaxNumbers)
+            if (this.FaxNumbers != null)
             {
-                r.FaxNumbers.Add(item.MapTo());
+                r.FaxNumbers.AddRange(this.FaxNumbers.Select(item => item.MapTo()));
             }
             r.GivenName = this.GivenName;
             r.Id = this.Id;
@@ -155,24 +151,23 @@ namespace Keap.Sdk.Clients.Contacts
             r.OptInReason = this.OptInReason;
             r.Origin = this.Origin?.MapTo();
             r.OwnerId = this.OwnerId;
-            foreach (var item in this.PhoneNumbers)
+            if (this.PhoneNumbers != null)
             {
-                r.PhoneNumbers.Add(item.MapTo());
+                r.PhoneNumbers.AddRange(this.PhoneNumbers.Select(item => item.MapTo()));
             }
+
             r.PreferredLocale = this.PreferredLocale;
             r.PreferredName = this.PreferredName;
             r.Prefix = this.Prefix;
-            foreach (var item in this.Relationships)
+            if (this.Relationships != null)
             {
-                r.Relationships.Add(item.MapTo());
+                r.Relationships.AddRange(this.Relationships.Select(item => item.MapTo()));
             }
             r.ScoreValue = this.ScoreValue;
-
-            foreach (var item in this.SocialAccounts)
+            if (this.SocialAccounts != null)
             {
-                r.SocialAccounts.Add(item.MapTo());
+                r.SocialAccounts.AddRange(this.SocialAccounts.Select(item => item.MapTo()));
             }
-
             r.SpouseName = this.SpouseName;
             r.Suffix = this.Suffix;
             r.TagIds = this.TagIds?.ToList();

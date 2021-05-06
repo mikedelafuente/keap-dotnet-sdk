@@ -1,13 +1,13 @@
-﻿using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
 
 namespace Keap.Sdk.Domain.Contacts
 {
     public class CustomField
     {
-        [JsonPropertyName("content")]
+        [JsonProperty("content")]
         public CustomFieldContent Content { get; set; }
 
-        [JsonPropertyName("id")]
+        [JsonProperty("id")]
         public string Id { get; set; }
     }
 }

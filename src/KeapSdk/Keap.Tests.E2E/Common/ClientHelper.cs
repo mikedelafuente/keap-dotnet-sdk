@@ -1,7 +1,7 @@
 ﻿using Keap.Sdk;
 using Keap.Sdk.Domain;
+using Newtonsoft.Json;
 using System;
-using System.Text.Json;
 
 namespace Keap.Tests.E2E.Common
 {
@@ -21,8 +21,8 @@ namespace Keap.Tests.E2E.Common
                 {
                     var json = System.IO.File.ReadAllText(fullPath);
 
-                    JsonSerializerOptions options = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
-                    var credentials = JsonSerializer.Deserialize<AccessTokenCredentials>(json, options);
+                    JsonSerializerSettings options = new JsonSerializerSettings() { Formatting = Formatting.Indented };
+                    var credentials = JsonConvert.DeserializeObject<AccessTokenCredentials>(json, options);
                     return credentials;
                 }
             }
@@ -50,8 +50,8 @@ namespace Keap.Tests.E2E.Common
         {
             var fullPath = System.IO.Path.GetFullPath($"./token_{accessTokenCredentials.IntegratorUniqueIdentifier}.secret");
 
-            JsonSerializerOptions options = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true, WriteIndented = true };
-            var json = JsonSerializer.Serialize(accessTokenCredentials, options);
+            JsonSerializerSettings options = new JsonSerializerSettings() { Formatting = Formatting.Indented };
+            var json = JsonConvert.SerializeObject(accessTokenCredentials, options);
 
             System.IO.File.WriteAllText(fullPath, json);
         }

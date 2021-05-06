@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
+﻿using Newtonsoft.Json;
+using System;
 
 namespace Keap.Sdk.Clients.Common
 {
@@ -16,31 +12,31 @@ namespace Keap.Sdk.Clients.Common
         /// <summary>
         /// Can be BILLING, SHIPPING or OTHER
         /// </summary>
-        [JsonPropertyName("country_code")]
+        [JsonProperty("country_code")]
         public string CountryCode { get; set; }
 
-        [JsonPropertyName("field")]
+        [JsonProperty("field")]
         public string Field { get; set; }
 
-        [JsonPropertyName("line1")]
+        [JsonProperty("line1")]
         public string Line1 { get; set; }
 
-        [JsonPropertyName("line2")]
+        [JsonProperty("line2")]
         public string Line2 { get; set; }
 
-        [JsonPropertyName("locality")]
+        [JsonProperty("locality")]
         public string Locality { get; set; }
 
-        [JsonPropertyName("postal_code")]
+        [JsonProperty("postal_code")]
         public string PostalCode { get; set; }
 
-        [JsonPropertyName("region")]
+        [JsonProperty("region")]
         public string Region { get; set; }
 
-        [JsonPropertyName("zip_code")]
+        [JsonProperty("zip_code")]
         public string ZipCode { get; set; }
 
-        [JsonPropertyName("zip_four")]
+        [JsonProperty("zip_four")]
         public string ZipFour { get; set; }
 
         internal static AddressDto MapFrom(Domain.Common.Address value)
