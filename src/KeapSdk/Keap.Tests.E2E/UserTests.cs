@@ -1,6 +1,9 @@
 ﻿using FluentAssertions;
 using Keap.Tests.Common;
+using Keap.Tests.E2E.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -95,6 +98,8 @@ namespace Keap.Tests.E2E
         public void Invite_a_user_to_the_app()
         {
             // Arrange
+            CleanupInvitedUsers();
+
             var client = Tests.Common.ClientHelper.GetSdkClient(PersonaType.Admin);
             var expectedEmail = Guid.NewGuid().ToString() + "@weekendproject.app";
             var expectedGivenName = "E2E Tests";
@@ -113,7 +118,80 @@ namespace Keap.Tests.E2E
             actual.Partner.Should().Be(expectedIsPartner);
 
             // TODO: How do I know if they are an admin?
-            throw new NotImplementedException("Clear out users!");
+        }
+
+        [Scenario("Invite a user to the app")]
+        [Given("a valid access token, given name and email")] // TODO: Determine how to feed in a list of different tokens as input
+        [When("a user is invited to the app")]
+        [Then("a user record with an ID greater than 0 and a status of Invited is returned")]
+        [TestMethod]
+        public void Invite_too_many_users_to_the_app()
+        {
+            // Arrange
+            CleanupInvitedUsers();
+
+            var client = Tests.Common.ClientHelper.GetSdkClient(PersonaType.Admin);
+            for (int i = 0; i < 2; i++)
+            {
+                client.Users.InviteUser(Guid.NewGuid().ToString() + "@weekendproject.app", "E2E Tests_TMU", false, false);
+            }
+
+            var expectedEmail = Guid.NewGuid().ToString() + "@weekendproject.app";
+            var expectedGivenName = "E2E Tests";
+            var expectedIsAdmin = true;
+            var expectedIsPartner = false;
+
+            Keap.Sdk.Exceptions.KeapLicenseException expectedException = null;
+            // Act
+            try
+            {
+                var actual = client.Users.InviteUser(expectedEmail, expectedGivenName, expectedIsAdmin, expectedIsPartner); // This user should never exist
+            }
+            catch (Keap.Sdk.Exceptions.KeapLicenseException ex)
+            {
+                expectedException = ex;
+            }
+
+            // Assert
+            expectedException.Should().NotBeNull("too many users should have been invited triggering a license expception");
+        }
+
+        private void CleanupInvitedUsers()
+        {
+            List<long> invitedUserIds = new List<long>();
+            var client = Tests.Common.ClientHelper.GetSdkClient(PersonaType.Admin);
+            var users = client.Users.GetUsers(true, true, 1000);
+            foreach (var user in users.Items)
+            {
+                if (user.Status == Sdk.Domain.Users.UserStatus.Invited)
+                {
+                    invitedUserIds.Add(user.Id);
+                }
+            }
+
+            // Only run if there are inactive users, for now
+            if (invitedUserIds.Count > 0)
+            {
+                IWebDriver driver;
+                using (driver = new ChromeDriver())
+                {
+                    var keapAppName = _config["TestSettings:AppName"];
+                    var username = _config["TestSettings:AdminUsername"];
+                    var password = _config["TestSettings:AdminPassword"];
+
+                    E2E.Common.SeleniumHelper.RunLoginToAccountCentral(username, password, driver);
+
+                    foreach (var userId in invitedUserIds)
+                    {
+                        driver.Url = $"https://{keapAppName}/Contact/manageUser.jsp?view=edit&ID={userId}";
+
+                        var cancelInvitationButton = driver.Wait(5).Until(d => d.FindElement(By.Name("Cancel_Invitation")));
+                        cancelInvitationButton.Click();
+                        //Cancel_Invitation
+                        driver.Wait(5).Until(d => d.Url.Contains("Reports/searchTemplate.jsp?reportClass=SetupUser", StringComparison.InvariantCultureIgnoreCase));
+                    }
+                }
+            }
         }
     }
 }

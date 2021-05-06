@@ -82,5 +82,25 @@ namespace Keap.Tests.E2E.Common
 
             return authorizationCode;
         }
+
+        /// <summary>
+        /// Redirects to accounts.infusionsoft.com
+        /// </summary>
+        /// <param name="keapAppName"></param>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        /// <param name="driver"></param>
+        internal static void RunLoginToAccountCentral(string username, string password, IWebDriver driver)
+        {
+            driver.Url = "https://signin.infusionsoft.com/login?service=https%3A%2F%2Faccounts.infusionsoft.com";
+
+            driver.Wait(10).Until(d => d.Url.StartsWith("https://signin.infusionsoft.com/", StringComparison.InvariantCultureIgnoreCase));
+
+            driver.DataQaFillInField("username", username);
+            driver.DataQaFillInField("password", password);
+            driver.DataQaClickButton("login");
+
+            driver.Wait(5).Until(d => d.Url.StartsWith("https://accounts.infusionsoft.com", StringComparison.InvariantCultureIgnoreCase));
+        }
     }
 }
