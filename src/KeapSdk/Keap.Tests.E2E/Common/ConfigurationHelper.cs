@@ -5,14 +5,14 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 
-namespace Keap.Tests.Common
+namespace Keap.Tests.E2E.Common
 {
     public static class ConfigurationHelper
     {
         private static object _configLock = new object();
         private static ConcurrentDictionary<string, IConfigurationRoot> _configurationDictionary = new ConcurrentDictionary<string, IConfigurationRoot>();
 
-        public static void ClearCachedConfiguration(System.Reflection.Assembly callingAssembly)
+        public static void ClearCachedConfiguration(Assembly callingAssembly)
         {
             Debug.WriteLine("Clearing cached configuration");
 
@@ -30,7 +30,7 @@ namespace Keap.Tests.Common
             }
         }
 
-        public static IConfigurationRoot GetConfiguration(System.Reflection.Assembly callingAssembly)
+        public static IConfigurationRoot GetConfiguration(Assembly callingAssembly)
         {
             Debug.WriteLine("Getting cached configuration");
             string key = GetKeyName(callingAssembly);
@@ -50,7 +50,7 @@ namespace Keap.Tests.Common
             return _configurationDictionary[key];
         }
 
-        private static IConfigurationRoot BuildConfiguration(System.Reflection.Assembly callingAssembly)
+        private static IConfigurationRoot BuildConfiguration(Assembly callingAssembly)
         {
             IConfigurationBuilder builder = new ConfigurationBuilder();
             builder.AddJsonFile(Path.Combine(Directory.GetCurrentDirectory(), "appsettings.json"));

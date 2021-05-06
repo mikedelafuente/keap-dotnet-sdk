@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace Keap.Tests.Common
+namespace Keap.Tests.E2E.Common
 {
     public static class TestHelper
     {

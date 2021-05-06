@@ -1,7 +1,7 @@
 ﻿using Keap.Sdk.Logging;
 using System.Diagnostics;
 
-namespace Keap.Tests.Common
+namespace Keap.Tests.E2E.Common
 {
     public static class LogHelper
     {

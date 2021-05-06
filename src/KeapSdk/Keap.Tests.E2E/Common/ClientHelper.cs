@@ -3,7 +3,7 @@ using Keap.Sdk.Domain;
 using System;
 using System.Text.Json;
 
-namespace Keap.Tests.Common
+namespace Keap.Tests.E2E.Common
 {
     public static class ClientHelper
     {

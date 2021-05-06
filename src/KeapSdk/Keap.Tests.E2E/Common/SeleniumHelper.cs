@@ -20,7 +20,7 @@ namespace Keap.Tests.E2E.Common
         /// <returns></returns>
         public static string GetAdminCodeFromSelenium(string authorizationUri)
         {
-            var config = Tests.Common.ConfigurationHelper.GetConfiguration(System.Reflection.Assembly.GetAssembly(typeof(SdkE2ETests)));
+            var config = ConfigurationHelper.GetConfiguration(System.Reflection.Assembly.GetAssembly(typeof(SdkE2ETests)));
             var keapAppName = config["TestSettings:AppName"];
             var username = config["TestSettings:AdminUsername"];
             var password = config["TestSettings:AdminPassword"];

@@ -1,14 +1,14 @@
 ﻿using System;
 
-namespace Keap.Tests.Common
+namespace Keap.Tests.E2E.Common
 {
     public class ThenAttribute : Attribute
     {
-        public string Outcome { get; set; }
-
         public ThenAttribute(string outcome)
         {
             Outcome = outcome;
         }
+
+        public string Outcome { get; set; }
     }
 }

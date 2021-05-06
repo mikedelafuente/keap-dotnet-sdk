@@ -33,7 +33,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Keap.Sdk\Keap.Sdk.csproj" />
-    <ProjectReference Include="..\Keap.Tests.Common\Keap.Tests.Common.csproj" />
   </ItemGroup>
 
 </Project>

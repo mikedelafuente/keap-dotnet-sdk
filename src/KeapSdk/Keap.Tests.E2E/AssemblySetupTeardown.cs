@@ -1,5 +1,5 @@
 ﻿using Keap.Sdk;
-using Keap.Tests.Common;
+using Keap.Tests.E2E.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
