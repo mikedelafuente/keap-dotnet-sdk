@@ -113,7 +113,7 @@ namespace Keap.Tests.E2E
             actual.Partner.Should().Be(expectedIsPartner);
 
             // TODO: How do I know if they are an admin?
-            throw new NotImplementedException("Clear out users! Bubble up the over license limit to the end use.");
+            throw new NotImplementedException("Clear out users!");
         }
     }
 }

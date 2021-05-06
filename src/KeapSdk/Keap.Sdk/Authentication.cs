@@ -235,7 +235,7 @@ namespace Keap.Sdk
             // Parse the response
             if (httpResponse.StatusCode != System.Net.HttpStatusCode.OK)
             {
-                throw new Exceptions.KeapHttpRequestException("Unable to convert the OAuth2 code into an access token. Please try again.", new HttpRequestException(httpResponse.ReasonPhrase));
+                throw new Exceptions.KeapHttpRequestException("Unable to convert the OAuth2 code into an access token. Please try again.", httpResponse.StatusCode, new HttpRequestException(httpResponse.ReasonPhrase));
             }
 
             var responseContentTask = httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false).GetAwaiter();

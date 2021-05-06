@@ -138,6 +138,15 @@ namespace Keap.Sdk.Clients.Users
             var responseTask = apiClient.PostAsync(path, inviteUserDto);
             var response = await responseTask;
             // TODO: Currently if we hit the license limit, a 400 is returned which is difficult to discern from other 400s for missing email
+
+            if (!response.IsSuccessStatusCode && response.StatusCode == System.Net.HttpStatusCode.BadRequest && response.ResponseBody.Contains("licenses"))
+            {
+                var message = RestHelper.AttemptToGetErrorMessage(response);
+                if (!String.IsNullOrWhiteSpace(message))
+                {
+                    throw new Exceptions.KeapLicenseException(message);
+                }
+            }
             var resultDto = Domain.Clients.RestHelper.ProcessResults<UserDto>(response);
 
             var result = resultDto.MapTo();
