@@ -140,17 +140,17 @@ namespace Keap.Sdk
             // Validate input
             if (string.IsNullOrWhiteSpace(integrationName))
             {
-                throw new Exceptions.KeapArgumentException(nameof(integrationName));
+                throw new Exceptions.KeapNullOrWhitespaceArgumentException(nameof(integrationName));
             }
 
             if (string.IsNullOrWhiteSpace(clientSecret))
             {
-                throw new Exceptions.KeapArgumentException(nameof(clientSecret));
+                throw new Exceptions.KeapNullOrWhitespaceArgumentException(nameof(clientSecret));
             }
 
             if (string.IsNullOrWhiteSpace(clientId))
             {
-                throw new Exceptions.KeapArgumentException(nameof(clientId));
+                throw new Exceptions.KeapNullOrWhitespaceArgumentException(nameof(clientId));
             }
 
             ValidateUrlWithThrow(nameof(authorizationRequestUrl), authorizationRequestUrl);
@@ -235,7 +235,7 @@ namespace Keap.Sdk
             // Parse the response
             if (httpResponse.StatusCode != System.Net.HttpStatusCode.OK)
             {
-                throw new Exceptions.KeapHttpRequestException("Unable to convert the OAuth2 code into an access token. Please try again.", new HttpRequestException(httpResponse.ReasonPhrase));
+                throw new Exceptions.KeapHttpRequestException("Unable to convert the OAuth2 code into an access token. Please try again.", httpResponse.StatusCode, new HttpRequestException(httpResponse.ReasonPhrase));
             }
 
             var responseContentTask = httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false).GetAwaiter();
@@ -252,7 +252,7 @@ namespace Keap.Sdk
         {
             if (string.IsNullOrWhiteSpace(url))
             {
-                throw new Exceptions.KeapArgumentException(nameOfParam);
+                throw new Exceptions.KeapNullOrWhitespaceArgumentException(nameOfParam);
             }
 
             if (!url.StartsWith("http", StringComparison.InvariantCultureIgnoreCase))

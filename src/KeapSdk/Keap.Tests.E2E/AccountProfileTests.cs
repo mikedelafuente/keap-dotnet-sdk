@@ -40,7 +40,7 @@ namespace Keap.Tests.E2E
             // Act
             var updatedAccountProfile = accountProfile.Clone();
             updatedAccountProfile.Address = Common.FakeData.GetAddress();
-
+            updatedAccountProfile.Address.CountryCode = "USA";
             var actual = client.AccountInfo.UpdateAccountProfile(updatedAccountProfile);
 
             // Assert

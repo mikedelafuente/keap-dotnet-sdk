@@ -11,7 +11,7 @@ namespace Keap.Tests.E2E.Common
         public static Sdk.Domain.Common.Address GetAddress()
         {
             var address = new Bogus.Faker<Sdk.Domain.Common.Address>()
-                 .RuleFor(a => a.CountryCode, f => f.Address.CountryCode())
+                 .RuleFor(a => a.CountryCode, f => f.Address.CountryCode(Bogus.DataSets.Iso3166Format.Alpha3))
                  .RuleFor(a => a.Field, f => f.PickRandom<Sdk.Domain.Common.AddressType>())
                  .RuleFor(a => a.Line1, f => f.Address.StreetAddress())
                  .RuleFor(a => a.Line2, f => f.Address.SecondaryAddress())

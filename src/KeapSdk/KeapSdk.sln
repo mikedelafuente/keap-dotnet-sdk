@@ -14,6 +14,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{31444870-E2C7-4A49-A124-69DF69EE884C}"
 	ProjectSection(SolutionItems) = preProject
 		..\..\.gitignore = ..\..\.gitignore
+		..\..\DEV.postman_environment.json = ..\..\DEV.postman_environment.json
+		..\..\Postman_prerequest_script.js = ..\..\Postman_prerequest_script.js
 		..\..\README.md = ..\..\README.md
 	EndProjectSection
 EndProject

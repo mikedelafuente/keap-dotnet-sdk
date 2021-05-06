@@ -17,11 +17,17 @@ namespace Keap.Sdk
             ApiClient = apiClient;
             AccountInfo = new Clients.AccountInfo.AccountInfoClient(ApiClient);
             Locale = new Clients.Locale.LocaleClient(ApiClient);
+            UserInfo = new Clients.UserInfo.UserInfoClient(ApiClient);
+            Users = new Clients.Users.UsersClient(ApiClient);
         }
 
         public IAccountInfoClient AccountInfo { get; }
 
         public ILocaleClient Locale { get; }
+
+        public IUserInfoClient UserInfo { get; }
+
+        public IUsersClient Users { get; }
 
         internal IRestApiClient ApiClient { get; }
     }

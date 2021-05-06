@@ -93,10 +93,22 @@ namespace Keap.Sdk.Domain.Clients
                 IsSuccessStatusCode = httpResponse.IsSuccessStatusCode
             };
 
-            if (serverResponse.IsSuccessStatusCode)
+            try
             {
+                // TODO: Parse non-success codes to JSON to see if there is an error message in the format of: { "message":"blah" }
+                // Store that message as an "Error reason"
+
                 var stringTask = httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false).GetAwaiter();
                 serverResponse.ResponseBody = stringTask.GetResult();
+            }
+            catch (Exception ex)
+            {
+                LogEventManager.Error(ex);
+                if (serverResponse.IsSuccessStatusCode)
+                {
+                    // We should not be in a failing state
+                    throw;
+                }
             }
 
             return serverResponse;
@@ -123,7 +135,7 @@ namespace Keap.Sdk.Domain.Clients
             // Parse the response
             if (httpResponse.StatusCode != System.Net.HttpStatusCode.OK)
             {
-                throw new Exceptions.KeapHttpRequestException("Unable to convert the OAuth2 code into an access token. Please try again.", new HttpRequestException(httpResponse.ReasonPhrase));
+                throw new Exceptions.KeapHttpRequestException("Unable to convert the OAuth2 code into an access token. Please try again.", httpResponse.StatusCode, new HttpRequestException(httpResponse.ReasonPhrase));
             }
 
             var responseContentTask = httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false).GetAwaiter();

@@ -9,6 +9,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Common\**" />
+    <EmbeddedResource Remove="Common\**" />
+    <None Remove="Common\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="appsettings.json" />
   </ItemGroup>
 
@@ -30,10 +36,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Keap.Sdk\Keap.Sdk.csproj" />
     <ProjectReference Include="..\Keap.Tests.Common\Keap.Tests.Common.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Common\" />
   </ItemGroup>
 
 </Project>
