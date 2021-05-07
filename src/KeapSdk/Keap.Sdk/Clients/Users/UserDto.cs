@@ -25,7 +25,7 @@ namespace Keap.Sdk.Clients.Users
         public string FamilyName { get; set; }
 
         [JsonProperty("fax_numbers")]
-        public Common.PhoneNumberDto[] FaxNumbers { get; set; }
+        public List<Common.PhoneNumberDto> FaxNumbers { get; set; } = new List<Common.PhoneNumberDto>();
 
         [JsonProperty("given_name")]
         public string GivenName { get; set; }
@@ -56,7 +56,7 @@ namespace Keap.Sdk.Clients.Users
         public bool Partner { get; set; }
 
         [JsonProperty("phone_numbers")]
-        public Common.PhoneNumberDto[] PhoneNumbers { get; set; }
+        public List<Common.PhoneNumberDto> PhoneNumbers { get; set; } = new List<Common.PhoneNumberDto>();
 
         [JsonProperty("preferred_name")]
         public string PreferredName { get; set; }

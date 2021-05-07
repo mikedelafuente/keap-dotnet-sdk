@@ -7,16 +7,16 @@ namespace Keap.Sdk.Domain.Contacts
         [JsonProperty("email")]
         public string Email { get; set; }
 
-        [JsonProperty("email_opt_status")]
-        public string EmailOptStatus { get; set; }
+        //[JsonProperty("email_opt_status")]
+        //public EmailOptStatusType EmailOptStatus { get; set; }
 
         [JsonProperty("field")]
-        public string Field { get; set; }
+        public EmailFieldType Field { get; set; }
 
-        [JsonProperty("is_opt_in")]
-        public bool IsOptIn { get; set; }
+        //[JsonProperty("is_opt_in")]
+        //public bool IsOptIn { get; set; }
 
-        [JsonProperty("opt_in_reason")]
-        public string OptInReason { get; set; }
+        //[JsonProperty("opt_in_reason")]
+        //public string OptInReason { get; set; }
     }
 }

@@ -3,16 +3,17 @@ using System;
 
 namespace Keap.Sdk.Clients.Common
 {
-    internal class PhoneNumberDto : TelephoneDto
+    // TODO: Add comments to properties and class
+    internal class FaxNumberDto : TelephoneDto
     {
-        internal static PhoneNumberDto MapFrom(PhoneNumber source)
+        internal static FaxNumberDto MapFrom(FaxNumber source)
         {
             if (source == null)
             {
                 return null;
             }
 
-            var result = new PhoneNumberDto
+            var result = new FaxNumberDto
             {
                 Extension = source.Extension,
                 Field = source.Field.ToString(),
@@ -23,12 +24,12 @@ namespace Keap.Sdk.Clients.Common
             return result;
         }
 
-        internal PhoneNumber MapTo()
+        internal FaxNumber MapTo()
         {
-            var result = new PhoneNumber
+            var result = new FaxNumber
             {
                 Extension = this.Extension,
-                Field = Enum.Parse<PhoneFieldType>(this.Field),
+                Field = Enum.Parse<FaxFieldType>(this.Field),
                 Number = this.Number,
                 Type = this.Type
             };

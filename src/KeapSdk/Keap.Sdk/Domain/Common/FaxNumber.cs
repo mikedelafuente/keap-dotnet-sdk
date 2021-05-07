@@ -2,13 +2,13 @@
 
 namespace Keap.Sdk.Domain.Common
 {
-    public class PhoneNumber
+    public class FaxNumber
     {
         [JsonProperty("extension")]
         public string Extension { get; set; }
 
         [JsonProperty("field")]
-        public PhoneFieldType Field { get; set; }
+        public FaxFieldType Field { get; set; }
 
         [JsonProperty("number")]
         public string Number { get; set; }

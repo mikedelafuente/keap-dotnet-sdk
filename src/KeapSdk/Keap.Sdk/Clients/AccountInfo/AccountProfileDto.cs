@@ -48,23 +48,28 @@ namespace Keap.Sdk.Clients.AccountInfo
         [JsonProperty("website")]
         public string Website { get; set; }
 
-        internal static AccountProfileDto MapFrom(Domain.Account.AccountProfile value)
+        internal static AccountProfileDto MapFrom(Domain.Account.AccountProfile source)
         {
+            if (source == null)
+            {
+                return null;
+            }
+
             AccountProfileDto result = new AccountProfileDto();
-            result.Address = AddressDto.MapFrom(value.Address);
-            result.BusinessGoals = value.BusinessGoals.GetClone();
-            result.BusinessPrimaryColor = value.BusinessPrimaryColor;
-            result.BusinessSecondaryColor = value.BusinessSecondaryColor;
-            result.BusinessType = value.BusinessType;
-            result.CurrencyCode = value.CurrencyCode;
-            result.Email = value.Email;
-            result.LanguageTag = value.LanguageTag;
-            result.LogoUrl = value.LogoUrl;
-            result.Name = value.Name;
-            result.Phone = value.Phone;
-            result.PhoneExt = value.PhoneExt;
-            result.TimeZone = value.TimeZone;
-            result.Website = value.Website;
+            result.Address = AddressDto.MapFrom(source.Address);
+            result.BusinessGoals = source.BusinessGoals.GetClone();
+            result.BusinessPrimaryColor = source.BusinessPrimaryColor;
+            result.BusinessSecondaryColor = source.BusinessSecondaryColor;
+            result.BusinessType = source.BusinessType;
+            result.CurrencyCode = source.CurrencyCode;
+            result.Email = source.Email;
+            result.LanguageTag = source.LanguageTag;
+            result.LogoUrl = source.LogoUrl;
+            result.Name = source.Name;
+            result.Phone = source.Phone;
+            result.PhoneExt = source.PhoneExt;
+            result.TimeZone = source.TimeZone;
+            result.Website = source.Website;
             return result;
         }
 

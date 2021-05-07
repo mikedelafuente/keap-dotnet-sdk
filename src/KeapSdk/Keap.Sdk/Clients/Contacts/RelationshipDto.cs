@@ -1,5 +1,6 @@
 ﻿using Keap.Sdk.Domain.Contacts;
 using Newtonsoft.Json;
+using System;
 
 namespace Keap.Sdk.Clients.Contacts
 {
@@ -13,6 +14,20 @@ namespace Keap.Sdk.Clients.Contacts
 
         [JsonProperty("relationship_type_id")]
         public string RelationshipTypeId { get; set; }
+
+        internal static RelationshipDto MapFrom(Relationship source)
+        {
+            if (source == null)
+            {
+                return null;
+            }
+
+            RelationshipDto r = new();
+            r.Id = source.Id;
+            r.LinkedContactId = source.LinkedContactId;
+            r.RelationshipTypeId = source.RelationshipTypeId;
+            return r;
+        }
 
         internal Relationship MapTo()
         {

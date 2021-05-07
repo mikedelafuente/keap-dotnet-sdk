@@ -40,12 +40,18 @@ namespace Keap.Sdk.Domain.Contacts
         [JsonProperty("email_status")]
         public string EmailStatus { get; set; }
 
+        /// <summary>
+        /// Last name or surname
+        /// </summary>
         [JsonProperty("family_name")]
         public string FamilyName { get; set; }
 
         [JsonProperty("fax_numbers")]
-        public List<PhoneNumber> FaxNumbers { get; set; } = new List<PhoneNumber>();
+        public List<FaxNumber> FaxNumbers { get; set; } = new List<FaxNumber>();
 
+        /// <summary>
+        /// First name or forename
+        /// </summary>
         [JsonProperty("given_name")]
         public string GivenName { get; set; }
 
@@ -55,15 +61,21 @@ namespace Keap.Sdk.Domain.Contacts
         [JsonProperty("job_title")]
         public string JobTitle { get; set; }
 
-        [JsonProperty("last_updated", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("last_updated")]
         public DateTimeOffset LastUpdated { get; set; }
 
         [JsonProperty("lead_source_id")]
         public long LeadSourceId { get; set; }
 
+        /// <summary>
+        /// Middle name
+        /// </summary>
         [JsonProperty("middle_name")]
         public string MiddleName { get; set; }
 
+        /// <summary>
+        /// Populate to mark the contact as Marketable
+        /// </summary>
         [JsonProperty("opt_in_reason")]
         public string OptInReason { get; set; }
 
@@ -86,7 +98,7 @@ namespace Keap.Sdk.Domain.Contacts
         public string Prefix { get; set; }
 
         [JsonProperty("relationships")]
-        public List<Relationship> Relationships { get; set; }
+        public List<Relationship> Relationships { get; set; } = new List<Relationship>();
 
         [JsonProperty("ScoreValue")]
         public string ScoreValue { get; set; }

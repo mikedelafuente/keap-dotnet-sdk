@@ -1,14 +1,14 @@
 ﻿using Newtonsoft.Json;
 
-namespace Keap.Sdk.Domain.Common
+namespace Keap.Sdk.Clients.Common
 {
-    public class PhoneNumber
+    internal abstract class TelephoneDto
     {
         [JsonProperty("extension")]
         public string Extension { get; set; }
 
         [JsonProperty("field")]
-        public PhoneFieldType Field { get; set; }
+        public string Field { get; set; }
 
         [JsonProperty("number")]
         public string Number { get; set; }

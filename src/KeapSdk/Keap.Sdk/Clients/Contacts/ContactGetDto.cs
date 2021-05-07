@@ -2,14 +2,15 @@
 using Keap.Sdk.Domain.Contacts;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Keap.Sdk.Clients.Contacts
 {
-    internal class ContactDto
+    internal class ContactGetDto
     {
         [JsonProperty("addresses")]
-        public AddressDto[] Addresses { get; set; }
+        public List<AddressDto> Addresses { get; set; } = new List<AddressDto>();
 
         [JsonProperty("anniversary")]
         public DateTimeOffset Anniversary { get; set; }
@@ -18,7 +19,7 @@ namespace Keap.Sdk.Clients.Contacts
         public DateTimeOffset Birthday { get; set; }
 
         [JsonProperty("company")]
-        public CompanyDto Company { get; set; }
+        public CompanyGetDto Company { get; set; }
 
         [JsonProperty("company_name")]
         public string CompanyName { get; set; }
@@ -27,13 +28,13 @@ namespace Keap.Sdk.Clients.Contacts
         public string ContactType { get; set; }
 
         [JsonProperty("custom_fields")]
-        public CustomFieldDto[] CustomFields { get; set; }
+        public List<CustomFieldDto> CustomFields { get; set; } = new List<CustomFieldDto>();
 
         [JsonProperty("date_created")]
         public DateTimeOffset DateCreated { get; set; }
 
         [JsonProperty("email_addresses")]
-        public EmailAddressDto[] EmailAddresses { get; set; }
+        public List<EmailAddressGetDto> EmailAddresses { get; set; } = new List<EmailAddressGetDto>();
 
         [JsonProperty("email_opted_in")]
         public bool EmailOptedIn { get; set; }
@@ -45,7 +46,7 @@ namespace Keap.Sdk.Clients.Contacts
         public string FamilyName { get; set; }
 
         [JsonProperty("fax_numbers")]
-        public PhoneNumberDto[] FaxNumbers { get; set; }
+        public List<FaxNumberDto> FaxNumbers { get; set; } = new List<FaxNumberDto>();
 
         [JsonProperty("given_name")]
         public string GivenName { get; set; }
@@ -69,13 +70,13 @@ namespace Keap.Sdk.Clients.Contacts
         public string OptInReason { get; set; }
 
         [JsonProperty("origin")]
-        public IpOriginDto Origin { get; set; }
+        public IpOriginGetDto Origin { get; set; }
 
         [JsonProperty("owner_id", NullValueHandling = NullValueHandling.Ignore)]
         public long OwnerId { get; set; }
 
         [JsonProperty("phone_numbers")]
-        public PhoneNumberDto[] PhoneNumbers { get; set; }
+        public List<PhoneNumberDto> PhoneNumbers { get; set; } = new List<PhoneNumberDto>();
 
         [JsonProperty("preferred_locale")]
         public string PreferredLocale { get; set; }
@@ -87,13 +88,13 @@ namespace Keap.Sdk.Clients.Contacts
         public string Prefix { get; set; }
 
         [JsonProperty("relationships")]
-        public RelationshipDto[] Relationships { get; set; }
+        public List<RelationshipDto> Relationships { get; set; } = new List<RelationshipDto>();
 
         [JsonProperty("ScoreValue")]
         public string ScoreValue { get; set; }
 
         [JsonProperty("social_accounts")]
-        public SocialAccountDto[] SocialAccounts { get; set; }
+        public List<SocialAccountDto> SocialAccounts { get; set; } = new List<SocialAccountDto>();
 
         [JsonProperty("source_type")]
         public string SourceType { get; set; }
@@ -105,7 +106,7 @@ namespace Keap.Sdk.Clients.Contacts
         public string Suffix { get; set; }
 
         [JsonProperty("tag_ids")]
-        public long[] TagIds { get; set; }
+        public List<long> TagIds { get; set; } = new List<long>();
 
         [JsonProperty("time_zone")]
         public string TimeZone { get; set; }
@@ -168,6 +169,7 @@ namespace Keap.Sdk.Clients.Contacts
             {
                 r.SocialAccounts.AddRange(this.SocialAccounts.Select(item => item.MapTo()));
             }
+            r.SourceType = this.SourceType;
             r.SpouseName = this.SpouseName;
             r.Suffix = this.Suffix;
             r.TagIds = this.TagIds?.ToList();

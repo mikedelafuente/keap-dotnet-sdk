@@ -13,6 +13,29 @@ namespace Keap.Sdk.Clients.Contacts
             this.apiClient = apiClient;
         }
 
+        public Contact CreateContact(Contact contact)
+        {
+            var responseTask = CreateContactAsync(contact).ConfigureAwait(false).GetAwaiter();
+            var result = responseTask.GetResult();
+
+            return result;
+        }
+
+        public async Task<Contact> CreateContactAsync(Contact contact)
+        {
+            string path = "contacts";
+
+            ContactPutPostDto contactDto = ContactPutPostDto.MapFrom(contact);
+
+            var responseTask = apiClient.PostAsync(path, contactDto);
+            var response = await responseTask;
+            var resultDto = Domain.Clients.RestHelper.ProcessResults<ContactGetDto>(response);
+
+            var result = resultDto.MapTo();
+
+            return result;
+        }
+
         public Contact GetContact(int contactId)
         {
             var responseTask = GetContactAsync(contactId).ConfigureAwait(false).GetAwaiter();
@@ -27,7 +50,7 @@ namespace Keap.Sdk.Clients.Contacts
 
             var responseTask = apiClient.GetAsync(path);
             var response = await responseTask;
-            var resultDto = Domain.Clients.RestHelper.ProcessResults<ContactDto>(response);
+            var resultDto = Domain.Clients.RestHelper.ProcessResults<ContactGetDto>(response);
 
             var result = resultDto.MapTo();
 

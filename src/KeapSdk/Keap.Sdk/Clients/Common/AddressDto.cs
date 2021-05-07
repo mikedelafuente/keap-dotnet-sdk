@@ -39,18 +39,23 @@ namespace Keap.Sdk.Clients.Common
         [JsonProperty("zip_four")]
         public string ZipFour { get; set; }
 
-        internal static AddressDto MapFrom(Domain.Common.Address value)
+        internal static AddressDto MapFrom(Domain.Common.Address source)
         {
+            if (source == null)
+            {
+                return null;
+            }
+
             AddressDto result = new AddressDto();
-            result.CountryCode = value.CountryCode;
-            result.Field = value.Field.ToString();
-            result.Line1 = value.Line1;
-            result.Line2 = value.Line2;
-            result.Locality = value.Locality;
-            result.PostalCode = value.PostalCode;
-            result.Region = value.Region;
-            result.ZipCode = value.ZipCode;
-            result.ZipFour = value.ZipFour;
+            result.CountryCode = source.CountryCode;
+            result.Field = source.Field.ToString();
+            result.Line1 = source.Line1;
+            result.Line2 = source.Line2;
+            result.Locality = source.Locality;
+            result.PostalCode = source.PostalCode;
+            result.Region = source.Region;
+            result.ZipCode = source.ZipCode;
+            result.ZipFour = source.ZipFour;
             return result;
         }
 

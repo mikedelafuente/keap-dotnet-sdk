@@ -166,7 +166,7 @@ namespace Keap.Sdk.Clients.Users
             var resultDto = Domain.Clients.RestHelper.ProcessResults<UserListDto>(response);
 
             ResultPage<User> result = new ResultPage<User>();
-            if (resultDto.Users != null && resultDto.Users.Length > 0)
+            if (resultDto.Users != null && resultDto.Users.Count > 0)
             {
                 result.NextPageToken = resultDto.GetNextPageToken($"include_inactive={includeInactive}&include_partners={includePartners}");
 

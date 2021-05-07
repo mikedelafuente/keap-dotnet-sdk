@@ -12,6 +12,35 @@ namespace Keap.Tests.E2E
     [TestClass]
     public class ContactTests
     {
+        [Scenario("Create a contact with a name and email address")]
+        [Given("any token and an empty contact model with a name and valid email address")]
+        [When("a call to create a contact is made")]
+        [Then("a contact is returned with the name, email address and an ID greater than 0")]
+        [TestMethod]
+        public void Create_a_contact_with_a_name_and_email_address()
+        {
+            // Arrange
+            var client = ClientHelper.GetSdkClient(PersonaType.Admin);
+            var expected = new Sdk.Domain.Contacts.Contact();
+            var nameFaker = new Bogus.DataSets.Name();
+            var internetFaker = new Bogus.DataSets.Internet();
+
+            expected.FamilyName = nameFaker.LastName();
+            expected.GivenName = nameFaker.FirstName();
+            var emailAddress = new Sdk.Domain.Contacts.EmailAddress();
+            emailAddress.Email = internetFaker.Email();
+            emailAddress.Field = Sdk.Domain.Contacts.EmailFieldType.EMAIL1;
+
+            expected.EmailAddresses.Add(emailAddress);
+
+            // Act
+            var actual = client.Contacts.CreateContact(expected);
+
+            // Assert
+            actual.Should().NotBeNull();
+            actual.Id.Should().BeGreaterThan(0);
+        }
+
         [Scenario("Get contact by a valid ID should return a contact")]
         [Given("any token and a valid contact ID")]
         [When("a call to get a contact by ID is made")]
@@ -22,6 +51,7 @@ namespace Keap.Tests.E2E
             // Arrange
             var client = ClientHelper.GetSdkClient(PersonaType.Admin);
             var validId = 2;
+
             // Act
             var actual = client.Contacts.GetContact(validId);
 
