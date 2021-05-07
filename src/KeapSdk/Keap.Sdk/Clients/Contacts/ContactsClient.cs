@@ -68,13 +68,34 @@ namespace Keap.Sdk.Clients.Contacts
             return result;
         }
 
+        public ResultPage<Contact> GetContacts(string nextPageToken)
+        {
+            var responseTask = GetContactsAsync(nextPageToken).ConfigureAwait(false).GetAwaiter();
+            var result = responseTask.GetResult();
+
+            return result;
+        }
+
         public async Task<ResultPage<Contact>> GetContactsAsync(int pageSize = 1000, string email = null, string givenName = null, string familyName = null, DateTimeOffset? lastUpdatedSince = null, DateTimeOffset? lastUpdatedUntil = null, string order = null, string orderDirection = null, bool includeLeadSourceId = false, bool includeCustomFields = false, bool includeJobTitle = true)
         {
             if (pageSize <= 0 || pageSize > 1000)
             {
                 pageSize = 1000;
             }
-            string path = $"contacts?limit={pageSize}&email={email}&given_name={givenName}&family_name={familyName}&order={order}&order_direction={orderDirection}&since={lastUpdatedSince}&unit={lastUpdatedUntil}";
+            string queryString = $"offset=0&limit={pageSize}&email={email}&given_name={givenName}&family_name={familyName}&order={order}&order_direction={orderDirection}&since={lastUpdatedSince}&unit={lastUpdatedUntil}";
+
+            return await GetContactsWithQueryStringAsync(queryString);
+        }
+
+        public async Task<ResultPage<Contact>> GetContactsAsync(string nextPageToken)
+        {
+            var qs = RestHelper.ExtractQueryStringFromPageToken(nextPageToken);
+            return await GetContactsWithQueryStringAsync(qs);
+        }
+
+        private async Task<ResultPage<Contact>> GetContactsWithQueryStringAsync(string queryString)
+        {
+            string path = $"contacts?{queryString}";
 
             var responseTask = apiClient.GetAsync(path);
             var response = await responseTask;
@@ -83,7 +104,7 @@ namespace Keap.Sdk.Clients.Contacts
             ResultPage<Contact> result = new ResultPage<Contact>();
             if (resultDto.Contacts != null && resultDto.Contacts.Count > 0)
             {
-                result.NextPageToken = resultDto.GetNextPageToken(); // $"email={email}&include_partners={givenName}"
+                result.NextPageToken = resultDto.GetNextPageToken();
 
                 foreach (var item in resultDto.Contacts)
                 {

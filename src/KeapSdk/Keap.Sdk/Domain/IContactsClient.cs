@@ -67,6 +67,16 @@ namespace Keap.Sdk.Domain
         public ResultPage<Contact> GetContacts(int pageSize = 1000, string email = null, string givenName = null, string familyName = null, DateTimeOffset? lastUpdatedSince = null, DateTimeOffset? lastUpdatedUntil = null, string order = null, string orderDirection = null, bool includeLeadSourceId = false, bool includeCustomFields = false, bool includeJobTitle = true);
 
         /// <summary>
+        /// Retrieves a list of all contacts using the next page token. If there is not a next page,
+        /// no token will be returned
+        /// </summary>
+        /// <param name="nextPageToken">
+        /// The next page token is returned with every contact list unless there are no results.
+        /// </param>
+        /// <returns></returns>
+        public ResultPage<Contact> GetContacts(string nextPageToken);
+
+        /// <summary>
         /// Retrieves a list of all contacts
         /// </summary>
         /// <param name="pageSize">Sets a total of items to return. Limit of 1000.</param>
@@ -92,5 +102,15 @@ namespace Keap.Sdk.Domain
         /// </param>
         /// <returns>Returns a list of contacts</returns>
         public Task<ResultPage<Contact>> GetContactsAsync(int pageSize = 1000, string email = null, string givenName = null, string familyName = null, DateTimeOffset? lastUpdatedSince = null, DateTimeOffset? lastUpdatedUntil = null, string order = null, string orderDirection = null, bool includeLeadSourceId = false, bool includeCustomFields = false, bool includeJobTitle = true);
+
+        /// <summary>
+        /// Retrieves a list of all contacts using the next page token. If there is not a next page,
+        /// no token will be returned
+        /// </summary>
+        /// <param name="nextPageToken">
+        /// The next page token is returned with every contact list unless there are no results.
+        /// </param>
+        /// <returns></returns>
+        public Task<ResultPage<Contact>> GetContactsAsync(string nextPageToken);
     }
 }
