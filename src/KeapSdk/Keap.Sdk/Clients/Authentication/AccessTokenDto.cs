@@ -1,27 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
+﻿using Newtonsoft.Json;
 
 namespace Keap.Sdk.Clients.Authentication.ResponseModels
 {
     internal class AccessTokenDto
     {
-        [JsonPropertyName("access_token")]
+        [JsonProperty("access_token")]
         public string AccessToken { get; set; }
 
-        [JsonPropertyName("expires_in")]
+        [JsonProperty("expires_in")]
         public int ExpiresIn { get; set; }
 
-        [JsonPropertyName("refresh_token")]
+        [JsonProperty("refresh_token")]
         public string RefreshToken { get; set; }
 
-        [JsonPropertyName("scope")]
+        [JsonProperty("scope")]
         public string Scope { get; set; }
 
-        [JsonPropertyName("token_type")]
+        [JsonProperty("token_type")]
         public string TokenType { get; set; }
     }
 }

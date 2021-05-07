@@ -1,11 +1,8 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Text.Json;
 using System.Linq.Expressions;
-using System.Text.Json.Serialization;
 
 namespace Keap.Sdk.Clients
 {
@@ -25,7 +22,7 @@ namespace Keap.Sdk.Clients
         public static string GetJsonPropertyName<T, TProp>(this T o, Expression<Func<T, TProp>> propertySelector)
         {
             MemberExpression body = (MemberExpression)propertySelector.Body;
-            var customAttribute = body.Member.GetCustomAttributesData().SingleOrDefault(x => x.AttributeType == typeof(JsonPropertyNameAttribute));
+            var customAttribute = body.Member.GetCustomAttributesData().SingleOrDefault(x => x.AttributeType == typeof(JsonPropertyAttribute));
             var result = body.Member.Name;
             if (customAttribute != null)
             {

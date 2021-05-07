@@ -1,22 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Newtonsoft.Json;
+using System;
 using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 using System.Web;
 
 namespace Keap.Sdk.Clients.Common
 {
     internal abstract class KeapListDto
     {
-        [JsonPropertyName("count")]
+        [JsonProperty("count")]
         public int Count { get; set; }
 
-        [JsonPropertyName("next")]
+        [JsonProperty("next")]
         public string Next { get; set; }
 
-        [JsonPropertyName("previous")]
+        [JsonProperty("previous")]
         public string Previous { get; set; }
 
         public string GetNextPageToken(string additionalParameters = null)

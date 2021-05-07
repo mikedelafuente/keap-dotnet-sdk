@@ -1,5 +1,5 @@
 using FluentAssertions;
-using Keap.Tests.Common;
+using Keap.Tests.E2E.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Keap.Tests.E2E
@@ -38,7 +38,7 @@ namespace Keap.Tests.E2E
             string integratorUniqueIdentifier = PersonaType.Admin.ToString();
 
             // Act
-            var actual = Sdk.Authentication.GetClientUsingOAuth2(integrationName, integratorUniqueIdentifier, clientId, clientSecret, "https://localhost/seleniumHandler", Tests.Common.ClientHelper.PersistCredentialsToSecretFile, Common.SeleniumHelper.GetAdminCodeFromSelenium);
+            var actual = Sdk.Authentication.GetClientUsingOAuth2(integrationName, integratorUniqueIdentifier, clientId, clientSecret, "https://localhost/seleniumHandler", ClientHelper.PersistCredentialsToSecretFile, Common.SeleniumHelper.GetAdminCodeFromSelenium);
 
             // Assert
             actual.Should().NotBeNull("valid credentials were passed in.");

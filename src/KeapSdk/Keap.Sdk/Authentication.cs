@@ -2,10 +2,10 @@
 using Keap.Sdk.Clients.Authentication.ResponseModels;
 using Keap.Sdk.Domain;
 using Keap.Sdk.Domain.Clients;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Text.Json;
 
 namespace Keap.Sdk
 {
@@ -241,8 +241,8 @@ namespace Keap.Sdk
             var responseContentTask = httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false).GetAwaiter();
             var responseContent = responseContentTask.GetResult();
 
-            JsonSerializerOptions options = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
-            var accessTokenResponse = JsonSerializer.Deserialize<AccessTokenDto>(responseContent, options);
+            JsonSerializerSettings options = new JsonSerializerSettings() { Formatting = Formatting.Indented };
+            var accessTokenResponse = JsonConvert.DeserializeObject<AccessTokenDto>(responseContent, options);
 
             AccessTokenCredentials credentials = new AccessTokenCredentials(integrationName, integratorUniqueIdentifier, clientId, clientSecret, restApiUrl, xmlRpcApiUrl, authorizationRequestUrl, accessTokenRequestUrl, refreshTokenRequestUrl, createTime, accessTokenResponse);
             return credentials;

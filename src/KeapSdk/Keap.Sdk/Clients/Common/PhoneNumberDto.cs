@@ -1,31 +1,34 @@
 ﻿using Keap.Sdk.Domain.Common;
 using System;
-using System.Text.Json.Serialization;
 
 namespace Keap.Sdk.Clients.Common
 {
-    // TODO: Add comments to properties and class
-
-    public class PhoneNumberDto
+    internal class PhoneNumberDto : TelephoneDto
     {
-        [JsonPropertyName("extension")]
-        public string Extension { get; set; }
+        internal static PhoneNumberDto MapFrom(PhoneNumber source)
+        {
+            if (source == null)
+            {
+                return null;
+            }
 
-        [JsonPropertyName("field")]
-        public string Field { get; set; }
+            var result = new PhoneNumberDto
+            {
+                Extension = source.Extension,
+                Field = source.Field.ToString(),
+                Number = source.Number,
+                Type = source.Type
+            };
 
-        [JsonPropertyName("number")]
-        public string Number { get; set; }
-
-        [JsonPropertyName("type")]
-        public string Type { get; set; }
+            return result;
+        }
 
         internal PhoneNumber MapTo()
         {
             var result = new PhoneNumber
             {
                 Extension = this.Extension,
-                Field = this.Field,
+                Field = Enum.Parse<PhoneFieldType>(this.Field),
                 Number = this.Number,
                 Type = this.Type
             };

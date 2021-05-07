@@ -1,37 +1,32 @@
 ﻿using Keap.Sdk.Domain.UserInfo;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace Keap.Sdk.Clients.UserInfo
 {
     internal class CurrentUserDto
     {
-        [JsonPropertyName("email")]
+        [JsonProperty("email")]
         public string Email { get; set; }
 
-        [JsonPropertyName("family_name")]
+        [JsonProperty("family_name")]
         public string FamilyName { get; set; }
 
-        [JsonPropertyName("given_name")]
+        [JsonProperty("given_name")]
         public string GivenName { get; set; }
 
-        [JsonPropertyName("global_user_id")]
+        [JsonProperty("global_user_id")]
         public long GlobalUserId { get; set; }
 
-        [JsonPropertyName("infusionsoft_id")]
+        [JsonProperty("infusionsoft_id")]
         public string InfusionsoftId { get; set; }
 
-        [JsonPropertyName("middle_name")]
+        [JsonProperty("middle_name")]
         public object MiddleName { get; set; }
 
-        [JsonPropertyName("preferred_name")]
+        [JsonProperty("preferred_name")]
         public object PreferredName { get; set; }
 
-        [JsonPropertyName("sub")]
+        [JsonProperty("sub")]
         public string Sub { get; set; }
 
         internal CurrentUser MapTo()

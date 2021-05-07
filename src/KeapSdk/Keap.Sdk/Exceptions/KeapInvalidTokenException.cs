@@ -3,7 +3,7 @@
     /// <summary>
     /// This exception is thrown when an expired refresh token is detected.
     /// </summary>
-    /// <seealso cref="Keap.Sdk.Exceptions.KeapException" />
+    /// <seealso cref="Keap.Sdk.Exceptions.KeapException"/>
     public class KeapExpiredRefreshTokenException : KeapException
     {
         /// <summary>
@@ -16,9 +16,10 @@
     }
 
     /// <summary>
-    ///  This exception is thrown when an invalid token is detected. Typically, this occurrs when not all required properties are populated.
+    /// This exception is thrown when an invalid token is detected. Typically, this occurrs when not
+    /// all required properties are populated.
     /// </summary>
-    /// <seealso cref="Keap.Sdk.Exceptions.KeapException" />
+    /// <seealso cref="Keap.Sdk.Exceptions.KeapException"/>
     public class KeapInvalidTokenException : KeapException
     {
         /// <summary>

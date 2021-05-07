@@ -1,71 +1,75 @@
 ﻿using Keap.Sdk.Clients.Common;
+using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.Text.Json.Serialization;
 
 namespace Keap.Sdk.Clients.AccountInfo
 {
     internal class AccountProfileDto
     {
-
-        [JsonPropertyName("address")]
+        [JsonProperty("address")]
         public AddressDto Address { get; set; }
 
-        [JsonPropertyName("business_goals")]
+        [JsonProperty("business_goals")]
         public List<string> BusinessGoals { get; set; }
 
-        [JsonPropertyName("business_primary_color")]
+        [JsonProperty("business_primary_color")]
         public string BusinessPrimaryColor { get; set; }
 
-        [JsonPropertyName("business_secondary_color")]
+        [JsonProperty("business_secondary_color")]
         public string BusinessSecondaryColor { get; set; }
 
-        [JsonPropertyName("business_type")]
+        [JsonProperty("business_type")]
         public string BusinessType { get; set; }
 
-        [JsonPropertyName("currency_code")]
+        [JsonProperty("currency_code")]
         public string CurrencyCode { get; set; }
 
-        [JsonPropertyName("email")]
+        [JsonProperty("email")]
         public string Email { get; set; }
 
-        [JsonPropertyName("language_tag")]
+        [JsonProperty("language_tag")]
         public string LanguageTag { get; set; }
 
-        [JsonPropertyName("logo_url")]
+        [JsonProperty("logo_url")]
         public string LogoUrl { get; set; }
 
-        [JsonPropertyName("name")]
+        [JsonProperty("name")]
         public string Name { get; set; }
 
-        [JsonPropertyName("phone")]
+        [JsonProperty("phone")]
         public string Phone { get; set; }
 
-        [JsonPropertyName("phone_ext")]
+        [JsonProperty("phone_ext")]
         public string PhoneExt { get; set; }
 
-        [JsonPropertyName("time_zone")]
+        [JsonProperty("time_zone")]
         public string TimeZone { get; set; }
 
-        [JsonPropertyName("website")]
+        [JsonProperty("website")]
         public string Website { get; set; }
 
-        internal static AccountProfileDto MapFrom(Domain.Account.AccountProfile value)
+        internal static AccountProfileDto MapFrom(Domain.Account.AccountProfile source)
         {
+            if (source == null)
+            {
+                return null;
+            }
+
             AccountProfileDto result = new AccountProfileDto();
-            result.Address = AddressDto.MapFrom(value.Address);
-            result.BusinessGoals = value.BusinessGoals.GetClone();
-            result.BusinessPrimaryColor = value.BusinessPrimaryColor;
-            result.BusinessSecondaryColor = value.BusinessSecondaryColor;
-            result.BusinessType = value.BusinessType;
-            result.CurrencyCode = value.CurrencyCode;
-            result.Email = value.Email;
-            result.LanguageTag = value.LanguageTag;
-            result.LogoUrl = value.LogoUrl;
-            result.Name = value.Name;
-            result.Phone = value.Phone;
-            result.PhoneExt = value.PhoneExt;
-            result.TimeZone = value.TimeZone;
-            result.Website = value.Website;
+            result.Address = AddressDto.MapFrom(source.Address);
+            result.BusinessGoals = source.BusinessGoals.GetClone();
+            result.BusinessPrimaryColor = source.BusinessPrimaryColor;
+            result.BusinessSecondaryColor = source.BusinessSecondaryColor;
+            result.BusinessType = source.BusinessType;
+            result.CurrencyCode = source.CurrencyCode;
+            result.Email = source.Email;
+            result.LanguageTag = source.LanguageTag;
+            result.LogoUrl = source.LogoUrl;
+            result.Name = source.Name;
+            result.Phone = source.Phone;
+            result.PhoneExt = source.PhoneExt;
+            result.TimeZone = source.TimeZone;
+            result.Website = source.Website;
             return result;
         }
 

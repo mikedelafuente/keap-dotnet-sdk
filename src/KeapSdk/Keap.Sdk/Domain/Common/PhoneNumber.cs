@@ -1,21 +1,19 @@
-﻿using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
 
 namespace Keap.Sdk.Domain.Common
 {
-    // TODO: Add comments to properties and class
-
     public class PhoneNumber
     {
-        [JsonPropertyName("extension")]
+        [JsonProperty("extension")]
         public string Extension { get; set; }
 
-        [JsonPropertyName("field")]
-        public string Field { get; set; }
+        [JsonProperty("field")]
+        public PhoneFieldType Field { get; set; }
 
-        [JsonPropertyName("number")]
+        [JsonProperty("number")]
         public string Number { get; set; }
 
-        [JsonPropertyName("type")]
+        [JsonProperty("type")]
         public string Type { get; set; }
     }
 }

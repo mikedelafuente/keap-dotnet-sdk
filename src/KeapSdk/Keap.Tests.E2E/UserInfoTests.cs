@@ -1,11 +1,6 @@
 ﻿using FluentAssertions;
-using Keap.Tests.Common;
+using Keap.Tests.E2E.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Keap.Tests.E2E
 {
@@ -20,7 +15,7 @@ namespace Keap.Tests.E2E
         public void Get_current_user_info()
         {
             // Arrange
-            var client = Tests.Common.ClientHelper.GetSdkClient(PersonaType.Admin);
+            var client = ClientHelper.GetSdkClient(PersonaType.Admin);
 
             // Act
             var actual = client.UserInfo.GetCurrentUser();

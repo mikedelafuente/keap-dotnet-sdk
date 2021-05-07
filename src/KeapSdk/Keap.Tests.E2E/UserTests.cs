@@ -1,14 +1,10 @@
 ﻿using FluentAssertions;
-using Keap.Tests.Common;
 using Keap.Tests.E2E.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Keap.Tests.E2E
 {
@@ -23,7 +19,7 @@ namespace Keap.Tests.E2E
         public void Get_a_list_of_users()
         {
             // Arrange
-            var client = Tests.Common.ClientHelper.GetSdkClient(PersonaType.Admin);
+            var client = ClientHelper.GetSdkClient(PersonaType.Admin);
 
             // Act
             var actual = client.Users.GetUsers();
@@ -41,7 +37,7 @@ namespace Keap.Tests.E2E
         public void Get_next_page_of_users()
         {
             // Arrange
-            var client = Tests.Common.ClientHelper.GetSdkClient(PersonaType.Admin);
+            var client = ClientHelper.GetSdkClient(PersonaType.Admin);
             var original = client.Users.GetUsers(pageSize: 1);
 
             original.Should().NotBeNull();
@@ -63,7 +59,7 @@ namespace Keap.Tests.E2E
         public void Get_the_email_signature_for_a_user()
         {
             // Arrange
-            var client = Tests.Common.ClientHelper.GetSdkClient(PersonaType.Admin);
+            var client = ClientHelper.GetSdkClient(PersonaType.Admin);
 
             // Act
             var actual = client.Users.GetUserEmailSignature(1); // This user should always exist
@@ -81,7 +77,7 @@ namespace Keap.Tests.E2E
         public void Get_the_email_signature_for_an_invalid_user()
         {
             // Arrange
-            var client = Tests.Common.ClientHelper.GetSdkClient(PersonaType.Admin);
+            var client = ClientHelper.GetSdkClient(PersonaType.Admin);
 
             // Act
             var actual = client.Users.GetUserEmailSignature(99999); // This user should never exist
@@ -100,7 +96,7 @@ namespace Keap.Tests.E2E
             // Arrange
             CleanupInvitedUsers();
 
-            var client = Tests.Common.ClientHelper.GetSdkClient(PersonaType.Admin);
+            var client = ClientHelper.GetSdkClient(PersonaType.Admin);
             var expectedEmail = Guid.NewGuid().ToString() + "@weekendproject.app";
             var expectedGivenName = "E2E Tests";
             var expectedIsAdmin = true;
@@ -130,7 +126,7 @@ namespace Keap.Tests.E2E
             // Arrange
             CleanupInvitedUsers();
 
-            var client = Tests.Common.ClientHelper.GetSdkClient(PersonaType.Admin);
+            var client = ClientHelper.GetSdkClient(PersonaType.Admin);
             for (int i = 0; i < 2; i++)
             {
                 client.Users.InviteUser(Guid.NewGuid().ToString() + "@weekendproject.app", "E2E Tests_TMU", false, false);
@@ -159,7 +155,7 @@ namespace Keap.Tests.E2E
         private void CleanupInvitedUsers()
         {
             List<long> invitedUserIds = new List<long>();
-            var client = Tests.Common.ClientHelper.GetSdkClient(PersonaType.Admin);
+            var client = ClientHelper.GetSdkClient(PersonaType.Admin);
             var users = client.Users.GetUsers(true, true, 1000);
             foreach (var user in users.Items)
             {

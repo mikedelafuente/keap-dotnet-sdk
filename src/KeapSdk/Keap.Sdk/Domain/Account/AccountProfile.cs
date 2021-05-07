@@ -1,54 +1,50 @@
-﻿using System;
+﻿using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace Keap.Sdk.Domain.Account
 {
     public class AccountProfile
     {
-        [JsonPropertyName("address")]
+        [JsonProperty("address")]
         public Common.Address Address { get; set; }
 
-        [JsonPropertyName("business_goals")]
+        [JsonProperty("business_goals")]
         public List<string> BusinessGoals { get; set; }
 
-        [JsonPropertyName("business_primary_color")]
+        [JsonProperty("business_primary_color")]
         public string BusinessPrimaryColor { get; set; }
 
-        [JsonPropertyName("business_secondary_color")]
+        [JsonProperty("business_secondary_color")]
         public string BusinessSecondaryColor { get; set; }
 
-        [JsonPropertyName("business_type")]
+        [JsonProperty("business_type")]
         public string BusinessType { get; set; }
 
-        [JsonPropertyName("currency_code")]
+        [JsonProperty("currency_code")]
         public string CurrencyCode { get; set; }
 
-        [JsonPropertyName("email")]
+        [JsonProperty("email")]
         public string Email { get; set; }
 
-        [JsonPropertyName("language_tag")]
+        [JsonProperty("language_tag")]
         public string LanguageTag { get; set; }
 
-        [JsonPropertyName("logo_url")]
+        [JsonProperty("logo_url")]
         public string LogoUrl { get; set; }
 
-        [JsonPropertyName("name")]
+        [JsonProperty("name")]
         public string Name { get; set; }
 
-        [JsonPropertyName("phone")]
+        [JsonProperty("phone")]
         public string Phone { get; set; }
 
-        [JsonPropertyName("phone_ext")]
+        [JsonProperty("phone_ext")]
         public string PhoneExt { get; set; }
 
-        [JsonPropertyName("time_zone")]
+        [JsonProperty("time_zone")]
         public string TimeZone { get; set; }
 
-        [JsonPropertyName("website")]
+        [JsonProperty("website")]
         public string Website { get; set; }
     }
 }

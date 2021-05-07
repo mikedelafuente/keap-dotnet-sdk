@@ -2,20 +2,20 @@
 using System;
 using System.Net.Http;
 using System.Text;
-using System.Text.Json;
+using Newtonsoft.Json;
 
 namespace Keap.Sdk.Domain.Clients
 {
     internal static class RestHelper
     {
-        private static readonly JsonSerializerOptions serializerOptions = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
+        private static JsonSerializerSettings serializerOptions = new JsonSerializerSettings() { Formatting = Formatting.Indented };
 
         public static string AttemptToGetErrorMessage(ServerResponse serverResponse)
         {
             string message = string.Empty;
             if (serverResponse.ResponseBody.Contains("{") && serverResponse.ResponseBody.Contains("\"message\""))
             {
-                var messageDto = JsonSerializer.Deserialize<ServerErrorMessageDto>(serverResponse.ResponseBody, serializerOptions);
+                var messageDto = JsonConvert.DeserializeObject<ServerErrorMessageDto>(serverResponse.ResponseBody, serializerOptions);
                 if (messageDto != null)
                 {
                     message = messageDto.Message;
@@ -36,7 +36,7 @@ namespace Keap.Sdk.Domain.Clients
         {
             if (serverResponse.IsSuccessStatusCode)
             {
-                var result = JsonSerializer.Deserialize<T>(serverResponse.ResponseBody, serializerOptions);
+                var result = JsonConvert.DeserializeObject<T>(serverResponse.ResponseBody, serializerOptions);
                 return result;
             }
             else

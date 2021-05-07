@@ -1,5 +1,5 @@
 using FluentAssertions;
-using Keap.Tests.Common;
+using Keap.Tests.E2E.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Keap.Tests.E2E
@@ -15,7 +15,7 @@ namespace Keap.Tests.E2E
         public void Get_the_account_profile_for_the_current_app()
         {
             // Arrange
-            var client = Tests.Common.ClientHelper.GetSdkClient(PersonaType.Admin);
+            var client = ClientHelper.GetSdkClient(PersonaType.Admin);
 
             // Act
             var actual = client.AccountInfo.GetAccountProfile();
@@ -34,7 +34,7 @@ namespace Keap.Tests.E2E
         public void Update_the_account_profile_for_the_current_app()
         {
             // Arrange
-            var client = Tests.Common.ClientHelper.GetSdkClient(PersonaType.Admin);
+            var client = ClientHelper.GetSdkClient(PersonaType.Admin);
             var accountProfile = client.AccountInfo.GetAccountProfile();
 
             // Act

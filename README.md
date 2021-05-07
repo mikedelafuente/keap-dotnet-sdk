@@ -1,22 +1,22 @@
 # Keap SDK for .NET
 
 ## Needed features
-* ~~ OAuth Login hooks ~~
+* ~~OAuth Login hooks~~
 * 429 notifications
-* ~~ Event Hub for logs and other events ~~
-* ~~ Auto-refresh of tokens ~~
-* ~~ Storage of keys using a provider model (IKeyStorage) - or event hub ~~
+* ~~Event Hub for logs and other events~~
+* ~~Auto-refresh of tokens~~
+* ~~Storage of keys using a provider model (IKeyStorage) - or event hub~~
 * Ability to leverage all v1 or v2
 * Calls to XML-RPC
 * Abstraction that would allow a shift from v1 to v2 with very low friction
 
 ## Areas to be implemented
-* ~~ Authentication ~~
+* ~~Authentication~~
 
 ### REST
 * Account Info
-  * ~~ Retrieve account profile ~~
-  * ~~ Updates an account profile ~~
+  * ~~Retrieve account profile~~
+  * ~~Updates an account profile~~
 * Affiliate
   * List Affiliates
   * Create an affiliate
@@ -66,7 +66,7 @@
   * List Applied Tags
   * Apply Tags
   * Remove Applied Tag
-  * Retrieve a Contact
+  * ~~Retrieve a Contact~~
   * Retrieve Contact Model
   * Create a Custom Field
   * Delete a Contact
@@ -173,11 +173,11 @@
   * Create a Custom Field
   * Search Tasks
 * User Info
-  * ~~ Retrieve User Info ~~
+  * ~~Retrieve User Info~~
 * Users
-  * ~~ List Users ~~
-  * ~~ Create a User ~~
-  * ~~ Get User email signature ~~
+  * ~~List Users~~
+  * ~~Create a User~~
+  * ~~Get User email signature~~
 
 ### XML-RPC 
 * Authentication

@@ -1,6 +1,6 @@
 ﻿using Keap.Sdk.Clients.Authentication.ResponseModels;
+using Newtonsoft.Json;
 using System;
-using System.Text.Json.Serialization;
 
 namespace Keap.Sdk.Domain
 {
@@ -34,53 +34,53 @@ namespace Keap.Sdk.Domain
             RefreshTokenRequestUrl = refreshTokenRequestUrl;
         }
 
-        [JsonPropertyName("access_token")]
+        [JsonProperty("access_token")]
         public string AccessToken { get; set; }
 
-        [JsonPropertyName("access_token_request_url")]
+        [JsonProperty("access_token_request_url")]
         public string AccessTokenRequestUrl { get; set; }
 
-        [JsonPropertyName("authorization_request_url")]
+        [JsonProperty("authorization_request_url")]
         public string AuthorizationRequestUrl { get; set; }
 
-        [JsonPropertyName("client_id")]
+        [JsonProperty("client_id")]
         public string ClientId { get; set; }
 
-        [JsonPropertyName("client_secret")]
+        [JsonProperty("client_secret")]
         public string ClientSecret { get; set; }
 
-        [JsonPropertyName("created_at")]
+        [JsonProperty("created_at")]
         public System.DateTime CreateTime { get; set; }
 
-        [JsonPropertyName("expires_in")]
+        [JsonProperty("expires_in")]
         public int ExpiresIn { get; set; }
 
-        [JsonPropertyName("integration_name")]
+        [JsonProperty("integration_name")]
         public string IntegrationName { get; set; }
 
         /// <summary>
         /// This can be anything or empty. Use it to flow an identity of a user in your system to
         /// this token.
         /// </summary>
-        [JsonPropertyName("integrator_unique_identifier")]
+        [JsonProperty("integrator_unique_identifier")]
         public string IntegratorUniqueIdentifier { get; }
 
-        [JsonPropertyName("refresh_token")]
+        [JsonProperty("refresh_token")]
         public string RefreshToken { get; set; }
 
-        [JsonPropertyName("refresh_token_request_url")]
+        [JsonProperty("refresh_token_request_url")]
         public string RefreshTokenRequestUrl { get; set; }
 
-        [JsonPropertyName("rest_api_url")]
+        [JsonProperty("rest_api_url")]
         public string RestApiUrl { get; set; }
 
-        [JsonPropertyName("scope")]
+        [JsonProperty("scope")]
         public string Scope { get; set; }
 
-        [JsonPropertyName("token_type")]
+        [JsonProperty("token_type")]
         public string TokenType { get; set; }
 
-        [JsonPropertyName("xml_rpc_api_url")]
+        [JsonProperty("xml_rpc_api_url")]
         public string XmlRpcApiUrl { get; set; }
 
         public System.DateTime GetAccessTokenExpiration()

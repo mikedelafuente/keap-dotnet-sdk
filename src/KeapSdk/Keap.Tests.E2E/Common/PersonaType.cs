@@ -1,4 +1,4 @@
-﻿namespace Keap.Tests.Common
+﻿namespace Keap.Tests.E2E.Common
 {
     public enum PersonaType
     {

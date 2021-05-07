@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace Keap.Sdk.Clients.Locale
 {
     internal class CountriesDto
     {
-        [JsonPropertyName("countries")]
+        [JsonProperty("countries")]
         public Dictionary<string, string> Countries { get; set; }
     }
 }

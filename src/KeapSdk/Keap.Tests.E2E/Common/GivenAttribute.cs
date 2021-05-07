@@ -1,14 +1,14 @@
 ﻿using System;
 
-namespace Keap.Tests.Common
+namespace Keap.Tests.E2E.Common
 {
     public class GivenAttribute : Attribute
     {
-        public string Condition { get; set; }
-
         public GivenAttribute(string condition)
         {
             Condition = condition;
         }
+
+        public string Condition { get; set; }
     }
 }

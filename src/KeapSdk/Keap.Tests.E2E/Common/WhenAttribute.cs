@@ -1,14 +1,14 @@
 ﻿using System;
 
-namespace Keap.Tests.Common
+namespace Keap.Tests.E2E.Common
 {
     public class WhenAttribute : Attribute
     {
-        public string Action { get; set; }
-
         public WhenAttribute(string action)
         {
             Action = action;
         }
+
+        public string Action { get; set; }
     }
 }

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Keap.Sdk.Domain.Users
+﻿namespace Keap.Sdk.Domain.Users
 {
     /// <summary>
     /// The HTML email signature for a user

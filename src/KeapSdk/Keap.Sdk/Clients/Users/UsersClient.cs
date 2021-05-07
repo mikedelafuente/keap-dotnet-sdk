@@ -3,9 +3,6 @@ using Keap.Sdk.Domain.Clients;
 using Keap.Sdk.Domain.Common;
 using Keap.Sdk.Domain.Users;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Keap.Sdk.Clients.Users
@@ -169,7 +166,7 @@ namespace Keap.Sdk.Clients.Users
             var resultDto = Domain.Clients.RestHelper.ProcessResults<UserListDto>(response);
 
             ResultPage<User> result = new ResultPage<User>();
-            if (resultDto.Users != null && resultDto.Users.Length > 0)
+            if (resultDto.Users != null && resultDto.Users.Count > 0)
             {
                 result.NextPageToken = resultDto.GetNextPageToken($"include_inactive={includeInactive}&include_partners={includePartners}");
 
