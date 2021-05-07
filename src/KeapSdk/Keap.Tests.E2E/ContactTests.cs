@@ -28,7 +28,7 @@ namespace Keap.Tests.E2E
             expected.FamilyName = nameFaker.LastName();
             expected.GivenName = nameFaker.FirstName();
             var emailAddress = new Sdk.Domain.Contacts.EmailAddress();
-            emailAddress.Email = internetFaker.Email();
+            emailAddress.Email = Guid.NewGuid().ToString() + "@weekendproject.app";
             emailAddress.Field = Sdk.Domain.Contacts.EmailFieldType.EMAIL1;
 
             expected.EmailAddresses.Add(emailAddress);
@@ -58,6 +58,24 @@ namespace Keap.Tests.E2E
             // Assert
             actual.Should().NotBeNull();
             actual.Id.Should().Be(validId);
+        }
+
+        [Scenario("Get the initial contacts page with default values")]
+        [Given("any token")]
+        [When("a call to get a list of contacts by ID is made")]
+        [Then("a populated contact is returned")]
+        [TestMethod]
+        public void Get_the_initial_contacts_page_with_default_values()
+        {
+            // Arrange
+            var client = ClientHelper.GetSdkClient(PersonaType.Admin);
+
+            // Act
+            var actual = client.Contacts.GetContacts();
+
+            // Assert
+            actual.Should().NotBeNull();
+            actual.Items.Count.Should().BeGreaterThan(0);
         }
     }
 }

@@ -7,6 +7,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace Keap.Sdk.Domain.Clients
 {
@@ -30,6 +31,8 @@ namespace Keap.Sdk.Domain.Clients
 
         public async Task<ServerResponse> DeleteAsync(string path)
         {
+            path = RestHelper.CleanupPathAndQueryString(path);
+            LogEventManager.Info($"DELETE {path}");
             ValidateToken();
             var httpResponseTask = _restClient.DeleteAsync(path);
             var httpResponse = await httpResponseTask;
@@ -39,6 +42,8 @@ namespace Keap.Sdk.Domain.Clients
 
         public async Task<ServerResponse> GetAsync(string path)
         {
+            path = RestHelper.CleanupPathAndQueryString(path);
+            LogEventManager.Info($"GET {path}");
             ValidateToken();
             var httpResponseTask = _restClient.GetAsync(path);
             var httpResponse = await httpResponseTask;
@@ -53,6 +58,9 @@ namespace Keap.Sdk.Domain.Clients
 
         public async Task<ServerResponse> PatchAsync(string path, object dtoToSerialize)
         {
+            path = RestHelper.CleanupPathAndQueryString(path);
+            LogEventManager.Info($"PATCH {path}");
+
             ValidateToken();
             var jsonContent = GetJsonContentType(dtoToSerialize);
 
@@ -64,6 +72,9 @@ namespace Keap.Sdk.Domain.Clients
 
         public async Task<ServerResponse> PostAsync(string path, object dtoToSerialize)
         {
+            path = RestHelper.CleanupPathAndQueryString(path);
+            LogEventManager.Info($"POST {path}");
+
             ValidateToken();
             var jsonContent = GetJsonContentType(dtoToSerialize);
 
@@ -75,6 +86,9 @@ namespace Keap.Sdk.Domain.Clients
 
         public async Task<ServerResponse> PutAsync(string path, object dtoToSerialize)
         {
+            path = RestHelper.CleanupPathAndQueryString(path);
+            LogEventManager.Info($"PUT {path}");
+
             ValidateToken();
             var jsonContent = GetJsonContentType(dtoToSerialize);
 
@@ -82,6 +96,32 @@ namespace Keap.Sdk.Domain.Clients
             var httpResponse = await httpResponseTask;
 
             return ParseHttpResponse(httpResponse);
+        }
+
+        private static string JsonPrettify(string json)
+        {
+            string output = json;
+            if (!String.IsNullOrWhiteSpace(json) && json.Trim().StartsWith("{"))
+            {
+                try
+                {
+                    using (var stringReader = new StringReader(json))
+                    {
+                        using (var stringWriter = new StringWriter())
+                        {
+                            var jsonReader = new JsonTextReader(stringReader);
+                            var jsonWriter = new JsonTextWriter(stringWriter) { Formatting = Formatting.Indented };
+                            jsonWriter.WriteToken(jsonReader);
+                            output = stringWriter.ToString();
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    LogEventManager.Info($"Could not parse JSON:{Environment.NewLine}{json}");
+                }
+            }
+            return output;
         }
 
         private static ServerResponse ParseHttpResponse(HttpResponseMessage httpResponse)
@@ -110,12 +150,14 @@ namespace Keap.Sdk.Domain.Clients
                     throw;
                 }
             }
-
+            LogEventManager.Info($"Response: {(int)serverResponse.StatusCode} ({serverResponse.StatusCode})");
+            LogEventManager.Info($"Response Body: {Environment.NewLine}{JsonPrettify(serverResponse.ResponseBody)}");
             return serverResponse;
         }
 
         private static AccessTokenCredentials RefreshAccessToken(AccessTokenCredentials currentCredentials)
         {
+            LogEventManager.Info($"Refreshing Access Token");
             HttpResponseMessage httpResponse;
             DateTime createTime;
             // POST the code to the token endpoint
@@ -162,7 +204,7 @@ namespace Keap.Sdk.Domain.Clients
         {
             JsonSerializerSettings options = new JsonSerializerSettings() { Formatting = Formatting.Indented };
             string json = JsonConvert.SerializeObject(value, options);
-            LogEventManager.Info($"JSON request sent: {json}");
+            LogEventManager.Info($"JSON request sent:{Environment.NewLine}{json}");
             return json;
         }
 

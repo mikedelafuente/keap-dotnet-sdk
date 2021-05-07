@@ -3,6 +3,9 @@ using System;
 using System.Net.Http;
 using System.Text;
 using Newtonsoft.Json;
+using System.Web;
+using System.Collections.Generic;
+using Keap.Sdk.Logging;
 
 namespace Keap.Sdk.Domain.Clients
 {
@@ -23,6 +26,93 @@ namespace Keap.Sdk.Domain.Clients
             }
 
             return message;
+        }
+
+        /// <summary>
+        /// Removes any leading question mark or trailing ampersand
+        /// </summary>
+        /// <param name="value">Value to cleanup</param>
+        /// <returns></returns>
+        public static string CleanupQueryString(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                return string.Empty;
+            }
+
+            if (value.StartsWith("?"))
+            {
+                if (value.Length > 1)
+                {
+                    // Changes '?param1=val1&param2=val2&' to 'param1=val1&param2=val2&'
+                    value = value.Substring(1);
+                }
+                else
+                {
+                    // Changes '?' to ''
+                    value = string.Empty;
+                }
+            }
+
+            if (value.EndsWith("&"))
+            {
+                // Changes 'param1=val1&param2=val2&' to 'param1=val1&param2=val2&'
+                if (value.Length > 1)
+                {
+                    value = value.Substring(0, value.Length - 1);
+                }
+                else
+                {
+                    // Changes '&' to ''
+                    value = string.Empty;
+                }
+            }
+
+            return value;
+        }
+
+        /// <summary>
+        /// Cleans up the path by removing any unused/empty query string parts
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        internal static string CleanupPathAndQueryString(string path)
+        {
+            LogEventManager.Info($"Cleaning up URL and query string for: {path}");
+            var workingPath = path;
+            if (!workingPath.StartsWith("http", StringComparison.InvariantCultureIgnoreCase))
+            {
+                workingPath = "http://localhost/" + workingPath;
+            }
+            else
+            {
+                // Do not cleanup anything that has a host on it
+                return path;
+            }
+
+            var uri = new Uri(workingPath);
+            var absolutePath = uri.AbsolutePath;
+            if (absolutePath.StartsWith("/"))
+            {
+                absolutePath = absolutePath.Substring(1);
+            }
+
+            string queryString = string.Empty;
+            if (!string.IsNullOrWhiteSpace(uri.Query))
+            {
+                queryString = RemoveEmptyQueryStringParameters(uri.Query);
+            }
+
+            if (!string.IsNullOrWhiteSpace(queryString))
+            {
+                path = absolutePath + "?" + queryString;
+            }
+            else
+            {
+                path = absolutePath;
+            }
+
+            return path;
         }
 
         internal static System.Collections.Specialized.NameValueCollection ConvertPageTokenToNameValueCollection(string nextPageToken)
@@ -50,6 +140,48 @@ namespace Keap.Sdk.Domain.Clients
 
             throw new Exceptions.KeapException(GenerateHttpExceptionReason(serverResponse),
                new HttpRequestException(serverResponse.ReasonPhrase, null, serverResponse.StatusCode));
+        }
+
+        /// <summary>
+        /// Removes any empty key/value pairs from the query string
+        /// </summary>
+        /// <param name="queryString"></param>
+        /// <returns></returns>
+        internal static string RemoveEmptyQueryStringParameters(string queryString)
+        {
+            string result = CleanupQueryString(queryString);
+
+            if (!string.IsNullOrWhiteSpace(queryString))
+            {
+                var originalNvc = HttpUtility.ParseQueryString(queryString);
+                var keysToRemove = new List<string>();
+                foreach (var key in originalNvc.Keys)
+                {
+                    var name = (string)key;
+                    var value = originalNvc[name];
+                    if (value != null)
+                    {
+                        var stringValue = (string)value;
+                        if (string.IsNullOrWhiteSpace(stringValue))
+                        {
+                            keysToRemove.Add(name);
+                        }
+                    }
+                    else
+                    {
+                        keysToRemove.Add(name);
+                    }
+                }
+
+                foreach (var name in keysToRemove)
+                {
+                    originalNvc.Remove(name);
+                }
+
+                result = originalNvc.ToString();
+            }
+
+            return result;
         }
 
         private static string GenerateHttpExceptionReason(ServerResponse serverResponse)
