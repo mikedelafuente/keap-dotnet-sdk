@@ -35,12 +35,38 @@ namespace Keap.Sdk.Clients.Contacts
             var response = await responseTask;
             var resultDto = Domain.Clients.RestHelper.ProcessResults<ContactGetDto>(response);
 
-            var result = resultDto.MapTo();
+            var result = resultDto?.MapTo();
 
             return result;
         }
 
-        public Contact GetContact(int contactId)
+        public bool DeleteContact(long contactId)
+        {
+            var responseTask = DeleteContactAsync(contactId).ConfigureAwait(false).GetAwaiter();
+            var result = responseTask.GetResult();
+
+            return result;
+        }
+
+        public async Task<bool> DeleteContactAsync(long contactId)
+        {
+            string path = $"contacts/{contactId}";
+
+            var responseTask = apiClient.DeleteAsync(path);
+            var response = await responseTask;
+
+            // Perform standard error handling
+            RestHelper.ProcessResultsForErrors(response);
+
+            if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public Contact GetContact(long contactId)
         {
             var responseTask = GetContactAsync(contactId).ConfigureAwait(false).GetAwaiter();
             var result = responseTask.GetResult();
@@ -48,7 +74,7 @@ namespace Keap.Sdk.Clients.Contacts
             return result;
         }
 
-        public async Task<Contact> GetContactAsync(int contactId)
+        public async Task<Contact> GetContactAsync(long contactId)
         {
             string path = $"contacts/{contactId}";
 
@@ -56,7 +82,7 @@ namespace Keap.Sdk.Clients.Contacts
             var response = await responseTask;
             var resultDto = Domain.Clients.RestHelper.ProcessResults<ContactGetDto>(response);
 
-            var result = resultDto.MapTo();
+            var result = resultDto?.MapTo();
 
             return result;
         }

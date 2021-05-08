@@ -24,5 +24,39 @@ namespace Keap.Tests.E2E.Common
 
             return address.Generate();
         }
+
+        public static string GetEmailAddress()
+        {
+            return Guid.NewGuid().ToString() + "@weekendproject.app";
+        }
+
+        public static string GetFirstName()
+        {
+            return new Bogus.DataSets.Name().FirstName();
+        }
+
+        public static string GetLastName()
+        {
+            return new Bogus.DataSets.Name().LastName();
+        }
+
+        /// <summary>
+        /// Creates a Contact with just a first, last and email address
+        /// </summary>
+        /// <returns></returns>
+        public static Sdk.Domain.Contacts.Contact GetSimpleContact()
+        {
+            var result = new Sdk.Domain.Contacts.Contact();
+
+            result.FamilyName = GetLastName();
+            result.GivenName = GetFirstName();
+            var emailAddress = new Sdk.Domain.Contacts.EmailAddress();
+            emailAddress.Email = GetEmailAddress();
+            emailAddress.Field = Sdk.Domain.Contacts.EmailFieldType.EMAIL1;
+
+            result.EmailAddresses.Add(emailAddress);
+
+            return result;
+        }
     }
 }

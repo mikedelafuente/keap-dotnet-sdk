@@ -134,17 +134,40 @@ namespace Keap.Sdk.Domain.Clients
                 var result = JsonConvert.DeserializeObject<T>(serverResponse.ResponseBody, serializerOptions);
                 return result;
             }
-            else
+
+            ProcessResultsForErrors(serverResponse);
+
+            return default(T);
+        }
+
+        internal static void ProcessResultsForErrors(ServerResponse serverResponse)
+        {
+            if (serverResponse.IsSuccessStatusCode)
             {
-                var errorMessage = AttemptToGetErrorMessage(serverResponse);
-                if (!String.IsNullOrWhiteSpace(errorMessage))
+                return;
+            }
+
+            int statusCode = (int)serverResponse.StatusCode;
+            var errorMessage = AttemptToGetErrorMessage(serverResponse);
+            if (!String.IsNullOrWhiteSpace(errorMessage))
+            {
+                var ex = new Exceptions.KeapHttpRequestException(errorMessage, serverResponse.StatusCode, new HttpRequestException(GenerateHttpExceptionReason(serverResponse), null, serverResponse.StatusCode));
+                if (statusCode < 200 || (statusCode >= 300 && statusCode < 400) || statusCode >= 500)
                 {
-                    throw new Exceptions.KeapHttpRequestException(errorMessage, serverResponse.StatusCode, new HttpRequestException(GenerateHttpExceptionReason(serverResponse), null, serverResponse.StatusCode));
+                    LogEventManager.Error(ex);
+                }
+                else
+                {
+                    LogEventManager.Info(GenerateHttpExceptionReason(serverResponse));
                 }
             }
 
-            throw new Exceptions.KeapException(GenerateHttpExceptionReason(serverResponse),
+            // only throw if the status code is not in a 2xx or 4xx code
+            if (statusCode < 200 || (statusCode >= 300 && statusCode < 400) || statusCode >= 500)
+            {
+                throw new Exceptions.KeapException(GenerateHttpExceptionReason(serverResponse),
                new HttpRequestException(serverResponse.ReasonPhrase, null, serverResponse.StatusCode));
+            }
         }
 
         /// <summary>

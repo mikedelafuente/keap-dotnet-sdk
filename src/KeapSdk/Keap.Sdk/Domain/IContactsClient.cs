@@ -26,18 +26,32 @@ namespace Keap.Sdk.Domain
         Task<Contact> CreateContactAsync(Contact contact);
 
         /// <summary>
-        /// Retrieves a single contact
+        /// Deletes the specified contact.
         /// </summary>
         /// <param name="contactId">The ID of the contact</param>
-        /// <returns>A contact if it exists, otherwise returns null.</returns>
-        Contact GetContact(int contactId);
+        /// <returns></returns>
+        public bool DeleteContact(long contactId);
+
+        /// <summary>
+        /// Deletes the specified contact.
+        /// </summary>
+        /// <param name="contactId">The ID of the contact</param>
+        /// <returns></returns>
+        public Task<bool> DeleteContactAsync(long contactId);
 
         /// <summary>
         /// Retrieves a single contact
         /// </summary>
         /// <param name="contactId">The ID of the contact</param>
         /// <returns>A contact if it exists, otherwise returns null.</returns>
-        Task<Contact> GetContactAsync(int contactId);
+        Contact GetContact(long contactId);
+
+        /// <summary>
+        /// Retrieves a single contact
+        /// </summary>
+        /// <param name="contactId">The ID of the contact</param>
+        /// <returns>A contact if it exists, otherwise returns null.</returns>
+        Task<Contact> GetContactAsync(long contactId);
 
         /// <summary>
         /// Retrieves a list of all contacts

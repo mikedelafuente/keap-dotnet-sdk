@@ -76,11 +76,7 @@ namespace Keap.Sdk.Clients.Users
         internal Domain.Users.User MapTo()
         {
             Domain.Users.User result = new();
-
-            if (Address != null)
-            {
-                result.Address = this.Address.MapTo();
-            }
+            result.Address = this.Address?.MapTo();
             result.CompanyName = this.CompanyName;
             result.CreatedBy = this.CreatedBy;
             result.DateCreated = this.DateCreated;
