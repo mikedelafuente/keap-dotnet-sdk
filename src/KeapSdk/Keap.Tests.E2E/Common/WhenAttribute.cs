@@ -2,13 +2,15 @@
 
 namespace Keap.Tests.E2E.Common
 {
-    public class WhenAttribute : Attribute
+    public class WhenAttribute : TestDescriptionAttribute
     {
-        public WhenAttribute(string action)
+        public WhenAttribute(string action) : base(action)
         {
-            Action = action;
         }
 
-        public string Action { get; set; }
+        public override string ToString()
+        {
+            return "WHEN " + Description;
+        }
     }
 }

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Keap.Tests.E2E
 {
     [TestClass]
-    public class ContactTests
+    public class ContactTests : E2E.Common.SdkE2ETests
     {
         [Scenario("Create a contact with a name and email address")]
         [Given("any token and an empty contact model with a name and valid email address")]
@@ -78,8 +78,14 @@ namespace Keap.Tests.E2E
         {
             // Arrange
             var client = ClientHelper.GetSdkClient(PersonaType.Admin);
+            // Create at least 3 records
+            for (int i = 0; i < 3; i++)
+            {
+                client.Contacts.CreateContact(FakeData.GetSimpleContact());
+            }
+
             var original = client.Contacts.GetContacts(pageSize: 1);
-            // TODO: Create at least 3 records
+            original.Items.Count.Should().Be(1);
 
             // Act
             var actual = client.Contacts.GetContacts(original.NextPageToken);
@@ -101,11 +107,17 @@ namespace Keap.Tests.E2E
         public void Get_additional_contact_pages_using_the_next_page_token_with_a_first_name_specified()
         {
             // Arrange
-            var givenName = "leone";
+            var givenName = FakeData.GetFirstName();
             var client = ClientHelper.GetSdkClient(PersonaType.Admin);
-            var original = client.Contacts.GetContacts(pageSize: 1, givenName: givenName);
+            // Create at least 3 records
+            for (int i = 0; i < 3; i++)
+            {
+                var newContact = FakeData.GetSimpleContact();
+                newContact.GivenName = givenName;
+                client.Contacts.CreateContact(newContact);
+            }
 
-            // TODO: Create at least 3 records
+            var original = client.Contacts.GetContacts(pageSize: 1, givenName: givenName);
 
             // Act
             var actual = client.Contacts.GetContacts(original.NextPageToken);
@@ -128,14 +140,14 @@ namespace Keap.Tests.E2E
         {
             // Arrange
             var client = ClientHelper.GetSdkClient(PersonaType.Admin);
-            var validId = 2;
+            var expected = client.Contacts.CreateContact(FakeData.GetSimpleContact());
 
             // Act
-            var actual = client.Contacts.GetContact(validId);
+            var actual = client.Contacts.GetContact(expected.Id);
 
             // Assert
             actual.Should().NotBeNull();
-            actual.Id.Should().Be(validId);
+            actual.Id.Should().Be(expected.Id);
         }
 
         [Scenario("Get the initial contacts page with default values")]

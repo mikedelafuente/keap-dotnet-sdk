@@ -124,6 +124,11 @@ namespace Keap.Sdk.Domain.Clients
 
         internal static string ExtractQueryStringFromPageToken(string nextPageToken)
         {
+            if (string.IsNullOrWhiteSpace(nextPageToken))
+            {
+                return string.Empty;
+            }
+
             return Encoding.UTF8.GetString(Convert.FromBase64String(nextPageToken));
         }
 

@@ -2,13 +2,15 @@
 
 namespace Keap.Tests.E2E.Common
 {
-    public class ScenarioAttribute : Attribute
+    public class ScenarioAttribute : TestDescriptionAttribute
     {
-        public ScenarioAttribute(string description)
+        public ScenarioAttribute(string description) : base(description)
         {
-            Description = description;
         }
 
-        public string Description { get; set; }
+        public override string ToString()
+        {
+            return "SCENARIO: " + Description;
+        }
     }
 }
