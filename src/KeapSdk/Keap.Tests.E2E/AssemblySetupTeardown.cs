@@ -26,6 +26,24 @@ namespace Keap.Tests.E2E
             EventHub.OnInfoMessage += LogHelper.HandleLogMessage;
             EventHub.OnVerboseMessage += LogHelper.HandleLogMessage;
             EventHub.OnWarnMessage += LogHelper.HandleLogMessage;
+
+            DeleteAllContacts();
+        }
+
+        private static void DeleteAllContacts()
+        {
+            var client = ClientHelper.GetSdkClient(PersonaType.Admin);
+
+            var contacts = client.Contacts.GetContacts();
+            while (!string.IsNullOrWhiteSpace(contacts.NextPageToken))
+            {
+                foreach (var contact in contacts.Items)
+                {
+                    client.Contacts.DeleteContact(contact.Id);
+                }
+
+                contacts = client.Contacts.GetContacts(contacts.NextPageToken);
+            }
         }
     }
 }
