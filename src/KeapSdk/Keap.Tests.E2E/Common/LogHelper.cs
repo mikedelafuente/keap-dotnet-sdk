@@ -1,4 +1,5 @@
 ﻿using Keap.Sdk.Logging;
+using System;
 using System.Diagnostics;
 
 namespace Keap.Tests.E2E.Common
@@ -16,6 +17,13 @@ namespace Keap.Tests.E2E.Common
                 Debug.WriteLine("------------ END EXCEPTION ------------");
                 Debug.WriteLine("");
             }
+        }
+
+        internal static void WriteSectionDividerToConsole(string description)
+        {
+            Debug.WriteLine($"{Environment.NewLine}--------------------");
+            Debug.WriteLine(description);
+            Debug.WriteLine($"--------------------{Environment.NewLine}");
         }
     }
 }

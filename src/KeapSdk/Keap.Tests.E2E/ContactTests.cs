@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Keap.Tests.E2E
 {
     [TestClass]
-    public class ContactTests
+    public class ContactTests : E2E.Common.SdkE2ETests
     {
         [Scenario("Create a contact with a name and email address")]
         [Given("any token and an empty contact model with a name and valid email address")]

@@ -1,14 +1,14 @@
-﻿using System;
-
-namespace Keap.Tests.E2E.Common
+﻿namespace Keap.Tests.E2E.Common
 {
-    public class GivenAttribute : Attribute
+    public class GivenAttribute : TestDescriptionAttribute
     {
-        public GivenAttribute(string condition)
+        public GivenAttribute(string condition) : base(condition)
         {
-            Condition = condition;
         }
 
-        public string Condition { get; set; }
+        public override string ToString()
+        {
+            return "GIVEN " + Description;
+        }
     }
 }

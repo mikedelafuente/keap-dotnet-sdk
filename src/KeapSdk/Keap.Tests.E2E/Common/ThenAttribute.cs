@@ -2,13 +2,15 @@
 
 namespace Keap.Tests.E2E.Common
 {
-    public class ThenAttribute : Attribute
+    public class ThenAttribute : TestDescriptionAttribute
     {
-        public ThenAttribute(string outcome)
+        public ThenAttribute(string outcome) : base(outcome)
         {
-            Outcome = outcome;
         }
 
-        public string Outcome { get; set; }
+        public override string ToString()
+        {
+            return "THEN " + Description;
+        }
     }
 }
