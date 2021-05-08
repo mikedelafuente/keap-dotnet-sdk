@@ -4,6 +4,7 @@ using Keap.Sdk.Domain.Common;
 using Keap.Sdk.Domain.Users;
 using System;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace Keap.Sdk.Clients.Users
 {
@@ -65,42 +66,18 @@ namespace Keap.Sdk.Clients.Users
         public async Task<ResultPage<User>> GetUsersAsync(bool includeInactive = true, bool includePartners = true, int pageSize = 1000)
         {
             // Client side enforcement of limits
-            return await GetUsersAsync(includeInactive, includePartners, pageSize, 0);
+            if (pageSize <= 0 || pageSize > 1000)
+            {
+                pageSize = 1000;
+            }
+            var queryString = $"offset=0&limit={pageSize}&include_inactive={includeInactive}&include_partners={includePartners}";
+            return await GetUsersWithQueryStringAsync(queryString);
         }
 
         public async Task<ResultPage<User>> GetUsersAsync(string nextPageToken)
         {
-            bool includeInactive = true;
-            bool includePartners = true;
-            int pageSize = 1000;
-            int offset = 0;
-
-            if (!string.IsNullOrWhiteSpace(nextPageToken))
-            {
-                var nvp = RestHelper.ConvertPageTokenToNameValueCollection(nextPageToken);
-
-                if (nvp["limit"] != null)
-                {
-                    pageSize = int.Parse(nvp["limit"]);
-                }
-
-                if (nvp["offset"] != null)
-                {
-                    offset = int.Parse(nvp["offset"]);
-                }
-
-                if (nvp["include_partners"] != null)
-                {
-                    includePartners = bool.Parse(nvp["include_partners"]);
-                }
-
-                if (nvp["include_inactive"] != null)
-                {
-                    includeInactive = bool.Parse(nvp["include_inactive"]);
-                }
-            }
-
-            return await GetUsersAsync(includeInactive, includePartners, pageSize, offset);
+            var queryString = RestHelper.ExtractQueryStringFromPageToken(nextPageToken);
+            return await GetUsersWithQueryStringAsync(queryString);
         }
 
         public User InviteUser(string email, string fullName, bool isAdmin, bool isPartner)
@@ -151,15 +128,13 @@ namespace Keap.Sdk.Clients.Users
             return result;
         }
 
-        private async Task<ResultPage<User>> GetUsersAsync(bool includeInactive, bool includePartners, int pageSize, int offset)
+        private async Task<ResultPage<User>> GetUsersWithQueryStringAsync(string queryString)
         {
             // Client side enforcement of limits
-            if (pageSize <= 0 || pageSize > 1000)
-            {
-                pageSize = 1000;
-            }
-
-            string path = $"users?include_inactive={includeInactive}&include_partners={includePartners}&limit={pageSize}&offset={offset}";
+            string path = $"users?{queryString}";
+            // Make sure that any parameters not included in the original request are appended onto
+            // each subsequent request.
+            var originalParameters = HttpUtility.ParseQueryString(queryString);
 
             var responseTask = apiClient.GetAsync(path);
             var response = await responseTask;
@@ -168,7 +143,7 @@ namespace Keap.Sdk.Clients.Users
             ResultPage<User> result = new ResultPage<User>();
             if (resultDto.Users != null && resultDto.Users.Count > 0)
             {
-                result.NextPageToken = resultDto.GetNextPageToken($"include_inactive={includeInactive}&include_partners={includePartners}");
+                result.NextPageToken = resultDto.GetNextPageToken(originalParameters); //$"include_inactive={includeInactive}&include_partners={includePartners}");
 
                 foreach (var item in resultDto.Users)
                 {

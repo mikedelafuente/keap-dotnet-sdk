@@ -117,9 +117,14 @@ namespace Keap.Sdk.Domain.Clients
 
         internal static System.Collections.Specialized.NameValueCollection ConvertPageTokenToNameValueCollection(string nextPageToken)
         {
-            var queryString = Encoding.UTF8.GetString(Convert.FromBase64String(nextPageToken));
+            var queryString = ExtractQueryStringFromPageToken(nextPageToken);
             var nvp = System.Web.HttpUtility.ParseQueryString(queryString);
             return nvp;
+        }
+
+        internal static string ExtractQueryStringFromPageToken(string nextPageToken)
+        {
+            return Encoding.UTF8.GetString(Convert.FromBase64String(nextPageToken));
         }
 
         internal static T ProcessResults<T>(ServerResponse serverResponse)
