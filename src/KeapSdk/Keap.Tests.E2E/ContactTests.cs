@@ -65,6 +65,32 @@ namespace Keap.Tests.E2E
             actual.Items[0].Id.Should().NotBe(next.Items[0].Id);
         }
 
+        [Scenario("Get additional contact pages using the next page token with a first name specified")]
+        [Given("any access token and a valid next page token")]
+        [When("a call to get a list of contacts is made with a next page token ")]
+        [Then("a list of contacts is returned")]
+        [TestMethod]
+        public void Get_additional_contact_pages_using_the_next_page_token_with_a_first_name_specified()
+        {
+            // Arrange
+            var givenName = "leone";
+            var client = ClientHelper.GetSdkClient(PersonaType.Admin);
+            var original = client.Contacts.GetContacts(pageSize: 1, givenName: givenName);
+
+            // TODO: Create at least 3 records
+
+            // Act
+            var actual = client.Contacts.GetContacts(original.NextPageToken);
+
+            // Assert
+            actual.Should().NotBeNull();
+            actual.Items.Count.Should().Be(1);
+            actual.NextPageToken.Should().NotBeNullOrWhiteSpace();
+            actual.Items[0].Id.Should().NotBe(original.Items[0].Id);
+            original.Items[0].GivenName.Should().BeEquivalentTo(givenName);
+            actual.Items[0].GivenName.Should().BeEquivalentTo(givenName);
+        }
+
         [Scenario("Get contact by a valid ID should return a contact")]
         [Given("any token and a valid contact ID")]
         [When("a call to get a contact by ID is made")]

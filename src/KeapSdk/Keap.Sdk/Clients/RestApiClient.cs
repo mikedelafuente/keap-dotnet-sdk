@@ -119,6 +119,7 @@ namespace Keap.Sdk.Domain.Clients
                 catch (Exception ex)
                 {
                     LogEventManager.Info($"Could not parse JSON:{Environment.NewLine}{json}");
+                    LogEventManager.Error(ex);
                 }
             }
             return output;

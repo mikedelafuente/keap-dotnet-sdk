@@ -1,6 +1,7 @@
 ﻿using Keap.Sdk.Domain.Clients;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Specialized;
 using System.Text;
 using System.Web;
 
@@ -17,7 +18,7 @@ namespace Keap.Sdk.Clients.Common
         [JsonProperty("previous")]
         public string Previous { get; set; }
 
-        public string GetNextPageToken(string additionalParameters = null)
+        public string GetNextPageToken(NameValueCollection additionalParameters = null)
         {
             // TODO: parse the string from the "Next" item and grab out the limit and offset
             //"next": "https://api.infusionsoft.com/crm/rest/v1/users/?limit=1&offset=1000",
@@ -28,10 +29,21 @@ namespace Keap.Sdk.Clients.Common
                 var originalParts = HttpUtility.ParseQueryString(RestHelper.CleanupQueryString(link.Query));
 
                 // Only add
-                if (!string.IsNullOrWhiteSpace(additionalParameters))
+                if (additionalParameters != null)
                 {
-                    var additionalParts = HttpUtility.ParseQueryString(RestHelper.CleanupQueryString(additionalParameters));
-                    originalParts.Add(additionalParts);
+                    foreach (var key in originalParts.AllKeys)
+                    {
+                        if (additionalParameters[key] != null)
+                        {
+                            // Remove duplicate keys
+                            additionalParameters.Remove(key);
+                        }
+                    }
+
+                    if (additionalParameters.Count > 0)
+                    {
+                        originalParts.Add(additionalParameters);
+                    }
                 }
 
                 toEncode = originalParts.ToString();
