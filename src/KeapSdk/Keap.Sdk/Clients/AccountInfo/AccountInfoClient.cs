@@ -29,7 +29,7 @@ namespace Keap.Sdk.Clients.AccountInfo
             var response = await responseTask;
             var resultDto = Domain.Clients.RestHelper.ProcessResults<AccountProfileDto>(response);
 
-            var result = resultDto.MapTo();
+            var result = resultDto?.MapTo();
 
             return result;
         }
@@ -51,7 +51,7 @@ namespace Keap.Sdk.Clients.AccountInfo
             var response = await responseTask;
             var resultDto = Domain.Clients.RestHelper.ProcessResults<AccountProfileDto>(response);
 
-            var result = resultDto.MapTo();
+            var result = resultDto?.MapTo();
 
             return result;
         }

@@ -30,7 +30,7 @@ namespace Keap.Sdk.Clients.UserInfo
             var response = await responseTask;
             var resultDto = Domain.Clients.RestHelper.ProcessResults<CurrentUserDto>(response);
 
-            var result = resultDto.MapTo();
+            var result = resultDto?.MapTo();
 
             return result;
         }

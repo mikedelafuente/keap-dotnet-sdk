@@ -53,10 +53,10 @@
   * Retrieve Company Model
   * Update a Company
 * Contact
-  * List Contacts
-  * Create a Contact
+  * ~~List Contacts~~
+  * ~~Create a Contact~~
   * Create or Update a Contact
-  * Delete a Contact
+  * ~~Delete a Contact~~
   * Update a Contact
   * Retrieve Credit Cards
   * Create a Credit Card
@@ -69,8 +69,7 @@
   * ~~Retrieve a Contact~~
   * Retrieve Contact Model
   * Create a Custom Field
-  * Delete a Contact
-  * Update a Contact
+
 * Ecommerce
   * List Orders
   * Create an Order

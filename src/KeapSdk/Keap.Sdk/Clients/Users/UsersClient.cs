@@ -17,14 +17,14 @@ namespace Keap.Sdk.Clients.Users
             this.apiClient = apiClient;
         }
 
-        public EmailSignature GetUserEmailSignature(int userId)
+        public EmailSignature GetUserEmailSignature(long userId)
         {
             var responseTask = GetUserEmailSignatureAsync(userId).ConfigureAwait(false).GetAwaiter();
             var result = responseTask.GetResult();
             return result;
         }
 
-        public async Task<EmailSignature> GetUserEmailSignatureAsync(int userId)
+        public async Task<EmailSignature> GetUserEmailSignatureAsync(long userId)
         {
             if (userId <= 0)
             {
@@ -123,7 +123,7 @@ namespace Keap.Sdk.Clients.Users
             }
             var resultDto = Domain.Clients.RestHelper.ProcessResults<UserDto>(response);
 
-            var result = resultDto.MapTo();
+            var result = resultDto?.MapTo();
 
             return result;
         }

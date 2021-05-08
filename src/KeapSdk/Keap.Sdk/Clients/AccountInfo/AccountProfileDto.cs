@@ -76,8 +76,8 @@ namespace Keap.Sdk.Clients.AccountInfo
         internal Domain.Account.AccountProfile MapTo()
         {
             Domain.Account.AccountProfile result = new Domain.Account.AccountProfile();
-            result.Address = Address.MapTo();
-            result.BusinessGoals = BusinessGoals.GetClone();
+            result.Address = Address?.MapTo();
+            result.BusinessGoals = BusinessGoals?.GetClone();
             result.BusinessPrimaryColor = BusinessPrimaryColor;
             result.BusinessSecondaryColor = BusinessSecondaryColor;
             result.BusinessType = BusinessType;

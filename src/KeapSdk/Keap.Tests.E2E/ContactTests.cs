@@ -21,17 +21,7 @@ namespace Keap.Tests.E2E
         {
             // Arrange
             var client = ClientHelper.GetSdkClient(PersonaType.Admin);
-            var expected = new Sdk.Domain.Contacts.Contact();
-            var nameFaker = new Bogus.DataSets.Name();
-            var internetFaker = new Bogus.DataSets.Internet();
-
-            expected.FamilyName = nameFaker.LastName();
-            expected.GivenName = nameFaker.FirstName();
-            var emailAddress = new Sdk.Domain.Contacts.EmailAddress();
-            emailAddress.Email = Guid.NewGuid().ToString() + "@weekendproject.app";
-            emailAddress.Field = Sdk.Domain.Contacts.EmailFieldType.EMAIL1;
-
-            expected.EmailAddresses.Add(emailAddress);
+            var expected = FakeData.GetSimpleContact();
 
             // Act
             var actual = client.Contacts.CreateContact(expected);
@@ -39,6 +29,44 @@ namespace Keap.Tests.E2E
             // Assert
             actual.Should().NotBeNull();
             actual.Id.Should().BeGreaterThan(0);
+        }
+
+        [Scenario("Delete a contact returns false given an invalid contact Id")]
+        [Given("any token and a very large contact ID that likely does not exist")]
+        [When("a call to delete the contact is made")]
+        [Then("false is returned ")]
+        [TestMethod]
+        public void Delete_a_contact_returns_false_given_an_invalid_contact_id()
+        {
+            // Arrange
+            var client = ClientHelper.GetSdkClient(PersonaType.Admin);
+
+            // Act
+            var actual = client.Contacts.DeleteContact(999999);
+
+            // Assert
+            actual.Should().BeFalse();
+        }
+
+        [Scenario("Delete a contact returns true given a valid contact Id")]
+        [Given("any token and a contact created by that token")]
+        [When("a call to delete the contact that was created is made")]
+        [Then("true is returned and the contact is no longer retrievable")]
+        [TestMethod]
+        public void Delete_a_contact_returns_true_given_a_valid_contact_id()
+        {
+            // Arrange
+            var client = ClientHelper.GetSdkClient(PersonaType.Admin);
+            var original = client.Contacts.CreateContact(FakeData.GetSimpleContact());
+            original.Should().NotBeNull();
+            original.Id.Should().BeGreaterThan(0);
+
+            // Act
+            var actual = client.Contacts.DeleteContact(original.Id);
+            var found = client.Contacts.GetContact(original.Id);
+            // Assert
+            actual.Should().BeTrue();
+            found.Should().BeNull();
         }
 
         [Scenario("Get additional contact pages using the next page token")]

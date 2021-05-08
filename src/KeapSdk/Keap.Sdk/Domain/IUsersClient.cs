@@ -11,14 +11,14 @@ namespace Keap.Sdk.Domain
         /// </summary>
         /// <param name="userId">ID of the user</param>
         /// <returns><see cref="EmailSignature"/> that contains the HTML snippet for the signature</returns>
-        EmailSignature GetUserEmailSignature(int userId);
+        EmailSignature GetUserEmailSignature(long userId);
 
         /// <summary>
         /// Retrieves a HTML snippet that contains the user's email signature.
         /// </summary>
         /// <param name="userId">ID of the user</param>
         /// <returns><see cref="EmailSignature"/> that contains the HTML snippet for the signature</returns>
-        Task<EmailSignature> GetUserEmailSignatureAsync(int userId);
+        Task<EmailSignature> GetUserEmailSignatureAsync(long userId);
 
         /// <summary>
         /// Retrieves the next page of users
